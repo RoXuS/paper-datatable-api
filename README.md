@@ -26,9 +26,15 @@ See the [component page](https://roxus.github.io/paper-datatable-api/components/
 
 - [Follows the guideline of Material Design](https://material.google.com/components/data-tables.html#)
 - Hide/Show columns
-- Freeze header
+- Freezes header
 - Sort
 - Pagination
+
+## Roadmap
+
+- Freezes a column
+- Add checkboxes to select or manipulate data
+- Display only selected rows
 
 ## Install
 
