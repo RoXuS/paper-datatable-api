@@ -30,6 +30,12 @@ See the [component page](https://roxus.github.io/paper-datatable-api/components/
 - Sort
 - Pagination
 
+## Install
+
+```
+$ bower install paper-datatable-api --save
+```
+
 ## Serve component 
 
 ```
