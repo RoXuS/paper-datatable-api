@@ -15,9 +15,6 @@
       paper-datatable-api {
         --paper-datatable-api-tbody-height: 48px;
       }
-      div.layout > div {
-        width: 500px;
-      }
     </style>
 
     <div class="layout horizontal center-justified">
@@ -28,12 +25,12 @@
             <paper-datatable-api frozen-header data="[[data]]">
               <paper-datatable-api-column header="Fruit" property="fruit">
                 <template>
-                  <span>{{value}}</span>
+                  <span>[[value]]</span>
                 </template>
               </paper-datatable-api-column>
               <paper-datatable-api-column header="Color" property="color">
                 <template>
-                  <span>{{value}}</span>
+                  <span>[[value]]</span>
                 </template>
               </paper-datatable-api-column>
             </paper-datatable-api>

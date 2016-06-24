@@ -5,6 +5,8 @@ paper-datatable-api web component
 
 `paper-datatable-api` is a material design implementation of a data table.
 
+See the [component page](https://roxus.github.io/paper-datatable-api/components/paper-datatable-api/) for more information.
+
     <iron-ajax auto url="data.json" last-response="{{data}}"></iron-ajax>
 
     <paper-datatable-api data="[[data]]">
@@ -24,9 +26,21 @@ paper-datatable-api web component
 
 - [Follows the guideline of Material Design](https://material.google.com/components/data-tables.html#)
 - Hide/Show columns
-- Freeze header
+- Freezes header
 - Sort
 - Pagination
+
+## Roadmap
+
+- Freezes a column
+- Add checkboxes to select or manipulate data
+- Display only selected rows
+
+## Install
+
+```
+$ bower install paper-datatable-api --save
+```
 
 ## Serve component 
 

@@ -1,6 +1,5 @@
 {
   "name": "paper-datatable-api",
-  "version": "0.0.1",
   "description": "A material design implementation of a data table",
   "authors": [
     "Julien Rousseau <RoXuS>"
@@ -19,7 +18,7 @@
   ],
   "ignore": [
     "/.*",
-    "/tests/"
+    "/test/"
   ],
   "dependencies": {
     "polymer": "Polymer/polymer#^1.4.0",
@@ -42,14 +41,13 @@
     "paper-header-panel": "PolymerElements/paper-header-panel#^1.1.6"
   },
   "homepage": "https://github.com/RoXuS/paper-datatable-api",
-  "_release": "0.0.1",
+  "_release": "bdcc05e267",
   "_resolution": {
-    "type": "version",
-    "tag": "0.0.1",
-    "commit": "b3ac75c0549c82086c99f9305585bacf9d279731"
+    "type": "branch",
+    "branch": "master",
+    "commit": "bdcc05e26720bb152981ef9f67fb8325f114dcaa"
   },
   "_source": "https://github.com/RoXuS/paper-datatable-api.git",
-  "_target": "^0.0.1",
-  "_originalSource": "paper-datatable-api",
-  "_direct": true
+  "_target": "master",
+  "_originalSource": "paper-datatable-api"
 }

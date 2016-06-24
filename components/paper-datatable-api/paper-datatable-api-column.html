@@ -38,6 +38,14 @@
          */
         property: String,
         /**
+         * If set, these other properties will be available in data (throught paper-datatable-api).
+         * Usefull to keep id of the object.
+         */
+        otherProperties: {
+          type: Array,
+          value: [],
+        },
+        /**
          * If true, the colum can be sort.
          */
         sortable: {
@@ -85,8 +93,8 @@
        * @property fillTemplate
        * @param {String} value The value of the property.
        */
-      fillTemplate: function(value) {
-        var instance = this.stamp({ value: value });
+      fillTemplate: function(value, otherValues) {
+        var instance = this.stamp({ value: value, otherValues: otherValues });
         return instance; 
       },
     });

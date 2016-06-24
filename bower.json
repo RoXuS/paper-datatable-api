@@ -12,7 +12,7 @@
     "paper-item": "PolymerElements/paper-item#^1.2.1",
     "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#^1.2.2",
     "paper-listbox": "PolymerElements/paper-listbox#^1.1.2",
-    "paper-datatable-api": "^0.0.1"
+    "paper-datatable-api": "master"
   },
   "devDependencies": {
     "paper-menu-button": "PolymerElements/paper-menu-button#^1.1.1",

@@ -224,6 +224,7 @@ Custom property | Description | Default
         this._removeRows();
         this._fillRows(data);
         this._fillColumns();
+        this._resizeHeader();
       },
 
       _removeRows: function() {
@@ -248,36 +249,65 @@ Custom property | Description | Default
       _fillColumns: function() {
         var pgTrs = Polymer.dom(this.root).querySelectorAll('.paper-datatable-api-tr');
 
-        console.log(pgTrs);
         pgTrs.forEach(function(pgTr) {
 
           var rowData = pgTr.rowData;
           this.columns.forEach(function(paperDatatableApiColumn) {
 
             var valueFromRowData = this._extractData(rowData, paperDatatableApiColumn.property);
-            if (valueFromRowData) {
-              var tdLocal = document.createElement('td');
-              var template = paperDatatableApiColumn.fillTemplate(valueFromRowData);
-              tdLocal.appendChild(template.root);
-              pgTr.appendChild(tdLocal);
-            }
+
+            var otherPropertiesValue = {};
+            paperDatatableApiColumn.otherProperties.forEach(function(property) {
+              otherPropertiesValue[property] = this._extractData(rowData, property);
+            }, this);
+
+            var tdLocal = document.createElement('td');
+            var template = paperDatatableApiColumn.fillTemplate(valueFromRowData, otherPropertiesValue);
+            tdLocal.appendChild(template.root);
+            pgTr.appendChild(tdLocal);
 
           }, this);
         }, this);
       },
 
-      _extractData: function(rowData, columnProperty) {
-        var splittedProperties = columnProperty.split('.');
-        if (splittedProperties.length > 1) {
-          return splittedProperties.reduce(function(prevRow, property) {
-            if (typeof prevRow === 'string') {
-              return rowData[prevRow][property];
-            } else {
-              return prevRow[property];
-            }
+      _resizeHeader: function() {
+        if (this.frozenHeader) {
+          this.async(function() {
+            var pgTds = Polymer.dom(this.root).querySelectorAll('tbody tr:first-child td');
+            pgTds.forEach(function(pgTd, i) {
+              i++;
+              var pgTh = Polymer.dom(this.root).querySelector('thead th:nth-child(' + i + ')');
+              var thOffsetWidth = pgTh.offsetWidth - 52;
+              pgTd.style.minWidth = thOffsetWidth + 'px';
+
+              this.async(function() {
+                var tdOffsetWidth = pgTd.offsetWidth - 52;
+
+                if (thOffsetWidth < tdOffsetWidth) {
+                  pgTh.style.width = tdOffsetWidth + 'px';
+                }
+              });
+            }, this);
           });
+        }
+      },
+
+      _extractData: function(rowData, columnProperty) {
+        if (columnProperty) {
+          var splittedProperties = columnProperty.split('.');
+          if (splittedProperties.length > 1) {
+            return splittedProperties.reduce(function(prevRow, property) {
+              if (typeof prevRow === 'string') {
+                return rowData[prevRow][property];
+              } else {
+                return prevRow[property];
+              }
+            });
+          } else {
+            return rowData[columnProperty];
+          }
         } else {
-          return rowData[columnProperty];
+          return null;
         }
       },
 

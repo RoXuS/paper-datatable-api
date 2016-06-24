@@ -14,13 +14,10 @@
 	border-spacing: 0px;
 	border-collapse: seperate;
 	@apply(--paper-font-common-base);
-	@apply(--paper-font-common-nowrap);
       }
 
-      thead.frozen, :host ::content tbody tr.frozen {
-	display: table;
-	width: 100%;
-	table-layout: fixed;
+      thead.frozen {
+	display: block;
       }
 
       thead th {
@@ -30,8 +27,7 @@
 	text-align: left;
 	height: 56px;
 	padding: 0 26px;
-	transition: linear .1s color, padding-left .2s linear;
-	max-width: 0;
+	white-space: nowrap;
       }
 
       thead th[sortable] {
@@ -43,32 +39,18 @@
       }
 
       thead th[sortable] iron-icon.sort {
-	transition: transform .2s linear, width .2s linear, padding .2s linear, color .2s linear;
 	color: rgba(0,0,0, .26);
-	width: 0px;
       }
 
       thead th[sortable][sorted],
       thead th[sortable]:hover {
-	padding-left: 10px;
 	color: rgba(0,0,0, .87);
       }
 
-      thead th[sortable][sorted] iron-icon.sort,
-      thead th[sortable]:hover iron-icon.sort {
+      thead th iron-icon.sort {
 	width: 16px;
 	height: 16px;
       }
-      /*  */
-      /* thead th[sortable][sorted][sort-direction='desc'] iron-icon.sort, */
-      /* thead th[sortable][sort-direction='desc']:hover iron-icon.sort { */
-	/* padding-left: 5px; */
-      /* } */
-      /*  */
-      /* thead th[sortable][sorted][sort-direction='asc'] iron-icon.sort, */
-      /* thead th[sortable][sort-direction='asc']:hover iron-icon.sort { */
-	/* padding-right: 5px; */
-      /* } */
 
       thead th[sortable][sorted] iron-icon.sort {
 	color: rgba(0,0,0, .87);
@@ -87,7 +69,6 @@
       }
 
       tbody.frozen {
-	table-layout: fixed;
 	display: block;
 	overflow: auto;
 	height: var(--paper-datatable-api-tbody-height, 48px);
@@ -101,7 +82,7 @@
 	font-size: 13px;
 	font-weight: normal;
 	color: rgba(0, 0, 0, var(--dark-primary-opacity));
-	padding: 0 26px;
+	padding: 6px 26px;
 	border-top: 1px solid;
 	border-color: rgba(0, 0, 0, var(--dark-divider-opacity));
       }
