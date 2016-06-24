@@ -1,0 +1,126 @@
+<!doctype html>
+
+<html>
+  <head>
+    <title>paper-datatable-api test</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+
+    <link rel="import" href="../paper-datatable-api.html">
+    <link rel="import" href="../paper-datatable-api-column.html">
+  </head>
+  <body>
+
+    <test-fixture id="pagination">
+      <template>
+        <paper-datatable-api size="0" page="0" available-size="[2, 4]" paginate>
+          <paper-datatable-api-column header="Fruit" property="fruit" sortable>
+            <template>
+              <span>{{value}}</span>
+            </template>
+          </paper-datatable-api-column>
+          <paper-datatable-api-column header="Color" property="color">
+            <template>
+              <div>{{value}}</div>
+            </template>
+          </paper-datatable-api-column>
+        </paper-datatable-api>
+      </template>
+    </test-fixture>
+
+    <script>
+      var data = [
+{
+  "color": "yellow",
+  "fruit": "banana"
+},
+{
+  "fruit": "apple",
+  "color": "green"
+}
+      ];
+
+      suite('paper-datatable-api', function() {
+
+        test('Next page', function() {
+          var paperDatatableApi = fixture('pagination');
+          paperDatatableApi.data = data;
+          paperDatatableApi.page = 0;
+          paperDatatableApi.totalPages = 1;
+          paperDatatableApi._nextPage();
+          assert.equal(paperDatatableApi.page, 0);
+          paperDatatableApi.totalPages = 2;
+          paperDatatableApi._nextPage();
+          assert.equal(paperDatatableApi.page, 1);
+        });
+
+        test('Prev page', function() {
+          var paperDatatableApi = fixture('pagination');
+          paperDatatableApi.data = data;
+          paperDatatableApi.page = 0;
+          paperDatatableApi._prevPage();
+          assert.equal(paperDatatableApi.page, 0);
+          paperDatatableApi.page = 1;
+          paperDatatableApi._prevPage();
+          assert.equal(paperDatatableApi.page, 0);
+        });
+
+        test('Next button status', function() {
+          var paperDatatableApi = fixture('pagination');
+          paperDatatableApi.data = data;
+          assert.equal(paperDatatableApi._nextButtonEnabled(0, 0), false);
+          assert.equal(paperDatatableApi._nextButtonEnabled(0, 2), true);
+          assert.equal(paperDatatableApi._nextButtonEnabled(1, 2), false);
+        });
+
+        test('Prev button status', function() {
+          var paperDatatableApi = fixture('pagination');
+          paperDatatableApi.data = data;
+          assert.equal(paperDatatableApi._prevButtonEnabled(0), false);
+          assert.equal(paperDatatableApi._prevButtonEnabled(1), true);
+        });
+
+        test('New size is selected', function(done) {
+          var paperDatatableApi = fixture('pagination');
+          paperDatatableApi.data = data;
+          paperDatatableApi.page = 1;
+          paperDatatableApi.size = 2;
+          flush(function() {
+            paperDatatableApi.querySelector('paper-listbox').select('4');
+            assert.equal(paperDatatableApi.page, 0);
+            assert.equal(paperDatatableApi.size, 4);
+            done();
+          });
+        });
+
+        test('Sort', function(done) {
+          var paperDatatableApi = fixture('pagination');
+          paperDatatableApi.data = data;
+          paperDatatableApi.page = 1;
+          paperDatatableApi.size = 2;
+          flush(function() {
+            var i = 0;
+            paperDatatableApi.addEventListener('sort', function(event) {
+              if (i === 0) {
+                assert.equal(event.detail.sort.property, 'fruit');
+                assert.equal(event.detail.sort.direction, 'asc');
+                flush(function() {
+                  i++;
+                  paperDatatableApi.querySelector('th[sortable]').click();
+                });
+              } else {
+                assert.equal(event.detail.sort.property, 'fruit');
+                assert.equal(event.detail.sort.direction, 'desc');
+                done();
+              }
+            });
+            paperDatatableApi.querySelector('th[sortable]').click();
+          });
+        });
+
+      });
+    </script>
+  </body>
+</html>

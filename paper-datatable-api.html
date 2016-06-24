@@ -1,0 +1,339 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="paper-datatable-api-shared-styles.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../paper-listbox/paper-listbox.html">
+<link rel="import" href="../paper-item/paper-item.html">
+
+<!--
+
+`paper-datatable-api` is a material design implementation of a data table.
+
+    <iron-ajax auto url="data.json" last-response="{{data}}"></iron-ajax>
+
+    <paper-datatable-api data="[[data]]">
+      <paper-datatable-api-column header="Fruit" property="fruit">
+        <template>
+          <span>{{value}}</span>
+        </template>
+      </paper-datatable-api-column>
+      <paper-datatable-api-column header="Color" property="color">
+        <template>
+          <span>{{value}}</span>
+        </template>
+      </paper-datatable-api-column>
+    </paper-datatable-api>
+
+### Features
+
+- [Follows the guideline of Material Design](https://material.google.com/components/data-tables.html#)
+- Hide/Show columns
+- Freeze header
+- Sort
+- Pagination
+
+### Styling
+
+The following custom properties and mixins are available for styling:
+
+Custom property | Description | Default
+----------------------------|-------------------------------------------|--------
+`--paper-datatable-api-tbody-height` | Height of the tbody in frozen header mode | `{}`
+
+@element paper-datatable-api
+@demo demo/index.html
+-->
+<dom-module id="paper-datatable-api">
+  <template>
+    <style>
+      .paper-datatable-api-col-1 {
+        display: none;
+      }
+    </style>
+    <style include="paper-datatable-api-shared-styles"></style>
+    <style include="iron-flex iron-flex-alignment"></style>
+    <table>
+      <thead class$="[[_isFrozen(frozenHeader)]]">
+        <tr>
+          <template is="dom-repeat" items="[[columns]]" as="column">
+            <th on-tap="_handleSort" data-column="[[column]]" sort-direction$="[[column.sortDirection]]" sorted$="[[column.sorted]]" sortable$="[[column.sortable]]">
+              <div class="layout horizontal center">
+                <iron-icon icon="arrow-downward" class="sort"></iron-icon>
+                <div>[[column.header]]</div>
+              </div>
+            </th>
+          </template>
+        </tr>
+      </thead>
+      <tbody class$="[[_isFrozen(frozenHeader)]]">
+      </tbody>
+      <template is="dom-if" if="[[paginate]]" restamp>
+        <tfoot>
+          <tr>
+            <td colspan$="[[_columnsHeight]]">
+              <div class="layout horizontal end-justified center">
+                <div class="layout horizontal center">
+                  <div>
+                    Row per page:
+                  </div>
+                  <div class="size">
+                    <paper-dropdown-menu no-label-float>
+                      <paper-listbox attr-for-selected="size" on-iron-select="_newSizeIsSelected" selected="[[size]]" class="dropdown-content">
+                        <template is="dom-repeat" items="[[availableSize]]" as="size">
+                          <paper-item size="[[size]]">[[size]]</paper-item>
+                        </template>
+                      </paper-listbox>
+                    </paper-dropdown-menu>
+                  </div>
+                </div>
+                <div class="status">
+                  [[_computeCurrentSize(page, size)]]-[[_computeCurrentMaxSize(page, size)]] of [[totalElements]]
+                </div>
+                <template is="dom-if" if="[[!_prevButtonEnabled(page)]]">
+                  <paper-icon-button icon="chevron-left" disabled on-tap="_prevPage"></paper-icon-button>
+                </template>
+                <template is="dom-if" if="[[_prevButtonEnabled(page)]]">
+                  <paper-icon-button icon="chevron-left" on-tap="_prevPage"></paper-icon-button>
+                </template>
+                <template is="dom-if" if="[[!_nextButtonEnabled(page, totalPages)]]">
+                  <paper-icon-button icon="chevron-right" disabled on-tap="_nextPage"></paper-icon-button>
+                </template>
+                <template is="dom-if" if="[[_nextButtonEnabled(page, totalPages)]]">
+                  <paper-icon-button icon="chevron-right" on-tap="_nextPage"></paper-icon-button>
+                </template>
+              </div>
+            </td>
+          </tr>
+        </tfoot>
+      </template>
+    </table>
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'paper-datatable-api',
+
+      properties: {
+        /**
+         * The columns element.
+         * It is exposed to create a list of label (see demo/advance-demo.html).
+         */
+        columns: {
+          type: Array,
+          notify: true,
+          value: [],
+        },
+        /**
+         * Contains the data which will be displayed in the table.
+         */
+        data: {
+          type: Array,
+          observer: '_dataChanged',
+        },
+        /**
+         * If true, the pagination will be activated.
+         */
+        paginate: {
+          type: Boolean,
+          value: false,
+        },
+        /**
+         * The current page.
+         */
+        page: {
+          type: Number,
+          notify: true,
+        },
+        /**
+         * The current size.
+         */
+        size: {
+          type: Number,
+          notify: true,
+        },
+        /**
+         * If true, the header will be static and the height of body will be
+         * setted through the dedicated mixin (--paper-datatable-api-tbody-height).
+         */
+        frozenHeader: {
+          type: Boolean,
+          value: false,
+        },
+        /**
+         * The total of elements have to be provided in case of pagination, it is mandatory.
+         */
+        totalElements: Number,
+        /**
+         * The total of pages have to be provided in case of pagination, it is mandatory.
+         * It is used to compute the footer.
+         */
+        totalPages: Number,
+        /**
+         * The available size in case of pagination.
+         */
+        availableSize: {
+          type: Array,
+          value: [10],
+        }
+      },
+
+      behaviors: [
+        Polymer.IronResizableBehavior
+      ],
+
+      attached: function() {
+        this._setColumns();
+      },
+
+      _isFrozen: function(frozenHeader) {
+        return frozenHeader ? 'frozen' : '';
+      },
+
+      _nextPage: function() {
+        if ((this.page + 1) < this.totalPages) {
+          this.page = this.page + 1;
+        }
+      },
+
+      _prevPage: function() {
+        if (this.page > 0) {
+          this.page = this.page - 1;
+        }
+      },
+
+      _nextButtonEnabled: function(page, totalPages) {
+        return (page + 1) < totalPages;
+      },
+
+      _prevButtonEnabled: function(page) {
+        return page > 0;
+      },
+
+      _computeCurrentSize: function(page, size) {
+        return (page * size) + 1;
+      },
+
+      _computeCurrentMaxSize: function(page, size) {
+        return size * (page + 1);
+      },
+
+      _dataChanged: function(data) {
+        this._removeRows();
+        this._fillRows(data);
+        this._fillColumns();
+      },
+
+      _removeRows: function() {
+        var pgTrs = Polymer.dom(this.root).querySelectorAll('.paper-datatable-api-tr');
+        pgTrs.forEach(function(pgTr) {
+          Polymer.dom(this.$$('tbody')).removeChild(pgTr);
+        }, this);
+      },
+
+      _fillRows: function(data) {
+        data.forEach(function(rowData) {
+          var trLocal = document.createElement('tr');
+          trLocal.rowData = rowData;
+          trLocal.className = 'paper-datatable-api-tr';
+          if (this.frozenHeader) {
+            trLocal.className = trLocal.className + ' frozen';
+          }
+          this.$$('tbody').appendChild(trLocal);
+        }, this);
+      },
+
+      _fillColumns: function() {
+        var pgTrs = Polymer.dom(this.root).querySelectorAll('.paper-datatable-api-tr');
+
+        console.log(pgTrs);
+        pgTrs.forEach(function(pgTr) {
+
+          var rowData = pgTr.rowData;
+          this.columns.forEach(function(paperDatatableApiColumn) {
+
+            var valueFromRowData = this._extractData(rowData, paperDatatableApiColumn.property);
+            if (valueFromRowData) {
+              var tdLocal = document.createElement('td');
+              var template = paperDatatableApiColumn.fillTemplate(valueFromRowData);
+              tdLocal.appendChild(template.root);
+              pgTr.appendChild(tdLocal);
+            }
+
+          }, this);
+        }, this);
+      },
+
+      _extractData: function(rowData, columnProperty) {
+        var splittedProperties = columnProperty.split('.');
+        if (splittedProperties.length > 1) {
+          return splittedProperties.reduce(function(prevRow, property) {
+            if (typeof prevRow === 'string') {
+              return rowData[prevRow][property];
+            } else {
+              return prevRow[property];
+            }
+          });
+        } else {
+          return rowData[columnProperty];
+        }
+      },
+
+      _setColumns: function() {
+        this.columns = this.queryAllEffectiveChildren('paper-datatable-api-column');
+        this._columnsHeight = this.columns.length;
+      },
+
+      /**
+       * Hide or show a column following the number in argument.
+       *
+       * @property toggleColumn
+       * @param {Number} columnPosition The number of column which will be toggled.
+       */
+      toggleColumn: function(columnPosition) {
+        var cssQuery = 'tr > *:nth-child(' + (columnPosition + 1) + ')';
+
+        if (this.columns[columnPosition].show) {
+          Polymer.dom(this.root).querySelectorAll(cssQuery).forEach(function(td) {
+            td.style.display = 'none';
+          });
+          this.set('columns.' + columnPosition + '.show', false);
+        } else {
+          Polymer.dom(this.root).querySelectorAll(cssQuery).forEach(function(td) {
+            td.style.display = 'table-cell';
+          });
+          this.set('columns.' + columnPosition + '.show', true);
+        }
+      },
+
+      _newSizeIsSelected: function() {
+        var newSize = this.$$('paper-listbox').selected;
+        if (newSize) {
+          this.page = 0;
+          this.size = newSize;
+        }
+      },
+
+      _handleSort: function(event) {
+        var column = event.model.column;
+        var th = event.currentTarget;
+        if (column.sortable) {
+          var sortDirection = column.sortDirection === 'asc' ? 'desc' : 'asc';
+          th.setAttribute('sort-direction', sortDirection);
+          th.setAttribute('sorted', true);
+          column.set('sortDirection', sortDirection);
+          column.set('sorted', true);
+          this.fire('sort', {
+            sort: {
+              property: column.property,
+              direction: column.sortDirection
+            },
+            column: column
+          });
+        }
+      },
+    });
+  </script>
+</dom-module>

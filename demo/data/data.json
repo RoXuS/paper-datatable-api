@@ -1,0 +1,18 @@
+[
+  {
+    "color": "yellow",
+    "fruit": "banana",
+    "weight": {
+      "kg": "0.12gr",
+      "gr": "120gr"
+    }
+  },
+  {
+    "fruit": "apple",
+    "color": "green",
+    "weight": {
+      "kg": "0.12gr",
+      "gr": "120gr"
+    }
+  }
+]

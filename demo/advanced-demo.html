@@ -1,0 +1,104 @@
+<link rel="import" href="../../polymer/polymer.html">
+
+<link rel="import" href="../../paper-menu/paper-menu.html">
+<link rel="import" href="../../paper-menu-button/paper-menu-button.html">
+<link rel="import" href="../../paper-item/paper-icon-item.html">
+<link rel="import" href="../../paper-card/paper-card.html">
+<link rel="import" href="../../iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../../iron-icon/iron-icon.html">
+
+<link rel="import" href="../paper-datatable-api.html">
+<link rel="import" href="../paper-datatable-api-column.html">
+<link rel="import" href="api-sample.html">
+
+<dom-module id="advanced-demo">
+
+  <template>
+
+    <style include="iron-flex iron-flex-alignment"></style>
+    <style>
+      div.layout > div {
+        width: 500px;
+      }
+      paper-card {
+        width: 100%;
+      }
+    </style>
+
+    <div class="layout horizontal center-justified">
+      <div>
+        <api-sample
+          data="{{dataFromApi}}"
+          page="{{page}}"
+          size="{{size}}"
+          sort-property="[[sortProperty]]"
+          total-elements="{{totalElements}}"
+          total-pages="{{totalPages}}">
+        </api-sample>
+
+        <paper-card heading="Sortable, paginable, with toggle column">
+          <div class="horizontal end-justified layout">
+            <paper-menu-button ignore-select horizontal-align="right">
+              <paper-icon-button icon="menu" class="dropdown-trigger"></paper-icon-button>
+              <paper-menu class="dropdown-content">
+                <template is="dom-repeat" items="[[columns]]" as="column" index-as="index">
+                  <paper-icon-item position="[[index]]" on-tap="_hideColumn">
+                    <template is="dom-if" if="[[column.show]]">
+                      <iron-icon icon="visibility-off" item-icon></iron-icon>
+                    </template>
+                    <template is="dom-if" if="[[!column.show]]">
+                      <iron-icon disabled icon="visibility" item-icon></iron-icon>
+                    </template>
+                    [[column.header]]
+                  </paper-icon-item>
+                </template>
+              </paper-menu>
+            </paper-menu-button>
+          </div>
+
+          <div class="card-content">
+            <paper-datatable-api
+              paginate
+              data="[[dataFromApi]]"
+              page="{{page}}"
+              size="{{size}}"
+              available-size="[2, 4]"
+              columns="{{columns}}"
+              on-sort="_handleSort"
+              total-elements="[[totalElements]]"
+              total-pages="[[totalPages]]">
+              <paper-datatable-api-column header="Fruit" property="fruit" sortable>
+                <template>
+                  <span>{{value}}</span>
+                </template>
+              </paper-datatable-api-column>
+              <paper-datatable-api-column header="Color" property="color">
+                <template>
+                  <span>{{value}}</span>
+                </template>
+              </paper-datatable-api-column>
+            </paper-datatable-api>
+          </div>
+        </paper-card>
+      </div>
+    </div>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'advanced-demo',
+      properties: {
+        sortProperty: {
+          type: String,
+        },
+      },
+      _hideColumn: function(event) {
+        var position = event.currentTarget.position;
+        this.$$('paper-datatable-api').toggleColumn(position);
+      },
+      _handleSort: function(event) {
+        this.sortProperty = event.detail.sort.property + ',' + event.detail.sort.direction;
+      },
+    });
+  </script>
+</dom-module>
