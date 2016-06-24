@@ -1,9 +1,25 @@
 {
   "name": "paper-datatable-api",
   "description": "A papertable in material design",
+  "authors": [
+    "Julien Rousseau <RoXuS>"
+  ],
+  "description": "A material design implementation of a data table",
+  "keywords": [
+    "web-component",
+    "web-components",
+    "polymer",
+    "datatable",
+    "grid",
+    "table"
+  ],
   "main": [
     "paper-datatable-api.html",
     "paper-datatable-api-column.html"
+  ],
+  "ignore": [
+    "/.*",
+    "/tests/"
   ],
   "dependencies": {
     "polymer": "Polymer/polymer#^1.4.0",
@@ -12,7 +28,6 @@
     "paper-item": "PolymerElements/paper-item#^1.2.1",
     "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#^1.2.2",
     "paper-listbox": "PolymerElements/paper-listbox#^1.1.2"
-
   },
   "devDependencies": {
     "paper-menu-button": "PolymerElements/paper-menu-button#^1.1.1",
