@@ -254,9 +254,15 @@ Custom property | Description | Default
           this.columns.forEach(function(paperDatatableApiColumn) {
 
             var valueFromRowData = this._extractData(rowData, paperDatatableApiColumn.property);
+
+            var otherPropertiesValue = {};
+            paperDatatableApiColumn.otherProperties.forEach(function(property) {
+              otherPropertiesValue[property] = this._extractData(rowData, property);
+            }, this);
+
             if (valueFromRowData) {
               var tdLocal = document.createElement('td');
-              var template = paperDatatableApiColumn.fillTemplate(valueFromRowData);
+              var template = paperDatatableApiColumn.fillTemplate(valueFromRowData, otherPropertiesValue);
               tdLocal.appendChild(template.root);
               pgTr.appendChild(tdLocal);
             }
@@ -266,17 +272,21 @@ Custom property | Description | Default
       },
 
       _extractData: function(rowData, columnProperty) {
-        var splittedProperties = columnProperty.split('.');
-        if (splittedProperties.length > 1) {
-          return splittedProperties.reduce(function(prevRow, property) {
-            if (typeof prevRow === 'string') {
-              return rowData[prevRow][property];
-            } else {
-              return prevRow[property];
-            }
-          });
+        if (columnProperty) {
+          var splittedProperties = columnProperty.split('.');
+          if (splittedProperties.length > 1) {
+            return splittedProperties.reduce(function(prevRow, property) {
+              if (typeof prevRow === 'string') {
+                return rowData[prevRow][property];
+              } else {
+                return prevRow[property];
+              }
+            });
+          } else {
+            return rowData[columnProperty];
+          }
         } else {
-          return rowData[columnProperty];
+          return null;
         }
       },
 

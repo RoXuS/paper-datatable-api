@@ -18,12 +18,17 @@
         <paper-datatable-api>
           <paper-datatable-api-column header="Fruit" property="fruit">
             <template>
-              <span>{{value}}</span>
+              <span>[[value]]</span>
             </template>
           </paper-datatable-api-column>
           <paper-datatable-api-column header="Color" property="color">
             <template>
-              <div>{{value}}</div>
+              <div>[[value]]</div>
+            </template>
+          </paper-datatable-api-column>
+          <paper-datatable-api-column header="Color + fruit" property="color" other-properties='["fruit"]'>
+            <template>
+              <div>[[otherValues.fruit]] is [[value]]</div>
             </template>
           </paper-datatable-api-column>
         </paper-datatable-api>
@@ -52,7 +57,8 @@
             var ths = paperDatatableApi.querySelectorAll('thead tr th');
             assert.equal(ths[0].textContent.trim(), 'Fruit');
             assert.equal(ths[1].textContent.trim(), 'Color');
-            assert.equal(ths.length, 2);
+            assert.equal(ths[2].textContent.trim(), 'Color + fruit');
+            assert.equal(ths.length, 3);
             done();
           });
         });
@@ -70,14 +76,16 @@
           paperDatatableApi.data = data;
           var trs = paperDatatableApi.querySelectorAll('tbody tr');
           var tr1tds = trs[0].querySelectorAll('td');
-          assert.equal(tr1tds.length, 2);
+          assert.equal(tr1tds.length, 3);
           assert.equal(tr1tds[0].querySelector('span').textContent, 'banana');
           assert.equal(tr1tds[1].querySelector('div').textContent, 'yellow');
+          assert.equal(tr1tds[2].querySelector('div').textContent, 'banana is yellow');
 
-          var tr2tds = trs[0].querySelectorAll('td');
-          assert.equal(tr2tds.length, 2);
-          assert.equal(tr2tds[0].querySelector('span').textContent, 'banana');
-          assert.equal(tr2tds[1].querySelector('div').textContent, 'yellow');
+          var tr2tds = trs[1].querySelectorAll('td');
+          assert.equal(tr2tds.length, 3);
+          assert.equal(tr2tds[0].querySelector('span').textContent, 'apple');
+          assert.equal(tr2tds[1].querySelector('div').textContent, 'green');
+          assert.equal(tr2tds[2].querySelector('div').textContent, 'apple is green');
         });
 
         test('Hide and show column', function() {
