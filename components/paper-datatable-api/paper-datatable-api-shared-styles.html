@@ -1,0 +1,149 @@
+<link rel="import" href="../paper-styles/color.html">
+<link rel="import" href="../paper-styles/default-theme.html">
+<link rel="import" href="../paper-styles/typography.html">
+
+<dom-module id="paper-datatable-api-shared-styles">
+  <template>
+    <style>
+      :host {
+	display: block;
+      }
+
+      table {
+	width: 100%;
+	border-spacing: 0px;
+	border-collapse: seperate;
+	@apply(--paper-font-common-base);
+	@apply(--paper-font-common-nowrap);
+      }
+
+      thead.frozen, :host ::content tbody tr.frozen {
+	display: table;
+	width: 100%;
+	table-layout: fixed;
+      }
+
+      thead th {
+	font-size: 12px;
+	color: rgba(0, 0, 0, var(--dark-secondary-opacity));
+	font-weight: 500;
+	text-align: left;
+	height: 56px;
+	padding: 0 26px;
+	transition: linear .1s color, padding-left .2s linear;
+	max-width: 0;
+      }
+
+      thead th[sortable] {
+	cursor: pointer;
+      }
+
+      thead th:not([sortable]) iron-icon.sort {
+	display: none;
+      }
+
+      thead th[sortable] iron-icon.sort {
+	transition: transform .2s linear, width .2s linear, padding .2s linear, color .2s linear;
+	color: rgba(0,0,0, .26);
+	width: 0px;
+      }
+
+      thead th[sortable][sorted],
+      thead th[sortable]:hover {
+	padding-left: 10px;
+	color: rgba(0,0,0, .87);
+      }
+
+      thead th[sortable][sorted] iron-icon.sort,
+      thead th[sortable]:hover iron-icon.sort {
+	width: 16px;
+	height: 16px;
+      }
+      /*  */
+      /* thead th[sortable][sorted][sort-direction='desc'] iron-icon.sort, */
+      /* thead th[sortable][sort-direction='desc']:hover iron-icon.sort { */
+	/* padding-left: 5px; */
+      /* } */
+      /*  */
+      /* thead th[sortable][sorted][sort-direction='asc'] iron-icon.sort, */
+      /* thead th[sortable][sort-direction='asc']:hover iron-icon.sort { */
+	/* padding-right: 5px; */
+      /* } */
+
+      thead th[sortable][sorted] iron-icon.sort {
+	color: rgba(0,0,0, .87);
+      }
+
+      thead th[sortable]:not([sorted]) iron-icon.sort {
+	transform: rotate(180deg);
+      }
+
+      thead th[sortable]:not([sorted]):not([sort-direction='desc']) iron-icon.sort {
+	transform: rotate(0deg);
+      }
+
+      thead th[sortable][sorted]:not([sort-direction='desc']) iron-icon.sort {
+	transform: rotate(180deg);
+      }
+
+      tbody.frozen {
+	table-layout: fixed;
+	display: block;
+	overflow: auto;
+	height: var(--paper-datatable-api-tbody-height, 48px);
+      }
+
+      :host ::content tbody tr {
+	height: 48px;
+      }
+
+      :host ::content tbody td {
+	font-size: 13px;
+	font-weight: normal;
+	color: rgba(0, 0, 0, var(--dark-primary-opacity));
+	padding: 0 26px;
+	border-top: 1px solid;
+	border-color: rgba(0, 0, 0, var(--dark-divider-opacity));
+      }
+
+      tfoot tr td {
+	font-size: 12px;
+	font-weight: normal;
+	height: 56px;
+	padding: 0 6px 0 0;
+	color: rgba(0, 0, 0, var(--dark-secondary-opacity));
+      }
+
+      tfoot tr td paper-icon-button {
+	width: 24px;
+	height: 24px;
+	padding: 0;
+	margin-left: 24px;
+      }
+
+      tfoot tr td .status {
+	margin: 0 8px 0 32px;
+      }
+
+      tfoot tr td div .size {
+	width: 64px;
+	text-align: right;
+      }
+
+      .size paper-dropdown-menu {
+	--paper-input-container-underline: {
+	  display: none;
+	};
+	--paper-input-container-input: {
+	  text-align: right;
+	  font-size: 12px;
+	  font-weight: 500;
+	  color: var(--paper-datatable-navigation-bar-text-color, rgba(0,0,0,.54));
+	};
+	--paper-dropdown-menu-icon: {
+	  color: var(--paper-datatable-navigation-bar-text-color, rgba(0,0,0,.54));
+	};
+      }
+    </style>
+  </template>
+</dom-module>

@@ -1,0 +1,50 @@
+<link rel="import" href="../../polymer/polymer.html">
+
+<link rel="import" href="../../iron-ajax/iron-ajax.html">
+<link rel="import" href="../../paper-card/paper-card.html">
+<link rel="import" href="../../iron-flex-layout/iron-flex-layout-classes.html">
+
+<link rel="import" href="../paper-datatable-api.html">
+<link rel="import" href="../paper-datatable-api-column.html">
+
+<dom-module id="frozen-demo">
+
+  <template>
+    <style include="iron-flex iron-flex-alignment"></style>
+    <style>
+      paper-datatable-api {
+        --paper-datatable-api-tbody-height: 48px;
+      }
+      div.layout > div {
+        width: 500px;
+      }
+    </style>
+
+    <div class="layout horizontal center-justified">
+      <div>
+        <paper-card heading="Frozen header demo">
+          <div class="card-content">
+            <iron-ajax auto url="data/data.json" last-response="{{data}}"></iron-ajax>
+            <paper-datatable-api frozen-header data="[[data]]">
+              <paper-datatable-api-column header="Fruit" property="fruit">
+                <template>
+                  <span>{{value}}</span>
+                </template>
+              </paper-datatable-api-column>
+              <paper-datatable-api-column header="Color" property="color">
+                <template>
+                  <span>{{value}}</span>
+                </template>
+              </paper-datatable-api-column>
+            </paper-datatable-api>
+          </div>
+        </paper-card>
+      </div>
+    </div>
+  </template>
+  <script>
+    Polymer({
+      is: 'frozen-demo',
+    });
+  </script>
+</dom-module>

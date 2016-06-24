@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+  <head>
+    <title>paper-datatable-api demo</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import" href="../../iron-ajax/iron-ajax.html">
+    <link rel="import" href="../../paper-tabs/paper-tabs.html">
+    <link rel="import" href="../../paper-tabs/paper-tab.html">
+    <link rel="import" href="../../paper-toolbar/paper-toolbar.html">
+    <link rel="import" href="../../paper-header-panel/paper-header-panel.html">
+    <link rel="import" href="../../iron-flex-layout/iron-flex-layout-classes.html">
+
+    <link rel="import" href="advanced-demo.html">
+    <link rel="import" href="simple-demo.html">
+    <link rel="import" href="frozen-demo.html">
+
+    <style>
+      .container {
+        height: calc(100vh - 64px);
+      }
+      .fullbleed {
+        margin: 0;
+      }
+      .main {
+        padding: 16px;
+      }
+    </style>
+  </head>
+  <body class="fullbleed">
+
+    <template is="dom-bind">
+      <style include="iron-flex iron-flex-alignment"></style>
+      <div class="container">
+        <paper-header-panel class="flex">
+          <paper-toolbar>
+            <paper-tabs attr-for-selected="demo" selected="{{selected}}">
+              <paper-tab demo="advanced">Advanced demo</paper-tab>
+              <paper-tab demo="simple">Simple demo</paper-tab>
+              <paper-tab demo="frozen">Frozen header demo</paper-tab>
+            </paper-tabs>
+          </paper-toolbar>
+          <div class="main">
+            <template is="dom-if" if="[[equals('advanced', selected)]]">
+              <advanced-demo></advanced-demo>
+            </template>
+            <template is="dom-if" if="[[equals('simple', selected)]]">
+              <simple-demo></simple-demo>
+            </template>
+            <template is="dom-if" if="[[equals('frozen', selected)]]">
+              <frozen-demo></frozen-demo>
+            </template>
+          </div>
+        </paper-header-panel>
+      </div>
+    </template>
+
+    <script>
+      var t = document.querySelector('template[is="dom-bind"]');
+
+      t.equals = function(target, value) {
+        return target === value;
+      };
+
+      t.selected = 'advanced';
+    </script>
+
+  </body>
+</html>

@@ -1,0 +1,28 @@
+{
+  "page" : {
+    "size" : 4,
+    "totalElements" : 4,
+    "totalPages" : 1,
+    "number" : 0
+  },
+  "_embedded": {
+    "data": [
+      {
+        "color": "yellow",
+        "fruit": "banana"
+      },
+      {
+        "fruit": "apple",
+        "color": "green"
+      },
+      {
+        "color": "orange",
+        "fruit": "orange"
+      },
+      {
+        "fruit": "strawberry",
+        "color": "pink"
+      }
+    ]
+  }
+}
