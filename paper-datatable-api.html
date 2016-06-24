@@ -260,12 +260,10 @@ Custom property | Description | Default
               otherPropertiesValue[property] = this._extractData(rowData, property);
             }, this);
 
-            if (valueFromRowData) {
-              var tdLocal = document.createElement('td');
-              var template = paperDatatableApiColumn.fillTemplate(valueFromRowData, otherPropertiesValue);
-              tdLocal.appendChild(template.root);
-              pgTr.appendChild(tdLocal);
-            }
+            var tdLocal = document.createElement('td');
+            var template = paperDatatableApiColumn.fillTemplate(valueFromRowData, otherPropertiesValue);
+            tdLocal.appendChild(template.root);
+            pgTr.appendChild(tdLocal);
 
           }, this);
         }, this);
