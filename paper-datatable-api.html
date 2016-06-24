@@ -224,6 +224,7 @@ Custom property | Description | Default
         this._removeRows();
         this._fillRows(data);
         this._fillColumns();
+        this._resizeHeader();
       },
 
       _removeRows: function() {
@@ -267,6 +268,28 @@ Custom property | Description | Default
 
           }, this);
         }, this);
+      },
+
+      _resizeHeader: function() {
+        if (this.frozenHeader) {
+          this.async(function() {
+            var pgTds = Polymer.dom(this.root).querySelectorAll('tbody tr:first-child td');
+            pgTds.forEach(function(pgTd, i) {
+              i++;
+              var pgTh = Polymer.dom(this.root).querySelector('thead th:nth-child(' + i + ')');
+              var thOffsetWidth = pgTh.offsetWidth - 52;
+              pgTd.style.minWidth = thOffsetWidth + 'px';
+
+              this.async(function() {
+                var tdOffsetWidth = pgTd.offsetWidth - 52;
+
+                if (thOffsetWidth < tdOffsetWidth) {
+                  pgTh.style.width = tdOffsetWidth + 'px';
+                }
+              });
+            }, this);
+          });
+        }
       },
 
       _extractData: function(rowData, columnProperty) {
