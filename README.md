@@ -5,6 +5,8 @@ paper-datatable-api web component
 
 `paper-datatable-api` is a material design implementation of a data table.
 
+See the [component page](https://roxus.github.io/paper-datatable-api/components/paper-datatable-api/) for more information.
+
     <iron-ajax auto url="data.json" last-response="{{data}}"></iron-ajax>
 
     <paper-datatable-api data="[[data]]">
