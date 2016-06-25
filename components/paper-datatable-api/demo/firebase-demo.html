@@ -1,0 +1,78 @@
+<link rel="import" href="../../polymer/polymer.html">
+
+<link rel="import" href="../../iron-ajax/iron-ajax.html">
+<link rel="import" href="../../iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../../paper-card/paper-card.html">
+<link rel="import" href="../../polymerfire/firebase-app.html">
+<link rel="import" href="../../polymerfire/firebase-document.html">
+
+<link rel="import" href="../paper-datatable-api.html">
+<link rel="import" href="../paper-datatable-api-column.html">
+
+<dom-module id="firebase-demo">
+
+  <template>
+
+    <style include="iron-flex iron-flex-alignment"></style>
+    <style>
+      div.layout > div {
+        width: 500px;
+      }
+
+      paper-card {
+        width: 100%;
+      }
+    </style>
+
+    <div class="layout horizontal center-justified">
+      <div>
+
+        <firebase-app
+          auth-domain="paper-datatable-api-ca8cd.firebaseapp.com"
+          api-key="AIzaSyDZojHwPBzKX_62EI4nd59flJKzWwPZoqA"
+          database-url="https://paper-datatable-api-ca8cd.firebaseio.com">
+        </firebase-app>
+
+        <firebase-document
+          path="/fruits"
+          data="{{data}}">
+        </firebase-document>
+
+        <paper-card heading="Data from firebase">
+          <div class="card-content">
+            <paper-datatable-api data="[[data]]">
+              <paper-datatable-api-column header="Fruit" property="fruit" other-properties='["color"]'>
+                <template>
+                  <span>[[value]], color: [[otherValues.color]]</span>
+                </template>
+              </paper-datatable-api-column>
+              <paper-datatable-api-column header="Weight (kg)" property="weight">
+                <template>
+                  <span>[[value.kg]]</span>
+                </template>
+              </paper-datatable-api-column>
+              <paper-datatable-api-column header="Weight (gr)" property="weight.gr">
+                <template>
+                  <span>[[value]]</span>
+                </template>
+              </paper-datatable-api-column>
+            </paper-datatable-api>
+          </div>
+        </paper-card>
+
+      </div> 
+    </div>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'firebase-demo',
+      properties: {
+        data: {
+          type: Array,
+          value: [],
+        },
+      },
+    });
+  </script>
+</dom-module>

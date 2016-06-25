@@ -16,6 +16,7 @@
     <link rel="import" href="advanced-demo.html">
     <link rel="import" href="simple-demo.html">
     <link rel="import" href="frozen-demo.html">
+    <link rel="import" href="firebase-demo.html">
 
     <style>
       .container {
@@ -40,6 +41,7 @@
               <paper-tab demo="advanced">Advanced demo</paper-tab>
               <paper-tab demo="simple">Simple demo</paper-tab>
               <paper-tab demo="frozen">Frozen header demo</paper-tab>
+              <paper-tab demo="firebase">Firebase demo</paper-tab>
             </paper-tabs>
           </paper-toolbar>
           <div class="main">
@@ -51,6 +53,9 @@
             </template>
             <template is="dom-if" if="[[equals('frozen', selected)]]">
               <frozen-demo></frozen-demo>
+            </template>
+            <template is="dom-if" if="[[equals('firebase', selected)]]">
+              <firebase-demo></firebase-demo>
             </template>
           </div>
         </paper-header-panel>

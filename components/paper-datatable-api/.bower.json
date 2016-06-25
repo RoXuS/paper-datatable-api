@@ -38,14 +38,15 @@
     "web-component-tester": "^4.0.0",
     "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0",
     "iron-ajax": "PolymerElements/iron-ajax#^1.2.0",
-    "paper-header-panel": "PolymerElements/paper-header-panel#^1.1.6"
+    "paper-header-panel": "PolymerElements/paper-header-panel#^1.1.6",
+    "polymerfire": "firebase/polymerfire#^0.9.3"
   },
   "homepage": "https://github.com/RoXuS/paper-datatable-api",
-  "_release": "bdcc05e267",
+  "_release": "394c0f4055",
   "_resolution": {
     "type": "branch",
     "branch": "master",
-    "commit": "bdcc05e26720bb152981ef9f67fb8325f114dcaa"
+    "commit": "394c0f40558654cb58d5aa771ccf1b89f272a2f7"
   },
   "_source": "https://github.com/RoXuS/paper-datatable-api.git",
   "_target": "master",
