@@ -1,0 +1,40 @@
+{
+  "name": "polymerfire",
+  "version": "0.9.3",
+  "authors": [
+    "Firebase"
+  ],
+  "description": "Polymer Web Components for Firebase",
+  "keywords": [
+    "web-component",
+    "polymer",
+    "firebase"
+  ],
+  "main": "polymerfire.html",
+  "license": "http://polymer.github.io/LICENSE.txt",
+  "homepage": "https://github.com/firebase/polymerfire",
+  "ignore": [
+    "/.*",
+    "/test/"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.2",
+    "firebase": "^3.0",
+    "app-storage": "polymerelements/app-storage#^0.9.0"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0",
+    "web-component-tester": "^4.0.0",
+    "note-app-elements": "polymerlabs/note-app-elements"
+  },
+  "_release": "0.9.3",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.9.3",
+    "commit": "7c0c00741dba6409ba912440e69b6ab9a6b38ce4"
+  },
+  "_source": "git://github.com/firebase/polymerfire.git",
+  "_target": "^0.9.3",
+  "_originalSource": "firebase/polymerfire",
+  "_direct": true
+}
