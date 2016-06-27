@@ -6,6 +6,7 @@
 <link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../paper-listbox/paper-listbox.html">
 <link rel="import" href="../paper-item/paper-item.html">
+<link rel="import" href="../paper-checkbox/paper-checkbox.html">
 
 <!--
 
@@ -57,8 +58,11 @@ Custom property | Description | Default
     <table>
       <thead class$="[[_isFrozen(frozenHeader)]]">
         <tr>
+          <template is="dom-if" if="[[selectable]]" restamp>
+            <th class="selectable"></th>
+          </template>
           <template is="dom-repeat" items="[[columns]]" as="column">
-            <th on-tap="_handleSort" data-column="[[column]]" sort-direction$="[[column.sortDirection]]" sorted$="[[column.sorted]]" sortable$="[[column.sortable]]">
+            <th class="pgTh" on-tap="_handleSort" data-column="[[column]]" sort-direction$="[[column.sortDirection]]" sorted$="[[column.sorted]]" sortable$="[[column.sortable]]">
               <div class="layout horizontal center">
                 <iron-icon icon="arrow-downward" class="sort"></iron-icon>
                 <div>[[column.header]]</div>
@@ -79,7 +83,7 @@ Custom property | Description | Default
                     Row per page:
                   </div>
                   <div class="size">
-                    <paper-dropdown-menu no-label-float>
+                    <paper-dropdown-menu no-label-float vertical-align="bottom">
                       <paper-listbox attr-for-selected="size" on-iron-select="_newSizeIsSelected" selected="[[size]]" class="dropdown-content">
                         <template is="dom-repeat" items="[[availableSize]]" as="size">
                           <paper-item size="[[size]]">[[size]]</paper-item>
@@ -177,12 +181,30 @@ Custom property | Description | Default
         availableSize: {
           type: Array,
           value: [10],
-        }
+        },
+        /**
+         * If true, the rows may be selectable.
+         */
+        selectable: {
+          type: Boolean,
+          value: false,
+        },
+        /**
+         * Contains the positions of selected columns.
+         */
+        selectedRows: {
+          type: Array,
+          value: [],
+        },
       },
 
       behaviors: [
         Polymer.IronResizableBehavior
       ],
+
+      listeners: {
+        'iron-resize': '_resizeHeader'
+      },
 
       attached: function() {
         this._setColumns();
@@ -242,16 +264,29 @@ Custom property | Description | Default
           if (this.frozenHeader) {
             trLocal.className = trLocal.className + ' frozen';
           }
-          this.$$('tbody').appendChild(trLocal);
+          Polymer.dom(this.$$('tbody')).appendChild(trLocal);
         }, this);
       },
 
       _fillColumns: function() {
         var pgTrs = Polymer.dom(this.root).querySelectorAll('.paper-datatable-api-tr');
 
-        pgTrs.forEach(function(pgTr) {
+        pgTrs.forEach(function(pgTr, i) {
 
           var rowData = pgTr.rowData;
+
+          if (this.selectable) {
+            var tdSelectable = document.createElement('td');
+            tdSelectable.className = 'selectable';
+            var paperCheckbox = document.createElement('paper-checkbox');
+            this.listen(paperCheckbox, 'change', '_selectChange');
+            paperCheckbox.rowData = rowData;
+            paperCheckbox.rowIndex = i;
+            Polymer.dom(tdSelectable).appendChild(paperCheckbox);
+            Polymer.dom(pgTr).appendChild(tdSelectable);
+            Polymer.dom.flush()
+          }
+
           this.columns.forEach(function(paperDatatableApiColumn) {
 
             var valueFromRowData = this._extractData(rowData, paperDatatableApiColumn.property);
@@ -263,11 +298,35 @@ Custom property | Description | Default
 
             var tdLocal = document.createElement('td');
             var template = paperDatatableApiColumn.fillTemplate(valueFromRowData, otherPropertiesValue);
-            tdLocal.appendChild(template.root);
-            pgTr.appendChild(tdLocal);
+            Polymer.dom(tdLocal).appendChild(template.root);
+            Polymer.dom(pgTr).appendChild(tdLocal);
 
           }, this);
         }, this);
+      },
+
+      _selectChange: function(event) {
+        var rowData = event.currentTarget.rowData;
+        var rowId = event.currentTarget.rowIndex;
+        var eventData = {};
+        if (event.target.checked){
+          this.push('selectedRows', rowId);
+          eventData = {
+            selected: [rowId],
+            data: rowData,
+          };
+        } else {
+          this.splice('selectedRows', this.selectedRows.indexOf(rowId), 1);
+          eventData = {
+            deselected: [rowId],
+          };
+        }
+        /**
+         * Fired when a row is selected.
+         * @event selection-changed
+         * Event param: {{node: Object}} detail Contains selected id and row data.
+         */
+        this.fire('selection-changed', eventData);
       },
 
       _resizeHeader: function() {
@@ -275,18 +334,31 @@ Custom property | Description | Default
           this.async(function() {
             var pgTds = Polymer.dom(this.root).querySelectorAll('tbody tr:first-child td');
             pgTds.forEach(function(pgTd, i) {
+              if (this.selectable && i === 0) {
+                return;
+              }
+
               i++;
-              var pgTh = Polymer.dom(this.root).querySelector('thead th:nth-child(' + i + ')');
-              var thOffsetWidth = pgTh.offsetWidth - 52;
-              pgTd.style.minWidth = thOffsetWidth + 'px';
+              var pgTh = Polymer.dom(this.root).querySelector('thead th:nth-of-type(' + i + ')');
 
-              this.async(function() {
-                var tdOffsetWidth = pgTd.offsetWidth - 52;
+              if (pgTh) {
+                pgTd.style.width = 'auto';
+                pgTh.style.width = 'auto';
+                this.async(function() {
+                  var thOffsetWidth = pgTh.offsetWidth - 52;
+                  if (pgTd.offsetWidth < (thOffsetWidth + 52)) {
+                    pgTd.style.width = thOffsetWidth + 'px';
+                  }
 
-                if (thOffsetWidth < tdOffsetWidth) {
-                  pgTh.style.width = tdOffsetWidth + 'px';
-                }
-              });
+                  this.async(function() {
+                    var tdOffsetWidth = pgTd.offsetWidth - 52;
+
+                    if (thOffsetWidth < tdOffsetWidth) {
+                      pgTh.style.width = tdOffsetWidth + 'px';
+                    }
+                  });
+                });
+              }
             }, this);
           });
         }
@@ -313,7 +385,7 @@ Custom property | Description | Default
 
       _setColumns: function() {
         this.columns = this.queryAllEffectiveChildren('paper-datatable-api-column');
-        this._columnsHeight = this.columns.length;
+        this._columnsHeight = this.selectable ? this.columns.length + 1 : this.columns.length;
       },
 
       /**
@@ -323,19 +395,15 @@ Custom property | Description | Default
        * @param {Number} columnPosition The number of column which will be toggled.
        */
       toggleColumn: function(columnPosition) {
-        var cssQuery = 'tr > *:nth-child(' + (columnPosition + 1) + ')';
-
-        if (this.columns[columnPosition].show) {
-          Polymer.dom(this.root).querySelectorAll(cssQuery).forEach(function(td) {
-            td.style.display = 'none';
-          });
-          this.set('columns.' + columnPosition + '.show', false);
-        } else {
-          Polymer.dom(this.root).querySelectorAll(cssQuery).forEach(function(td) {
-            td.style.display = 'table-cell';
-          });
-          this.set('columns.' + columnPosition + '.show', true);
-        }
+        var isShow = this.columns[columnPosition].show;
+        var indexColumn = this.selectable ? columnPosition + 2 : columnPosition + 1;
+        var cssQuery = 'tr th:nth-of-type(' + indexColumn + '), tr td:nth-of-type(' + indexColumn + ')';
+        Polymer.dom(this.root).querySelectorAll(cssQuery).forEach(function(tdTh) {
+          var displayMode = isShow ? 'none' : 'table-cell';
+          tdTh.style.display = displayMode;
+        }, this);
+        this.set('columns.' + columnPosition + '.show', isShow ? false : true);
+        this._resizeHeader();
       },
 
       _newSizeIsSelected: function() {

@@ -29,11 +29,11 @@ See the [component page](https://roxus.github.io/paper-datatable-api/components/
 - Freezes header
 - Sort
 - Pagination
+- Checkboxes to select or manipulate data
 
 ## Roadmap
 
 - Freezes a column
-- Add checkboxes to select or manipulate data
 - Display only selected rows
 
 ## Install

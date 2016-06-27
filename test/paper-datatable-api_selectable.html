@@ -1,0 +1,74 @@
+<!doctype html>
+
+<html>
+  <head>
+    <title>paper-datatable-api test</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+
+    <link rel="import" href="../paper-datatable-api.html">
+    <link rel="import" href="../paper-datatable-api-column.html">
+  </head>
+  <body>
+
+    <test-fixture id="selectable">
+      <template>
+        <paper-datatable-api selectable>
+          <paper-datatable-api-column header="Fruit" property="fruit" sortable>
+            <template>
+              <span>{{value}}</span>
+            </template>
+          </paper-datatable-api-column>
+          <paper-datatable-api-column header="Color" property="color">
+            <template>
+              <div>{{value}}</div>
+            </template>
+          </paper-datatable-api-column>
+        </paper-datatable-api>
+      </template>
+    </test-fixture>
+
+    <script>
+      var data = [
+{
+  "color": "yellow",
+  "fruit": "banana"
+},
+{
+  "fruit": "apple",
+  "color": "green"
+}
+      ];
+
+      suite('paper-datatable-api', function() {
+
+        test('Select row', function(done) {
+          var paperDatatableApi = fixture('selectable');
+          paperDatatableApi.data = data;
+          flush(function() {
+            var i = 0;
+            var paperCheckbox = paperDatatableApi.querySelector('tbody tr td:first-child paper-checkbox');
+            paperDatatableApi.addEventListener('selection-changed', function(event) {
+              if (i === 0) {
+                assert.equal(event.detail.selected, 0);
+                assert.equal(event.detail.data, data[0]);
+                i++;
+                flush(function() {
+                  paperCheckbox.click();
+                });
+              } else {
+                assert.equal(event.detail.deselected, 0);
+                assert.equal(event.detail.data, undefined);
+                done();
+              }
+            });
+            paperCheckbox.click();
+          });
+        });
+
+      });
+    </script>
+  </body>
+</html>

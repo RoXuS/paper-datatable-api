@@ -26,8 +26,11 @@
 	font-weight: 500;
 	text-align: left;
 	height: 56px;
-	padding: 0 26px;
 	white-space: nowrap;
+      }
+
+      thead th:not(.selectable) {
+	padding: 0 26px;
       }
 
       thead th[sortable] {
@@ -50,6 +53,7 @@
       thead th iron-icon.sort {
 	width: 16px;
 	height: 16px;
+	transition: transform .2s linear;
       }
 
       thead th[sortable][sorted] iron-icon.sort {
@@ -85,6 +89,15 @@
 	padding: 6px 26px;
 	border-top: 1px solid;
 	border-color: rgba(0, 0, 0, var(--dark-divider-opacity));
+      }
+
+      :host ::content thead th.selectable {
+	width: 26px;
+      }
+
+      :host ::content thead th.selectable,
+      :host ::content tbody td.selectable {
+	padding: 6px 0 6px 26px;
       }
 
       tfoot tr td {
