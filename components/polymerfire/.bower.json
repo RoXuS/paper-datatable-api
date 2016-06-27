@@ -35,6 +35,5 @@
   },
   "_source": "git://github.com/firebase/polymerfire.git",
   "_target": "^0.9.3",
-  "_originalSource": "firebase/polymerfire",
-  "_direct": true
+  "_originalSource": "firebase/polymerfire"
 }

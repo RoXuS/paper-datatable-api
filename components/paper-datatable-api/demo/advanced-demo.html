@@ -20,8 +20,13 @@
       div.layout > div {
         width: 500px;
       }
+
       paper-card {
         width: 100%;
+      }
+
+      div > paper-card:not(:first-child) {
+        margin-top: 16px;
       }
     </style>
 
@@ -59,12 +64,15 @@
           <div class="card-content">
             <paper-datatable-api
               paginate
+              selectable
               data="[[dataFromApi]]"
               page="{{page}}"
               size="{{size}}"
               available-size="[2, 4]"
               columns="{{columns}}"
               on-sort="_handleSort"
+              selected-rows={{selectedRows}}
+              on-selection-changed="_handleSelectionChanged"
               total-elements="[[totalElements]]"
               total-pages="[[totalPages]]">
               <paper-datatable-api-column header="Fruit" property="fruit" sortable>
@@ -80,6 +88,18 @@
             </paper-datatable-api>
           </div>
         </paper-card>
+        <paper-card id="paperCardEvent" heading="Events">
+          <div class="card-content"></div>
+        </paper-card>
+        <paper-card id="paperCardSelectedRows" heading="Selected Rows attribute">
+          <div class="card-content">
+            <template is="dom-repeat" items="[[selectedRows]]" as="selectedRow">
+              <div>
+                Row [[selectedRow]] selected
+              </div>
+            </template>
+          </div>
+        </paper-card>
       </div>
     </div>
   </template>
@@ -91,6 +111,10 @@
         sortProperty: {
           type: String,
         },
+        selectedRows: {
+          type: Array,
+          value: [],
+        },
       },
       _hideColumn: function(event) {
         var position = event.currentTarget.position;
@@ -98,6 +122,21 @@
       },
       _handleSort: function(event) {
         this.sortProperty = event.detail.sort.property + ',' + event.detail.sort.direction;
+      },
+      _handleSelectionChanged: function(event) {
+        var divLocal = document.createElement('div');
+        if (event.detail.selected) {
+          var eventRow = document.createTextNode('Row ' + event.detail.selected + ' selected');
+          Polymer.dom(divLocal).appendChild(eventRow);
+          var eventData = document.createTextNode('Data : ' + JSON.stringify(event.detail.data));
+          var brLocal = document.createElement('br');
+          Polymer.dom(divLocal).appendChild(brLocal);
+          Polymer.dom(divLocal).appendChild(eventData);
+        } else {
+          var eventRow = document.createTextNode('Row ' + event.detail.deselected + ' deselected');
+          Polymer.dom(divLocal).appendChild(eventRow);
+        }
+        Polymer.dom(this.$.paperCardEvent).querySelector('.card-content').appendChild(divLocal);
       },
     });
   </script>
