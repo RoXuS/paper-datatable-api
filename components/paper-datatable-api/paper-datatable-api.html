@@ -7,6 +7,7 @@
 <link rel="import" href="../paper-listbox/paper-listbox.html">
 <link rel="import" href="../paper-item/paper-item.html">
 <link rel="import" href="../paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../app-localize-behavior/app-localize-behavior.html">
 
 <!--
 
@@ -80,7 +81,7 @@ Custom property | Description | Default
               <div class="layout horizontal end-justified center">
                 <div class="layout horizontal center">
                   <div>
-                    Row per page:
+                    [[localize('rowPerPage')]]:
                   </div>
                   <div class="size">
                     <paper-dropdown-menu no-label-float vertical-align="bottom">
@@ -196,10 +197,36 @@ Custom property | Description | Default
           type: Array,
           value: [],
         },
+        language: {
+          type: String,
+          value: 'en'
+        },
+        resources: {
+          value: function() {
+            return {
+              'en': {
+                'rowPerPage': 'Row per page'
+              },
+              "en-en": {
+                'rowPerPage': 'Row per page'
+              },
+              "en-US": {
+                'rowPerPage': 'Row per page'
+              },
+              "fr": {
+                'rowPerPage': 'Ligne par page '
+              },
+              "fr-fr": {
+                'rowPerPage': 'Ligne par page '
+              }
+            }
+          },
+        },
       },
 
       behaviors: [
-        Polymer.IronResizableBehavior
+        Polymer.IronResizableBehavior,
+        Polymer.AppLocalizeBehavior,
       ],
 
       listeners: {
@@ -208,6 +235,8 @@ Custom property | Description | Default
 
       attached: function() {
         this._setColumns();
+        var userLang = navigator.language || navigator.userLanguage;
+        this.language = userLang;
       },
 
       _isFrozen: function(frozenHeader) {
