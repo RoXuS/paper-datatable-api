@@ -1,5 +1,9 @@
 # Change Log
 
+## [v0.0.3](https://github.com/RoXuS/paper-datatable-api/tree/0.0.3) (2016-06-28)
+- Add localization ([commit](https://github.com/RoXuS/paper-datatable-api/commit/18b19fb))
+- Add selectable feature, fix header in case of resize ([commit](https://github.com/RoXuS/paper-datatable-api/commit/bbb52e1))
+
 ## [v0.0.2](https://github.com/RoXuS/paper-datatable-api/tree/0.0.2) (2016-06-25)
 - Add demo with firebase element ([commit](https://github.com/RoXuS/paper-datatable-api/commit/520dc5e))
 - Fix table in frozen header mode ([commit](https://github.com/RoXuS/paper-datatable-api/commit/bdcc05e))
