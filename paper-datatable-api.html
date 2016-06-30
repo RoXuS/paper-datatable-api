@@ -94,7 +94,7 @@ Custom property | Description | Default
                   </div>
                 </div>
                 <div class="status">
-                  [[_computeCurrentSize(page, size)]]-[[_computeCurrentMaxSize(page, size)]] of [[totalElements]]
+                  [[_computeCurrentSize(page, size)]]-[[_computeCurrentMaxSize(page, size)]] [[localize('of')]] [[totalElements]]
                 </div>
                 <template is="dom-if" if="[[!_prevButtonEnabled(page)]]">
                   <paper-icon-button icon="chevron-left" disabled on-tap="_prevPage"></paper-icon-button>
@@ -205,19 +205,24 @@ Custom property | Description | Default
           value: function() {
             return {
               'en': {
-                'rowPerPage': 'Row per page'
+                'rowPerPage': 'Row per page',
+                'of': 'of'
               },
               "en-en": {
-                'rowPerPage': 'Row per page'
+                'rowPerPage': 'Row per page',
+                'of': 'of'
               },
               "en-US": {
-                'rowPerPage': 'Row per page'
+                'rowPerPage': 'Row per page',
+                'of': 'of'
               },
               "fr": {
-                'rowPerPage': 'Ligne par page '
+                'rowPerPage': 'Ligne par page ',
+                'of': 'sur'
               },
               "fr-fr": {
-                'rowPerPage': 'Ligne par page '
+                'rowPerPage': 'Ligne par page ',
+                'of': 'sur'
               }
             }
           },
