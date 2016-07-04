@@ -78,11 +78,13 @@
 	height: var(--paper-datatable-api-tbody-height, 48px);
       }
 
-      :host ::content tbody tr {
+      :host ::content tbody tr,
+      tbody tr {
 	height: 48px;
       }
 
-      :host ::content tbody td {
+      :host ::content tbody td,
+      tbody td {
 	font-size: 13px;
 	font-weight: normal;
 	color: rgba(0, 0, 0, var(--dark-primary-opacity));
@@ -91,12 +93,15 @@
 	border-color: rgba(0, 0, 0, var(--dark-divider-opacity));
       }
 
-      :host ::content thead th.selectable {
+      :host ::content thead th.selectable,
+      thead th.selectable {
 	width: 26px;
       }
 
       :host ::content thead th.selectable,
-      :host ::content tbody td.selectable {
+      :host ::content tbody td.selectable,
+      thead th.selectable,
+      tbody td.selectable {
 	padding: 6px 0 6px 26px;
       }
 

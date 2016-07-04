@@ -30,7 +30,7 @@ Sample application loading resources from an external file:
 ```html
 <dom-module id="x-app">
    <template>
-    <div>{{localize('hello', 'Batman')}}</div>
+    <div>{{localize('hello', 'name', 'Batman')}}</div>
    </template>
    <script>
       Polymer({
@@ -59,7 +59,7 @@ Alternatively, you can also inline your resources inside the app itself:
 ```html
 <dom-module id="x-app">
    <template>
-    <div>{{localize('hello', 'Batman')}}</div>
+    <div>{{localize('hello', 'name', 'Batman')}}</div>
    </template>
    <script>
       Polymer({
