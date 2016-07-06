@@ -60,7 +60,9 @@ Custom property | Description | Default
       <thead class$="[[_isFrozen(frozenHeader)]]">
         <tr>
           <template is="dom-if" if="[[selectable]]" restamp>
-            <th class="selectable"></th>
+            <th class="selectable">
+              <paper-checkbox on-change="_selectAllCheckbox"></paper-checkbox>
+            </th>
           </template>
           <template is="dom-repeat" items="[[columns]]" as="column">
             <th class="pgTh" on-tap="_handleSort" data-column="[[column]]" sort-direction$="[[column.sortDirection]]" sorted$="[[column.sorted]]" sortable$="[[column.sortable]]">
@@ -339,11 +341,30 @@ Custom property | Description | Default
         }, this);
       },
 
+      _selectAllCheckbox: function(event) {
+        var localTarget = Polymer.dom(event).localTarget;
+        var allPaperCheckbox = Polymer.dom(this.root).querySelectorAll('tbody tr td paper-checkbox');
+        allPaperCheckbox.forEach(function(paperCheckbox) {
+          if (localTarget.checked) {
+            paperCheckbox.checked = true;
+          } else {
+            paperCheckbox.checked = false;
+          }
+          this._selectChange(paperCheckbox);
+        }, this);
+      },
+
       _selectChange: function(event) {
-        var rowData = event.currentTarget.rowData;
-        var rowId = event.currentTarget.rowIndex;
+        var localTarget;
+        if (event.type && event.type === 'change') {
+          localTarget = Polymer.dom(event).localTarget;
+        } else {
+          localTarget = event;
+        }
+        var rowData = localTarget.rowData;
+        var rowId = localTarget.rowIndex;
         var eventData = {};
-        if (event.target.checked){
+        if (localTarget.checked){
           this.push('selectedRows', rowId);
           eventData = {
             selected: [rowId],
