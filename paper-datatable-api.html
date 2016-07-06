@@ -431,9 +431,12 @@ Custom property | Description | Default
               if (pgTh) {
                 pgTd.style.width = 'auto';
                 pgTh.style.width = 'auto';
+                if (pgInput) {
+                  pgInput.style.width = '26px';
+                }
                 this.async(function() {
-                  var thOffsetWidth = pgTh.offsetWidth - 52;
-                  if (pgTd.offsetWidth < (thOffsetWidth + 52)) {
+                  var thOffsetWidth = pgTh.offsetWidth - 49;
+                  if (pgTd.offsetWidth < (thOffsetWidth + 49)) {
                     pgTd.style.width = thOffsetWidth + 'px';
                     if (pgInput) {
                       pgInput.style.width = (pgTh.offsetWidth - 38) + 'px';
@@ -441,7 +444,7 @@ Custom property | Description | Default
                   }
 
                   this.async(function() {
-                    var tdOffsetWidth = pgTd.offsetWidth - 52;
+                    var tdOffsetWidth = pgTd.offsetWidth - 49;
 
                     if (thOffsetWidth < tdOffsetWidth) {
                       pgTh.style.width = tdOffsetWidth + 'px';
