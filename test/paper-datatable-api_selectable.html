@@ -68,6 +68,42 @@
           });
         });
 
+        test('Select all rows', function(done) {
+          var paperDatatableApi = fixture('selectable');
+          paperDatatableApi.data = data;
+          flush(function() {
+            var i = 0;
+            var paperCheckbox = paperDatatableApi.querySelector('thead tr th:first-child paper-checkbox');
+            paperDatatableApi.addEventListener('selection-changed', function(event) {
+              console.log(event.detail.selected, i);
+              switch(i) {
+                case 0:
+                  assert.equal(event.detail.selected, 0);
+                  assert.equal(event.detail.data, data[0]);
+                  break;
+                case 1:
+                  assert.equal(event.detail.selected, 1);
+                  assert.equal(event.detail.data, data[1]);
+                  flush(function() {
+                    paperCheckbox.click();
+                  });
+                  break;
+                case 2:
+                  assert.equal(event.detail.deselected, 0);
+                  assert.equal(event.detail.data, undefined);
+                  break;
+                case 3:
+                  assert.equal(event.detail.deselected, 1);
+                  assert.equal(event.detail.data, undefined);
+                  done();
+                  break;
+              }
+              i++;
+            });
+            paperCheckbox.click();
+          });
+        });
+
       });
     </script>
   </body>
