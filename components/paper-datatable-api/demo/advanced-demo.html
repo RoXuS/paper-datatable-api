@@ -41,7 +41,7 @@
           total-pages="{{totalPages}}">
         </api-sample>
 
-        <paper-card heading="Sortable, paginable, with toggle column">
+        <paper-card heading="Sortable, paginable, filterable, with toggle column">
           <div class="horizontal end-justified layout">
             <paper-menu-button ignore-select horizontal-align="right">
               <paper-icon-button icon="menu" class="dropdown-trigger"></paper-icon-button>
@@ -65,12 +65,14 @@
             <paper-datatable-api
               paginate
               selectable
+              filters
               data="[[dataFromApi]]"
               page="{{page}}"
               size="{{size}}"
               available-size="[2, 4]"
               columns="{{columns}}"
               on-sort="_handleSort"
+              on-filter="_handleFilter"
               selected-rows={{selectedRows}}
               on-selection-changed="_handleSelectionChanged"
               total-elements="[[totalElements]]"
@@ -80,7 +82,7 @@
                   <span>[[value]]</span>
                 </template>
               </paper-datatable-api-column>
-              <paper-datatable-api-column header="Color" property="color">
+              <paper-datatable-api-column header="Color" property="color" filter>
                 <template>
                   <span>[[value]]</span>
                 </template>
@@ -124,6 +126,14 @@
       },
       _handleSort: function(event) {
         this.sortProperty = event.detail.sort.property + ',' + event.detail.sort.direction;
+      },
+      _handleFilter: function(event) {
+        var divLocal = document.createElement('div');
+        var filter = event.detail.filter.value;
+        var column = event.detail.filter.property;
+        var eventRow = document.createTextNode(filter + ' is filtered on ' + column + 'column');
+        Polymer.dom(divLocal).appendChild(eventRow);
+        Polymer.dom(this.$.paperCardEvent).querySelector('.card-content').appendChild(divLocal);
       },
       _handleSelectionChanged: function(event) {
         var divLocal = document.createElement('div');

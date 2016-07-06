@@ -29,7 +29,37 @@
 	white-space: nowrap;
       }
 
-      thead th:not(.selectable) {
+      thead.filters tr:nth-child(1) th {
+	height: 26px;
+	padding-top: 16px;
+	padding-bottom: 10px;
+	border-bottom: 2px solid rgba(0, 0, 0, var(--dark-divider-opacity));
+      }
+
+      thead.filters tr:nth-child(2) th {
+	height: 38px;
+      }
+
+      thead.filters th input {
+	height: 20px;
+	padding: 4px 0;
+	width: calc(100% - 10px);
+	border: 1px solid rgba(0, 0, 0, var(--dark-divider-opacity));
+      }
+
+      thead.filters.frozen th input {
+	width: 16px;
+      }
+
+      thead.filters th:not(:first-child) input {
+	padding: 4px;
+      }
+
+      thead.filters th input[disabled] {
+	background: var(--paper-grey-100);
+      }
+
+      thead th:not(.selectable):not(.filters) {
 	padding: 0 26px;
       }
 
@@ -78,6 +108,10 @@
 	height: var(--paper-datatable-api-tbody-height, 48px);
       }
 
+      tbody.frozen.filters {
+	height: calc(var(--paper-datatable-api-tbody-height, 48px) - 57px);
+      }
+
       :host ::content tbody tr,
       tbody tr {
 	height: 48px;
@@ -103,6 +137,10 @@
       thead th.selectable,
       tbody td.selectable {
 	padding: 6px 0 6px 26px;
+      }
+
+      thead.filters tr.filters th {
+	padding: 8px 0 8px 26px;
       }
 
       tfoot tr td {

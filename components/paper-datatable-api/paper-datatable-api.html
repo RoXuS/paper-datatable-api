@@ -7,6 +7,7 @@
 <link rel="import" href="../paper-listbox/paper-listbox.html">
 <link rel="import" href="../paper-item/paper-item.html">
 <link rel="import" href="../paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../iron-input/iron-input.html">
 <link rel="import" href="../app-localize-behavior/app-localize-behavior.html">
 
 <!--
@@ -35,6 +36,9 @@
 - Freeze header
 - Sort
 - Pagination
+- Checkboxes to select or manipulate data
+- Filter a column
+- Ability to filter columns
 
 ### Styling
 
@@ -57,7 +61,7 @@ Custom property | Description | Default
     <style include="paper-datatable-api-shared-styles"></style>
     <style include="iron-flex iron-flex-alignment"></style>
     <table>
-      <thead class$="[[_isFrozen(frozenHeader)]]">
+      <thead class$="[[_generateClass(frozenHeader, filters)]]">
         <tr>
           <template is="dom-if" if="[[selectable]]" restamp>
             <th class="selectable">
@@ -73,8 +77,28 @@ Custom property | Description | Default
             </th>
           </template>
         </tr>
+
+        <template is="dom-if" if="[[filters]]" restamp>
+          <tr class="filters">
+            <template is="dom-if" if="[[selectable]]" restamp>
+              <th>
+                <input disabled is="iron-input"></input>
+              </th>
+            </template>
+            <template is="dom-repeat" items="[[columns]]" as="column">
+              <th class="pgTh">
+                <template is="dom-if" if="[[column.filter]]" restamp>
+                  <input on-keyup="_handleFilter" is="iron-input" data-column="[[column]]"></input>
+                </template>
+                <template is="dom-if" if="[[!column.filter]]" restamp>
+                  <input disabled is="iron-input"></input>
+                </template>
+              </th>
+            </template>
+          </tr>
+        </template>
       </thead>
-      <tbody class$="[[_isFrozen(frozenHeader)]]">
+      <tbody class$="[[_generateClass(frozenHeader, filters)]]">
       </tbody>
       <template is="dom-if" if="[[paginate]]" restamp>
         <tfoot>
@@ -170,6 +194,13 @@ Custom property | Description | Default
           value: false,
         },
         /**
+         * If true, a filter on each column is added.
+         */
+        filters: {
+          type: Boolean,
+          value: false,
+        },
+        /**
          * The total of elements have to be provided in case of pagination, it is mandatory.
          */
         totalElements: Number,
@@ -245,9 +276,8 @@ Custom property | Description | Default
         var userLang = navigator.language || navigator.userLanguage;
         this.language = userLang;
       },
-
-      _isFrozen: function(frozenHeader) {
-        return frozenHeader ? 'frozen' : '';
+      _generateClass: function(frozenHeader, filters) {
+        return frozenHeader ? filters ? 'filters frozen' : 'frozen' : filters ? 'filters' : '';
       },
 
       _nextPage: function() {
@@ -384,7 +414,7 @@ Custom property | Description | Default
         this.fire('selection-changed', eventData);
       },
 
-      _resizeHeader: function() {
+      _resizeHeader: function(event) {
         if (this.frozenHeader) {
           this.async(function() {
             var pgTds = Polymer.dom(this.root).querySelectorAll('tbody tr:first-child td');
@@ -394,22 +424,33 @@ Custom property | Description | Default
               }
 
               i++;
-              var pgTh = Polymer.dom(this.root).querySelector('thead th:nth-of-type(' + i + ')');
+              var pgThs = Polymer.dom(this.root).querySelectorAll('thead th:nth-of-type(' + i + ')');
+              var pgTh = pgThs[0];
+              var pgInput = pgThs[1].querySelector('input');
 
               if (pgTh) {
                 pgTd.style.width = 'auto';
                 pgTh.style.width = 'auto';
+                if (pgInput) {
+                  pgInput.style.width = '26px';
+                }
                 this.async(function() {
-                  var thOffsetWidth = pgTh.offsetWidth - 52;
-                  if (pgTd.offsetWidth < (thOffsetWidth + 52)) {
+                  var thOffsetWidth = pgTh.offsetWidth - 49;
+                  if (pgTd.offsetWidth < (thOffsetWidth + 49)) {
                     pgTd.style.width = thOffsetWidth + 'px';
+                    if (pgInput) {
+                      pgInput.style.width = (pgTh.offsetWidth - 38) + 'px';
+                    }
                   }
 
                   this.async(function() {
-                    var tdOffsetWidth = pgTd.offsetWidth - 52;
+                    var tdOffsetWidth = pgTd.offsetWidth - 49;
 
                     if (thOffsetWidth < tdOffsetWidth) {
                       pgTh.style.width = tdOffsetWidth + 'px';
+                      if (pgInput) {
+                        pgInput.style.width = (pgTd.offsetWidth - 38) + 'px';
+                      }
                     }
                   });
                 });
@@ -478,6 +519,13 @@ Custom property | Description | Default
           th.setAttribute('sorted', true);
           column.set('sortDirection', sortDirection);
           column.set('sorted', true);
+
+          /**
+           * Fired when a column is sorted.
+           * @event sort
+           * Event param: {{node: Object}} detail Contains sort object.
+           * { sort: { property: STRING, direction: asc|desc }, column: OBJECT }
+           */
           this.fire('sort', {
             sort: {
               property: column.property,
@@ -486,6 +534,25 @@ Custom property | Description | Default
             column: column
           });
         }
+      },
+
+      _handleFilter: function(event) {
+        var column = event.model.column;
+        var input = event.currentTarget;
+
+        /**
+         * Fired when a filters inputs changed.
+         * @event filter
+         * Event param: {{node: Object}} detail Contains sort object.
+         * { sort: { property: STRING, value: STRING }, column: OBJECT }
+         */
+        this.fire('filter', {
+          filter: {
+            property: column.property,
+            value: input.value
+          },
+          column: column
+        });
       },
     });
   </script>

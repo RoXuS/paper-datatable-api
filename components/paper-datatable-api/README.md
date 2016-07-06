@@ -30,6 +30,7 @@ See the [component page](https://roxus.github.io/paper-datatable-api/components/
 - Sort
 - Pagination
 - Checkboxes to select or manipulate data
+- Ability to filter columns
 
 ## Roadmap
 
