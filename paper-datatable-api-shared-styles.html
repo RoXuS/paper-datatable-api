@@ -118,6 +118,11 @@
 	height: 48px;
       }
 
+      :host ::content tbody tr.selected,
+      tbody tr.selected {
+	background-color: var(--paper-datatable-api-tr-selected-background, --paper-grey-100);
+      }
+
       :host ::content tbody td,
       tbody td {
 	font-size: 13px;
