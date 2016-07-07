@@ -44,9 +44,11 @@
 
 The following custom properties and mixins are available for styling:
 
-Custom property | Description | Default
-----------------------------|-------------------------------------------|--------
-`--paper-datatable-api-tbody-height` | Height of the tbody in frozen header mode | `{}`
+Custom property                                 | Description                               | Default
+------------------------------------------------|-------------------------------------------|-----------------
+`--paper-datatable-api-tbody-height`            | Height of the tbody in frozen header mode | `{}`
+`--paper-datatable-api-checkbox-color`          | Define color of checked checkbox          | `--primary-color`
+`--paper-datatable-api-tr-selected-backgroundr` | Define color of the selected tr           | `--paper-grey-100`
 
 @element paper-datatable-api
 @demo demo/index.html
@@ -391,6 +393,9 @@ Custom property | Description | Default
         } else {
           localTarget = event;
         }
+
+        var tr = Polymer.dom(localTarget).parentNode.parentNode
+
         var rowData = localTarget.rowData;
         var rowId = localTarget.rowIndex;
         var eventData = {};
@@ -400,11 +405,13 @@ Custom property | Description | Default
             selected: [rowId],
             data: rowData,
           };
+          tr.classList.add('selected');
         } else {
           this.splice('selectedRows', this.selectedRows.indexOf(rowId), 1);
           eventData = {
             deselected: [rowId],
           };
+          tr.classList.remove('selected');
         }
         /**
          * Fired when a row is selected.

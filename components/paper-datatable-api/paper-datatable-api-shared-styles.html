@@ -106,6 +106,7 @@
 	display: block;
 	overflow: auto;
 	height: var(--paper-datatable-api-tbody-height, 48px);
+	transition: all 100ms cubic-bezier(0.4, 0, 0.2, 1);
       }
 
       tbody.frozen.filters {
@@ -115,6 +116,11 @@
       :host ::content tbody tr,
       tbody tr {
 	height: 48px;
+      }
+
+      :host ::content tbody tr.selected,
+      tbody tr.selected {
+	background-color: var(--paper-datatable-api-tr-selected-background, --paper-grey-100);
       }
 
       :host ::content tbody td,
@@ -180,6 +186,10 @@
 	--paper-dropdown-menu-icon: {
 	  color: var(--paper-datatable-navigation-bar-text-color, rgba(0,0,0,.54));
 	};
+      }
+
+      paper-checkbox {
+        --paper-checkbox-checked-color: var(--paper-datatable-api-checkbox-color, var(--primary-color));
       }
     </style>
   </template>
