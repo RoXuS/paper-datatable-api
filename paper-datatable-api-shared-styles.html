@@ -32,7 +32,7 @@
 
       thead.filters tr:nth-child(1) th {
 	height: 26px;
-	padding-top: 16px;
+	padding-top: 10px;
 	padding-bottom: 10px;
 	border-bottom: 2px solid rgba(0, 0, 0, var(--dark-divider-opacity));
       }
@@ -79,6 +79,7 @@
       thead th[sortable][sorted],
       thead th[sortable]:hover {
 	color: rgba(0,0,0, .87);
+	@apply(--paper-datatable-api-header-sorted);
       }
 
       thead th iron-icon.sort {
@@ -152,7 +153,11 @@
       }
 
       thead.filters tr.filters th {
-	padding: 8px 0 8px 26px;
+	padding: 8px 26px;
+      }
+
+      thead.filters tr.filters th:first-child {
+	padding-right: 0;
       }
 
       tfoot tr td {
