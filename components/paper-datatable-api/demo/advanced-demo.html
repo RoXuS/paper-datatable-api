@@ -46,8 +46,8 @@
             <paper-menu-button ignore-select horizontal-align="right">
               <paper-icon-button icon="menu" class="dropdown-trigger"></paper-icon-button>
               <paper-menu class="dropdown-content">
-                <template is="dom-repeat" items="[[columns]]" as="column" index-as="index">
-                  <paper-icon-item position="[[index]]" on-tap="_hideColumn">
+                <template is="dom-repeat" items="[[toggleColumns]]" as="column" index-as="index">
+                  <paper-icon-item position="[[column.position]]" on-tap="_hideColumn">
                     <template is="dom-if" if="[[column.show]]">
                       <iron-icon icon="visibility-off" item-icon></iron-icon>
                     </template>
@@ -70,14 +70,14 @@
               page="{{page}}"
               size="{{size}}"
               available-size="[2, 4]"
-              columns="{{columns}}"
+              toggle-columns="{{toggleColumns}}"
               on-sort="_handleSort"
               on-filter="_handleFilter"
               selected-rows={{selectedRows}}
               on-selection-changed="_handleSelectionChanged"
               total-elements="[[totalElements]]"
               total-pages="[[totalPages]]">
-              <paper-datatable-api-column header="Fruit" property="fruit" sortable>
+              <paper-datatable-api-column header="Fruit" property="fruit" sortable hideable>
                 <template>
                   <span>[[value]]</span>
                 </template>

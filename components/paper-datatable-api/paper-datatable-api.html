@@ -33,6 +33,7 @@
 
 - [Follows the guideline of Material Design](https://material.google.com/components/data-tables.html#)
 - Hide/Show columns
+- Choose which columns can be hidden or show
 - Freeze header
 - Sort
 - Pagination
@@ -46,10 +47,11 @@ The following custom properties and mixins are available for styling:
 
 Custom property                                 | Description                               | Default
 ------------------------------------------------|-------------------------------------------|---------------
-`--paper-datatable-api-tbody-height`            | Height of the tbody in frozen header mode | `{}`
-`--paper-datatable-api-checkbox-color`          | Define color of checked checkbox          | `--primary-color`
-`--paper-datatable-api-tr-selected-background`  | Define color of the selected tr           | `--paper-grey-100`
-`--paper-datatable-api-header`                  | Mixin applied to the columns header       | `{}`
+`--paper-datatable-api-tbody-height`             | Height of the tbody in frozen header mode | `{}`
+`--paper-datatable-api-checked-checkbox-color`   | Define color of checked checkbox          | `--primary-color`
+`--paper-datatable-api-unchecked-checkbox-color` | Define color of unchecked checkbox        | `--primary-color`
+`--paper-datatable-api-tr-selected-background`   | Define color of the selected tr           | `--paper-grey-100`
+`--paper-datatable-api-header`                   | Mixin applied to the columns header       | `{}`
 
 @element paper-datatable-api
 @demo demo/index.html
@@ -71,7 +73,7 @@ Custom property                                 | Description                   
               <paper-checkbox on-change="_selectAllCheckbox"></paper-checkbox>
             </th>
           </template>
-          <template is="dom-repeat" items="[[columns]]" as="column">
+          <template is="dom-repeat" items="[[_columns]]" as="column">
             <th class="pgTh" on-tap="_handleSort" data-column="[[column]]" sort-direction$="[[column.sortDirection]]" sorted$="[[column.sorted]]" sortable$="[[column.sortable]]">
               <div class="layout horizontal center">
                 <iron-icon icon="arrow-downward" class="sort"></iron-icon>
@@ -88,7 +90,7 @@ Custom property                                 | Description                   
                 <input disabled is="iron-input"></input>
               </th>
             </template>
-            <template is="dom-repeat" items="[[columns]]" as="column">
+            <template is="dom-repeat" items="[[_columns]]" as="column">
               <th class="pgTh">
                 <template is="dom-if" if="[[column.filter]]" restamp>
                   <input on-keyup="_handleFilter" is="iron-input" data-column="[[column]]"></input>
@@ -153,9 +155,16 @@ Custom property                                 | Description                   
       properties: {
         /**
          * The columns element.
+         */
+        _columns: {
+          type: Array,
+          value: [],
+        },
+        /**
+         * The list of hideable columns.
          * It is exposed to create a list of label (see demo/advance-demo.html).
          */
-        columns: {
+        toggleColumns: {
           type: Array,
           notify: true,
           value: [],
@@ -356,7 +365,7 @@ Custom property                                 | Description                   
             Polymer.dom.flush()
           }
 
-          this.columns.forEach(function(paperDatatableApiColumn) {
+          this._columns.forEach(function(paperDatatableApiColumn) {
 
             var valueFromRowData = this._extractData(rowData, paperDatatableApiColumn.property);
 
@@ -488,8 +497,16 @@ Custom property                                 | Description                   
       },
 
       _setColumns: function() {
-        this.columns = this.queryAllEffectiveChildren('paper-datatable-api-column');
-        this._columnsHeight = this.selectable ? this.columns.length + 1 : this.columns.length;
+        this._columns = this.queryAllEffectiveChildren('paper-datatable-api-column')
+          .map(function(column, i) {
+            column.position = i;
+            return column;
+          });
+
+        this.toggleColumns = this._columns.filter(function(column) {
+          return column.hideable;
+        });
+        this._columnsHeight = this.selectable ? this._columns.length + 1 : this._columns.length;
       },
 
       /**
@@ -499,15 +516,22 @@ Custom property                                 | Description                   
        * @param {Number} columnPosition The number of column which will be toggled.
        */
       toggleColumn: function(columnPosition) {
-        var isShow = this.columns[columnPosition].show;
-        var indexColumn = this.selectable ? columnPosition + 2 : columnPosition + 1;
-        var cssQuery = 'tr th:nth-of-type(' + indexColumn + '), tr td:nth-of-type(' + indexColumn + ')';
-        Polymer.dom(this.root).querySelectorAll(cssQuery).forEach(function(tdTh) {
-          var displayMode = isShow ? 'none' : 'table-cell';
-          tdTh.style.display = displayMode;
-        }, this);
-        this.set('columns.' + columnPosition + '.show', isShow ? false : true);
-        this._resizeHeader();
+        var column = this.toggleColumns[columnPosition];
+        if (column && column.hideable) {
+          var isShow = column.show;
+          var indexColumn = this.selectable ? columnPosition + 2 : columnPosition + 1;
+          var cssQuery = 'tr th:nth-of-type(' + indexColumn + '), tr td:nth-of-type(' + indexColumn + ')';
+          Polymer.dom(this.root).querySelectorAll(cssQuery).forEach(function(tdTh) {
+            var displayMode = isShow ? 'none' : 'table-cell';
+            tdTh.style.display = displayMode;
+          }, this);
+          column.show = !isShow;
+          var toggleColumnIndex = this.toggleColumns.findIndex(function(toggleColumn) {
+            return toggleColumn.position === columnPosition;
+          });
+          this.set('toggleColumns.' + toggleColumnIndex + '.show', isShow ? false : true);
+          this._resizeHeader();
+        }
       },
 
       _newSizeIsSelected: function() {

@@ -121,6 +121,7 @@ Custom property | Description | Default
       close-animation-config="[[closeAnimationConfig]]"
       no-animations="[[noAnimations]]"
       focus-target="[[_dropdownContent]]"
+      allow-outside-scroll="[[allowOutsideScroll]]"
       restore-focus-on-close
       on-iron-overlay-canceled="__onIronOverlayCanceled">
       <div class="dropdown-content">
@@ -335,6 +336,17 @@ Custom property | Description | Default
           }
 
           this.$.dropdown.open();
+        },
+
+        /**
+         * By default, the dropdown will constrain scrolling on the page
+         * to itself when opened.
+         * Set to true in order to prevent scroll from being constrained
+         * to the dropdown when it opens.
+         */
+        allowOutsideScroll: {
+          type: Boolean,
+          value: false
         },
 
         /**
