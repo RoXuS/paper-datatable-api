@@ -47,7 +47,7 @@ The following custom properties and mixins are available for styling:
 
 Custom property                                   | Description                                | Default
 --------------------------------------------------|--------------------------------------------|---------------
-`--paper-datatable-api-tbody-height`              | Height of the tbody in frozen header mode  | `{}`
+`--paper-datatable-api-height`                    | Height of the table in frozen header mode  | `{}`
 `--paper-datatable-api-checked-checkbox-color`    | Define color of checked checkbox           | `--primary-color`
 `--paper-datatable-api-unchecked-checkbox-color`  | Define color of unchecked checkbox         | `--primary-color`
 `--paper-datatable-api-tr-selected-background`    | Define color of the selected tr            | `--paper-grey-100`
@@ -67,86 +67,104 @@ Custom property                                   | Description                 
     </style>
     <style include="paper-datatable-api-shared-styles"></style>
     <style include="iron-flex iron-flex-alignment"></style>
-    <table>
-      <thead class$="[[_generateClass(frozenHeader, filters)]]">
-        <tr>
-          <template is="dom-if" if="[[selectable]]" restamp>
-            <th class="selectable">
-              <paper-checkbox on-change="_selectAllCheckbox"></paper-checkbox>
-            </th>
-          </template>
-          <template is="dom-repeat" items="[[_columns]]" as="column">
-            <th class="pgTh" on-tap="_handleSort" data-column="[[column]]" sort-direction$="[[column.sortDirection]]" sorted$="[[column.sorted]]" sortable$="[[column.sortable]]">
-              <div class="layout horizontal center">
-                <iron-icon icon="arrow-downward" class="sort"></iron-icon>
-                <div>[[column.header]]</div>
-              </div>
-            </th>
-          </template>
-        </tr>
 
-        <template is="dom-if" if="[[filters]]" restamp>
-          <tr class="filters">
-            <template is="dom-if" if="[[selectable]]" restamp>
-              <th>
-                <input disabled is="iron-input"></input>
-              </th>
-            </template>
-            <template is="dom-repeat" items="[[_columns]]" as="column">
-              <th class="pgTh">
-                <template is="dom-if" if="[[column.filter]]" restamp>
-                  <input on-keyup="_handleFilter" is="iron-input" data-column="[[column]]"></input>
-                </template>
-                <template is="dom-if" if="[[!column.filter]]" restamp>
-                  <input disabled is="iron-input"></input>
-                </template>
-              </th>
-            </template>
-          </tr>
-        </template>
-      </thead>
-      <tbody class$="[[_generateClass(frozenHeader, filters)]]">
-      </tbody>
-      <template is="dom-if" if="[[paginate]]" restamp>
-        <tfoot>
-          <tr>
-            <td colspan$="[[_columnsHeight]]">
-              <div class="layout horizontal end-justified center">
-                <div class="layout horizontal center">
-                  <div>
-                    [[localize('rowPerPage')]]:
+    <div id="wrapper" class$="[[_generateClass(frozenHeader, filters, paginate)]]">
+      <div class="backgroundFrozen">
+        <div></div>
+      </div>
+      <div class="inner">
+        <table>
+          <thead class$="[[_generateClass(frozenHeader, filters)]]">
+            <tr>
+              <template is="dom-if" if="[[selectable]]" restamp>
+                <th class="selectable">
+                  <div class$="[[_generateClass(frozenHeader)]]">
+                    <paper-checkbox on-change="_selectAllCheckbox"></paper-checkbox>
                   </div>
-                  <div class="size">
-                    <paper-dropdown-menu no-label-float vertical-align="bottom">
-                      <paper-listbox attr-for-selected="size" on-iron-select="_newSizeIsSelected" selected="[[size]]" class="dropdown-content">
-                        <template is="dom-repeat" items="[[availableSize]]" as="size">
-                          <paper-item size="[[size]]">[[size]]</paper-item>
-                        </template>
-                      </paper-listbox>
-                    </paper-dropdown-menu>
+                </th>
+              </template>
+              <template is="dom-repeat" items="[[_columns]]" as="column">
+                <th class="pgTh" on-tap="_handleSort" data-column="[[column]]" sort-direction$="[[column.sortDirection]]" sorted$="[[column.sorted]]" sortable$="[[column.sortable]]">
+                  <div class$="[[_generateClass(frozenHeader)]]">
+                    <div class="layout horizontal center">
+                      <iron-icon icon="arrow-downward" class="sort"></iron-icon>
+                      <div>[[column.header]]</div>
+                    </div>
                   </div>
-                </div>
-                <div class="status">
-                  [[_computeCurrentSize(page, size)]]-[[_computeCurrentMaxSize(page, size)]] [[localize('of')]] [[totalElements]]
-                </div>
-                <template is="dom-if" if="[[!_prevButtonEnabled(page)]]">
-                  <paper-icon-button icon="chevron-left" disabled on-tap="_prevPage"></paper-icon-button>
+                </th>
+              </template>
+            </tr>
+
+            <template is="dom-if" if="[[filters]]" restamp>
+              <tr class="filters">
+                <template is="dom-if" if="[[selectable]]" restamp>
+                  <th>
+                    <div class$="[[_generateClass(frozenHeader)]]">
+                      <input disabled is="iron-input"></input>
+                    </div>
+                  </th>
                 </template>
-                <template is="dom-if" if="[[_prevButtonEnabled(page)]]">
-                  <paper-icon-button icon="chevron-left" on-tap="_prevPage"></paper-icon-button>
+                <template is="dom-repeat" items="[[_columns]]" as="column">
+                  <th class="pgTh">
+                    <div class$="[[_generateClass(frozenHeader)]]">
+                      <template is="dom-if" if="[[column.filter]]" restamp>
+                        <input on-keyup="_handleFilter" is="iron-input" data-column="[[column]]"></input>
+                      </template>
+                      <template is="dom-if" if="[[!column.filter]]" restamp>
+                        <input disabled is="iron-input"></input>
+                      </template>
+                    </div>
+                  </th>
                 </template>
-                <template is="dom-if" if="[[!_nextButtonEnabled(page, totalPages)]]">
-                  <paper-icon-button icon="chevron-right" disabled on-tap="_nextPage"></paper-icon-button>
-                </template>
-                <template is="dom-if" if="[[_nextButtonEnabled(page, totalPages)]]">
-                  <paper-icon-button icon="chevron-right" on-tap="_nextPage"></paper-icon-button>
-                </template>
-              </div>
-            </td>
-          </tr>
-        </tfoot>
-      </template>
-    </table>
+              </tr>
+            </template>
+          </thead>
+          <tbody class$="[[_generateClass(frozenHeader, filters)]]">
+          </tbody>
+          <template is="dom-if" if="[[paginate]]" restamp>
+            <tfoot class$="[[_generateClass(frozenHeader, filters, paginate)]]">
+              <tr>
+                <td colspan$="[[_columnsHeight]]">
+                  <div class$="[[_generateClass(frozenHeader)]]">
+                    <div class="layout horizontal end-justified center">
+                      <div class="layout horizontal center">
+                        <div>
+                          [[localize('rowPerPage')]]:
+                        </div>
+                        <div class="size">
+                          <paper-dropdown-menu no-label-float vertical-align="bottom">
+                            <paper-listbox attr-for-selected="size" on-iron-select="_newSizeIsSelected" selected="[[size]]" class="dropdown-content">
+                              <template is="dom-repeat" items="[[availableSize]]" as="size">
+                                <paper-item size="[[size]]">[[size]]</paper-item>
+                              </template>
+                            </paper-listbox>
+                          </paper-dropdown-menu>
+                        </div>
+                      </div>
+                      <div class="status">
+                        [[_computeCurrentSize(page, size)]]-[[_computeCurrentMaxSize(page, size)]] [[localize('of')]] [[totalElements]]
+                      </div>
+                      <template is="dom-if" if="[[!_prevButtonEnabled(page)]]">
+                        <paper-icon-button icon="chevron-left" disabled on-tap="_prevPage"></paper-icon-button>
+                      </template>
+                      <template is="dom-if" if="[[_prevButtonEnabled(page)]]">
+                        <paper-icon-button icon="chevron-left" on-tap="_prevPage"></paper-icon-button>
+                      </template>
+                      <template is="dom-if" if="[[!_nextButtonEnabled(page, totalPages)]]">
+                        <paper-icon-button icon="chevron-right" disabled on-tap="_nextPage"></paper-icon-button>
+                      </template>
+                      <template is="dom-if" if="[[_nextButtonEnabled(page, totalPages)]]">
+                        <paper-icon-button icon="chevron-right" on-tap="_nextPage"></paper-icon-button>
+                      </template>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tfoot>
+          </template>
+        </table>
+      </div>
+    </div>
   </template>
 
   <script>
@@ -246,32 +264,32 @@ Custom property                                   | Description                 
         },
         language: {
           type: String,
-          value: 'en'
+          value: 'en',
         },
         resources: {
-          value: function() {
+          value: function () {
             return {
-              'en': {
-                'rowPerPage': 'Row per page',
-                'of': 'of'
+              en: {
+                rowPerPage: 'Row per page',
+                of: 'of',
               },
-              "en-en": {
-                'rowPerPage': 'Row per page',
-                'of': 'of'
+              'en-en': {
+                rowPerPage: 'Row per page',
+                of: 'of',
               },
-              "en-US": {
-                'rowPerPage': 'Row per page',
-                'of': 'of'
+              'en-US': {
+                rowPerPage: 'Row per page',
+                of: 'of',
               },
-              "fr": {
-                'rowPerPage': 'Ligne par page ',
-                'of': 'sur'
+              fr: {
+                rowPerPage: 'Ligne par page ',
+                of: 'sur',
               },
-              "fr-fr": {
-                'rowPerPage': 'Ligne par page ',
-                'of': 'sur'
-              }
-            }
+              'fr-fr': {
+                rowPerPage: 'Ligne par page ',
+                of: 'sur',
+              },
+            };
           },
         },
       },
@@ -282,76 +300,98 @@ Custom property                                   | Description                 
       ],
 
       listeners: {
-        'iron-resize': '_resizeHeader'
+        'iron-resize': '_resizeHeader',
       },
 
-      attached: function() {
+      attached: function () {
         this._setColumns();
         var userLang = navigator.language || navigator.userLanguage;
         this.language = userLang;
       },
-      _generateClass: function(frozenHeader, filters) {
-        return frozenHeader ? filters ? 'filters frozen' : 'frozen' : filters ? 'filters' : '';
+
+      _generateClass: function (frozenHeader, filters, paginate) {
+        if (frozenHeader && filters && paginate) {
+          return 'filters frozen paginate';
+        }
+        if (frozenHeader && filters) {
+          return 'filters frozen';
+        }
+        if (frozenHeader && paginate) {
+          return 'paginate frozen';
+        }
+        if (filters && paginate) {
+          return 'paginate filters';
+        }
+        if (filters) {
+          return 'filters';
+        }
+        if (paginate) {
+          return 'paginate';
+        }
+        if (frozenHeader) {
+          return 'frozen';
+        }
       },
 
-      _nextPage: function() {
+      _nextPage: function () {
         if ((this.page + 1) < this.totalPages) {
           this.page = this.page + 1;
         }
       },
 
-      _prevPage: function() {
+      _prevPage: function () {
         if (this.page > 0) {
           this.page = this.page - 1;
         }
       },
 
-      _nextButtonEnabled: function(page, totalPages) {
+      _nextButtonEnabled: function (page, totalPages) {
         return (page + 1) < totalPages;
       },
 
-      _prevButtonEnabled: function(page) {
+      _prevButtonEnabled: function (page) {
         return page > 0;
       },
 
-      _computeCurrentSize: function(page, size) {
+      _computeCurrentSize: function (page, size) {
         return (page * size) + 1;
       },
 
-      _computeCurrentMaxSize: function(page, size) {
+      _computeCurrentMaxSize: function (page, size) {
         return size * (page + 1);
       },
 
-      _dataChanged: function(data) {
+      _dataChanged: function (data) {
         this._removeRows();
         this._fillRows(data);
         this._fillColumns();
         this._resizeHeader();
       },
 
-      _removeRows: function() {
+      _removeRows: function () {
         var pgTrs = Polymer.dom(this.root).querySelectorAll('.paper-datatable-api-tr');
-        pgTrs.forEach(function(pgTr) {
+        pgTrs.forEach(function (pgTr) {
           Polymer.dom(this.$$('tbody')).removeChild(pgTr);
         }, this);
       },
 
-      _fillRows: function(data) {
-        data.forEach(function(rowData) {
+      _fillRows: function (data) {
+        data.forEach(function (rowData) {
           var trLocal = document.createElement('tr');
           trLocal.rowData = rowData;
           trLocal.className = 'paper-datatable-api-tr';
           if (this.frozenHeader) {
             trLocal.className = trLocal.className + ' frozen';
           }
+
           Polymer.dom(this.$$('tbody')).appendChild(trLocal);
         }, this);
       },
 
-      _fillColumns: function() {
+      _fillColumns: function () {
         var pgTrs = Polymer.dom(this.root).querySelectorAll('.paper-datatable-api-tr');
 
-        pgTrs.forEach(function(pgTr, i) {
+        pgTrs.forEach(function (pgTr, i) {
 
           var rowData = pgTr.rowData;
 
@@ -364,20 +404,23 @@ Custom property                                   | Description                 
             paperCheckbox.rowIndex = i;
             Polymer.dom(tdSelectable).appendChild(paperCheckbox);
             Polymer.dom(pgTr).appendChild(tdSelectable);
-            Polymer.dom.flush()
+            Polymer.dom.flush();
           }
 
-          this._columns.forEach(function(paperDatatableApiColumn) {
+          this._columns.forEach(function (paperDatatableApiColumn) {
 
             var valueFromRowData = this._extractData(rowData, paperDatatableApiColumn.property);
 
             var otherPropertiesValue = {};
-            paperDatatableApiColumn.otherProperties.forEach(function(property) {
+            paperDatatableApiColumn.otherProperties.forEach(function (property) {
               otherPropertiesValue[property] = this._extractData(rowData, property);
             }, this);
 
             var tdLocal = document.createElement('td');
-            var template = paperDatatableApiColumn.fillTemplate(valueFromRowData, otherPropertiesValue);
+            var template = paperDatatableApiColumn.fillTemplate(
+              valueFromRowData,
+              otherPropertiesValue
+            );
             Polymer.dom(tdLocal).appendChild(template.root);
             Polymer.dom(pgTr).appendChild(tdLocal);
 
@@ -385,20 +428,22 @@ Custom property                                   | Description                 
         }, this);
       },
 
-      _selectAllCheckbox: function(event) {
+      _selectAllCheckbox: function (event) {
         var localTarget = Polymer.dom(event).localTarget;
-        var allPaperCheckbox = Polymer.dom(this.root).querySelectorAll('tbody tr td paper-checkbox');
-        allPaperCheckbox.forEach(function(paperCheckbox) {
+        var allPaperCheckbox = Polymer.dom(this.root)
+          .querySelectorAll('tbody tr td paper-checkbox');
+        allPaperCheckbox.forEach(function (paperCheckbox) {
           if (localTarget.checked) {
             paperCheckbox.checked = true;
           } else {
             paperCheckbox.checked = false;
           }
+
           this._selectChange(paperCheckbox);
         }, this);
       },
 
-      _selectChange: function(event) {
+      _selectChange: function (event) {
         var localTarget;
         if (event.type && event.type === 'change') {
           localTarget = Polymer.dom(event).localTarget;
@@ -406,12 +451,12 @@ Custom property                                   | Description                 
           localTarget = event;
         }
 
-        var tr = Polymer.dom(localTarget).parentNode.parentNode
+        var tr = Polymer.dom(localTarget).parentNode.parentNode;
 
         var rowData = localTarget.rowData;
         var rowId = localTarget.rowIndex;
         var eventData = {};
-        if (localTarget.checked){
+        if (localTarget.checked) {
           this.push('selectedRows', rowId);
           eventData = {
             selected: [rowId],
@@ -433,51 +478,20 @@ Custom property                                   | Description                 
         this.fire('selection-changed', eventData);
       },
 
-      _resizeHeader: function(event) {
+      _resizeHeader: function (event) {
         if (this.frozenHeader) {
-          this.async(function() {
-            var pgTds = Polymer.dom(this.root).querySelectorAll('tbody tr:first-child td');
-            pgTds.forEach(function(pgTd, i) {
-              if (this.selectable && i === 0) {
-                return;
-              }
-
-              i++;
-              var pgThs = Polymer.dom(this.root).querySelectorAll('thead th:nth-of-type(' + i + ')');
-              var pgTh = pgThs[0];
-              var pgInput = pgThs[1].querySelector('input');
-
-              if (pgTh) {
-                pgTd.style.width = 'auto';
-                pgTh.style.width = 'auto';
-                if (pgInput) {
-                  pgInput.style.width = 'calc(100% - 10px)';
-                }
-                this.async(function() {
-                  var thOffsetWidth = pgTh.offsetWidth - 49;
-                  if (pgTd.offsetWidth < (thOffsetWidth + 49)) {
-                    pgTd.style.width = thOffsetWidth + 'px';
-                  }
-
-                  this.async(function() {
-                    var tdOffsetWidth = pgTd.offsetWidth - 49;
-
-                    if (thOffsetWidth < tdOffsetWidth) {
-                      pgTh.style.width = tdOffsetWidth + 'px';
-                    }
-                  });
-                });
-              }
-            }, this);
-          });
+          Polymer.dom(this.root).querySelectorAll('thead th:not(:first-child) input')
+            .forEach(function (input) {
+              input.style.width = input.parentNode.parentNode.offsetWidth - 52 + 'px';
+            });
         }
       },
 
-      _extractData: function(rowData, columnProperty) {
+      _extractData: function (rowData, columnProperty) {
         if (columnProperty) {
           var splittedProperties = columnProperty.split('.');
           if (splittedProperties.length > 1) {
-            return splittedProperties.reduce(function(prevRow, property) {
+            return splittedProperties.reduce(function (prevRow, property) {
               if (typeof prevRow === 'string') {
                 return rowData[prevRow][property];
               } else {
@@ -492,16 +506,17 @@ Custom property                                   | Description                 
         }
       },
 
-      _setColumns: function() {
+      _setColumns: function () {
         this._columns = this.queryAllEffectiveChildren('paper-datatable-api-column')
-          .map(function(column, i) {
+          .map(function (column, i) {
             column.position = i;
             return column;
           });
 
-        this.toggleColumns = this._columns.filter(function(column) {
+        this.toggleColumns = this._columns.filter(function (column) {
           return column.hideable;
         });
+
         this._columnsHeight = this.selectable ? this._columns.length + 1 : this._columns.length;
       },
 
@@ -511,26 +526,29 @@ Custom property                                   | Description                 
        * @property toggleColumn
        * @param {Number} columnPosition The number of column which will be toggled.
        */
-      toggleColumn: function(columnPosition) {
+      toggleColumn: function (columnPosition) {
         var column = this.toggleColumns[columnPosition];
         if (column && column.hideable) {
           var isShow = column.show;
           var indexColumn = this.selectable ? columnPosition + 2 : columnPosition + 1;
-          var cssQuery = 'tr th:nth-of-type(' + indexColumn + '), tr td:nth-of-type(' + indexColumn + ')';
-          Polymer.dom(this.root).querySelectorAll(cssQuery).forEach(function(tdTh) {
+          var cssQuery = 'tr th:nth-of-type(' + indexColumn +
+          '), tr td:nth-of-type(' + indexColumn + ')';
+          Polymer.dom(this.root).querySelectorAll(cssQuery).forEach(function (tdTh) {
             var displayMode = isShow ? 'none' : 'table-cell';
             tdTh.style.display = displayMode;
           }, this);
+
           column.show = !isShow;
-          var toggleColumnIndex = this.toggleColumns.findIndex(function(toggleColumn) {
+          var toggleColumnIndex = this.toggleColumns.findIndex(function (toggleColumn) {
             return toggleColumn.position === columnPosition;
           });
+
           this.set('toggleColumns.' + toggleColumnIndex + '.show', isShow ? false : true);
           this._resizeHeader();
         }
       },
 
-      _newSizeIsSelected: function() {
+      _newSizeIsSelected: function () {
         var newSize = this.$$('paper-listbox').selected;
         if (newSize) {
           this.page = 0;
@@ -538,7 +556,7 @@ Custom property                                   | Description                 
         }
       },
 
-      _handleSort: function(event) {
+      _handleSort: function (event) {
         var column = event.model.column;
         var th = event.currentTarget;
         if (column.sortable) {
@@ -557,14 +575,14 @@ Custom property                                   | Description                 
           this.fire('sort', {
             sort: {
               property: column.property,
-              direction: column.sortDirection
+              direction: column.sortDirection,
             },
-            column: column
+            column: column,
           });
         }
       },
 
-      _handleFilter: function(event) {
+      _handleFilter: function (event) {
         var column = event.model.column;
         var input = event.currentTarget;
 
@@ -577,9 +595,9 @@ Custom property                                   | Description                 
         this.fire('filter', {
           filter: {
             property: column.property,
-            value: input.value
+            value: input.value,
           },
-          column: column
+          column: column,
         });
       },
     });

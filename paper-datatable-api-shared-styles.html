@@ -16,43 +16,17 @@
 	@apply(--paper-font-common-base);
       }
 
-      thead.frozen {
-	display: block;
-      }
-
       thead th {
 	font-size: 12px;
 	@apply(--paper-datatable-api-header);
 	color: rgba(0, 0, 0, var(--dark-secondary-opacity));
 	font-weight: 500;
 	text-align: left;
-	height: 56px;
 	white-space: nowrap;
       }
 
-      thead.filters tr:nth-child(1) th {
-	height: 26px;
-	padding-top: 10px;
-	padding-bottom: 10px;
-	border-bottom: 2px solid rgba(0, 0, 0, var(--dark-divider-opacity));
-      }
-
-      thead.filters tr:nth-child(2) th {
-	height: 38px;
-      }
-
-      thead.filters th input {
-	height: 20px;
-	padding: 4px 0;
-	width: calc(100% - 10px);
-	border: 1px solid rgba(0, 0, 0, var(--dark-divider-opacity));
-      }
-
-      thead.filters.frozen th input {
-	width: 16px;
-      }
-
       thead.filters th:not(:first-child) input {
+	width: 100%;
 	padding: 4px;
       }
 
@@ -104,17 +78,6 @@
 	transform: rotate(180deg);
       }
 
-      tbody.frozen {
-	display: block;
-	overflow: auto;
-	height: var(--paper-datatable-api-tbody-height, 48px);
-	transition: all 100ms cubic-bezier(0.4, 0, 0.2, 1);
-      }
-
-      tbody.frozen.filters {
-	height: calc(var(--paper-datatable-api-tbody-height, 48px) - 57px);
-      }
-
       :host ::content tbody tr,
       tbody tr {
 	height: 48px;
@@ -152,10 +115,6 @@
 	padding: 6px 0 6px 26px;
       }
 
-      thead.filters tr.filters th {
-	padding: 8px 26px;
-      }
-
       thead.filters tr.filters th:first-child {
 	padding-right: 0;
       }
@@ -182,6 +141,7 @@
       tfoot tr td div .size {
 	width: 64px;
 	text-align: right;
+
       }
 
       .size paper-dropdown-menu {
@@ -202,6 +162,100 @@
       paper-checkbox {
         --paper-checkbox-checked-color: var(--paper-datatable-api-checked-checkbox-color, --primary-color);
         --paper-checkbox-unchecked-color: var(--paper-datatable-api-unchecked-checkbox-color, --primary-text-color);
+      }
+
+      /* Frozen mode */
+
+      #wrapper.frozen {
+	width: 100%;
+	position: relative;
+	padding-top: 38px;
+	padding-bottom: 56px;
+	height: var(--paper-datatable-api-height, 48px);
+	transition: all 500ms cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      #wrapper.frozen:not(.paginate) {
+	padding-bottom: 0;
+      }
+
+      #wrapper.frozen.filters {
+	padding-top: 90px;
+      }
+
+      #wrapper.frozen .inner {
+	overflow-x: hidden;
+	overflow-y: auto;
+	height: 100%;
+      }
+
+      #wrapper.frozen.filters .backgroundFrozen {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 90px;
+      }
+
+      #wrapper.filters.frozen .backgroundFrozen > div {
+	height: 38px;
+	border-bottom: 2px solid rgba(0, 0, 0, var(--dark-divider-opacity));
+      }
+
+      thead tr th div.frozen {
+	position: absolute;
+	top: 10px;
+      }
+
+      thead tr.filters th div.frozen {
+	position: absolute;
+	top: 50px;
+      }
+
+      thead:not(.frozen) th {
+	height: 36px;
+      }
+
+      thead:not(.frozen).filters tr:nth-child(1) th {
+	height: 26px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	border-bottom: 2px solid rgba(0, 0, 0, var(--dark-divider-opacity));
+      }
+
+      thead:not(.frozen).filters tr:nth-child(2) th {
+	height: 38px;
+      }
+
+      thead.filters th input {
+	height: 20px;
+	padding: 4px 0;
+	width: calc(100% - 10px);
+	border: 1px solid rgba(0, 0, 0, var(--dark-divider-opacity));
+      }
+
+      thead.filters.frozen th input {
+	width: 16px;
+      }
+
+      :host ::content thead.frozen th.selectable,
+      thead.frozen th.selectable {
+	padding: 0 0 0 26px;
+      }
+
+      thead:not(.frozen).filters tr.filters th {
+	padding: 8px 26px;
+      }
+
+      tfoot.paginate.frozen tr td > div.frozen {
+	position: absolute;
+	bottom: 0px;
+	width: 100%;
+	height: 56px;
+      }
+
+      tfoot.paginate.frozen tr td > div.frozen > div {
+	height: 56px;
       }
     </style>
   </template>
