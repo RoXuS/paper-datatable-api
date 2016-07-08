@@ -16,7 +16,7 @@
     <test-fixture id="simple">
       <template>
         <paper-datatable-api>
-          <paper-datatable-api-column header="Fruit" property="fruit">
+          <paper-datatable-api-column header="Fruit" property="fruit" hideable>
             <template>
               <span>[[value]]</span>
             </template>
@@ -101,9 +101,10 @@
           assert.equal(tr1tds[0].style.display, 'table-cell');
           assert.equal(tr1tds[1].style.display, '');
           paperDatatableApi.toggleColumn(1);
-          assert.equal(tr1tds[1].style.display, 'none');
-          paperDatatableApi.toggleColumn(1);
-          assert.equal(tr1tds[1].style.display, 'table-cell');
+          assert.equal(tr1tds[1].style.display, '');
+          assert.equal(tr1tds[2].style.display, '');
+          paperDatatableApi.toggleColumn(2);
+          assert.equal(tr1tds[2].style.display, '');
         });
 
       });
