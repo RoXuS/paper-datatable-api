@@ -119,6 +119,11 @@
 	height: 48px;
       }
 
+      :host ::content tbody tr:hover,
+      tbody tr:hover {
+	background: var(--paper-datatable-api-tr-hover-background-color, none);
+      }
+
       :host ::content tbody tr.selected,
       tbody tr.selected {
 	background-color: var(--paper-datatable-api-tr-selected-background, --paper-grey-100);
