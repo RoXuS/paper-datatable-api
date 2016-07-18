@@ -38,6 +38,7 @@
 - Sort
 - Pagination
 - Checkboxes to select or manipulate data
+- Keep the selected data throught the pages
 - Filter a column
 - Ability to filter columns
 
@@ -257,10 +258,18 @@ Custom property                                   | Description                 
         },
         /**
          * Contains the positions of selected columns.
+         * Can contain a specific data if selectableDataKey is setted.
          */
         selectedRows: {
           type: Array,
           value: [],
+        },
+        /**
+         * If it is setted, the selected rows are persistant (throught the pages).
+         * Uses the value of the rowData following the defined key.
+         */
+        selectableDataKey: {
+          type: String,
         },
         language: {
           type: String,
@@ -402,6 +411,12 @@ Custom property                                   | Description                 
             this.listen(paperCheckbox, 'change', '_selectChange');
             paperCheckbox.rowData = rowData;
             paperCheckbox.rowIndex = i;
+
+            if (this.selectableDataKey !== undefined &&
+              rowData[this.selectableDataKey] !== undefined &&
+              this.selectedRows.indexOf(rowData[this.selectableDataKey]) !== -1) {
+                paperCheckbox.checked = true;
+            }
             Polymer.dom(tdSelectable).appendChild(paperCheckbox);
             Polymer.dom(pgTr).appendChild(tdSelectable);
             Polymer.dom.flush();
@@ -454,7 +469,12 @@ Custom property                                   | Description                 
         var tr = Polymer.dom(localTarget).parentNode.parentNode;
 
         var rowData = localTarget.rowData;
+
         var rowId = localTarget.rowIndex;
+        if (this.selectableDataKey !== undefined && rowData[this.selectableDataKey] !== undefined) {
+          rowId = rowData[this.selectableDataKey];
+        }
+
         var eventData = {};
         if (localTarget.checked) {
           this.push('selectedRows', rowId);
