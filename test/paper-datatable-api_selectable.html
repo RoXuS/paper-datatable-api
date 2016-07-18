@@ -30,6 +30,23 @@
       </template>
     </test-fixture>
 
+    <test-fixture id="selectableWithKey">
+      <template>
+        <paper-datatable-api selectable-data-key="fruit" selectable>
+          <paper-datatable-api-column header="Fruit" property="fruit" sortable>
+            <template>
+              <span>{{value}}</span>
+            </template>
+          </paper-datatable-api-column>
+          <paper-datatable-api-column header="Color" property="color">
+            <template>
+              <div>{{value}}</div>
+            </template>
+          </paper-datatable-api-column>
+        </paper-datatable-api>
+      </template>
+    </test-fixture>
+
     <script>
       var data = [
 {
@@ -75,7 +92,6 @@
             var i = 0;
             var paperCheckbox = paperDatatableApi.querySelector('thead tr th:first-child paper-checkbox');
             paperDatatableApi.addEventListener('selection-changed', function(event) {
-              console.log(event.detail.selected, i);
               switch(i) {
                 case 0:
                   assert.equal(event.detail.selected, 0);
@@ -104,6 +120,17 @@
           });
         });
 
+        test('Select rows with specific key', function() {
+          var paperDatatableApi = fixture('selectableWithKey');
+          paperDatatableApi.data = data;
+          flush(function() {
+            var i = 0;
+            var paperCheckbox = paperDatatableApi.querySelector('tbody tr td:first-child paper-checkbox');
+            paperCheckbox.click();
+            assert.equal(paperDatatableApi.selectedRows.length, 1);
+            assert.equal(paperDatatableApi.selectedRows[0], 'banana');
+          });
+        });
       });
     </script>
   </body>
