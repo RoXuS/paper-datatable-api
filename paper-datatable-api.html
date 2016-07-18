@@ -487,6 +487,7 @@ Custom property                                   | Description                 
           this.splice('selectedRows', this.selectedRows.indexOf(rowId), 1);
           eventData = {
             deselected: [rowId],
+            data: rowData,
           };
           tr.classList.remove('selected');
         }
