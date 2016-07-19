@@ -339,21 +339,27 @@ Custom property                                   | Description                 
         if (frozenHeader && filters && paginate) {
           return 'filters frozen paginate';
         }
+
         if (frozenHeader && filters) {
           return 'filters frozen';
         }
+
         if (frozenHeader && paginate) {
           return 'paginate frozen';
         }
+
         if (filters && paginate) {
           return 'paginate filters';
         }
+
         if (filters) {
           return 'filters';
         }
+
         if (paginate) {
           return 'paginate';
         }
+
         if (frozenHeader) {
           return 'frozen';
         }
@@ -430,10 +436,11 @@ Custom property                                   | Description                 
             paperCheckbox.rowIndex = i;
 
             if (this.selectableDataKey !== undefined &&
-              rowData[this.selectableDataKey] !== undefined &&
-              this.selectedRows.indexOf(rowData[this.selectableDataKey]) !== -1) {
-                paperCheckbox.checked = true;
+            rowData[this.selectableDataKey] !== undefined &&
+            this.selectedRows.indexOf(rowData[this.selectableDataKey]) !== -1) {
+              paperCheckbox.checked = true;
             }
+
             Polymer.dom(tdSelectable).appendChild(paperCheckbox);
             Polymer.dom(pgTr).appendChild(tdSelectable);
             Polymer.dom.flush();
