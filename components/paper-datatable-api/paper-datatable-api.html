@@ -38,6 +38,7 @@
 - Sort
 - Pagination
 - Checkboxes to select or manipulate data
+- Keep the selected data throught the pages
 - Filter a column
 - Ability to filter columns
 
@@ -87,8 +88,14 @@ Custom property                                   | Description                 
                 <th class="pgTh" on-tap="_handleSort" data-column="[[column]]" sort-direction$="[[column.sortDirection]]" sorted$="[[column.sorted]]" sortable$="[[column.sortable]]">
                   <div class$="[[_generateClass(frozenHeader)]]">
                     <div class="layout horizontal center">
-                      <iron-icon icon="arrow-downward" class="sort"></iron-icon>
-                      <div>[[column.header]]</div>
+                      <template is="dom-if" if="[[equals(positionSortIcon, 'right')]]">
+                        <div class="flex">[[column.header]]</div>
+                        <iron-icon icon="arrow-downward" class="sort"></iron-icon>
+                      </template>
+                      <template is="dom-if" if="[[equals(positionSortIcon, 'left')]]">
+                        <iron-icon icon="arrow-downward" class="sort"></iron-icon>
+                        <div class="flex">[[column.header]]</div>
+                      </template>
                     </div>
                   </div>
                 </th>
@@ -257,10 +264,25 @@ Custom property                                   | Description                 
         },
         /**
          * Contains the positions of selected columns.
+         * Can contain a specific data if selectableDataKey is setted.
          */
         selectedRows: {
           type: Array,
           value: [],
+        },
+        /**
+         * If it is setted, the selected rows are persistant (throught the pages).
+         * Uses the value of the rowData following the defined key.
+         */
+        selectableDataKey: {
+          type: String,
+        },
+        /**
+         * Change the position of the sort icon in the header.
+         */
+        positionSortIcon: {
+          type: String,
+          value: 'left',
         },
         language: {
           type: String,
@@ -309,25 +331,35 @@ Custom property                                   | Description                 
         this.language = userLang;
       },
 
+      equals: function (targetedValue, value) {
+        return value === targetedValue;
+      },
+
       _generateClass: function (frozenHeader, filters, paginate) {
         if (frozenHeader && filters && paginate) {
           return 'filters frozen paginate';
         }
+
         if (frozenHeader && filters) {
           return 'filters frozen';
         }
+
         if (frozenHeader && paginate) {
           return 'paginate frozen';
         }
+
         if (filters && paginate) {
           return 'paginate filters';
         }
+
         if (filters) {
           return 'filters';
         }
+
         if (paginate) {
           return 'paginate';
         }
+
         if (frozenHeader) {
           return 'frozen';
         }
@@ -402,6 +434,13 @@ Custom property                                   | Description                 
             this.listen(paperCheckbox, 'change', '_selectChange');
             paperCheckbox.rowData = rowData;
             paperCheckbox.rowIndex = i;
+
+            if (this.selectableDataKey !== undefined &&
+            rowData[this.selectableDataKey] !== undefined &&
+            this.selectedRows.indexOf(rowData[this.selectableDataKey]) !== -1) {
+              paperCheckbox.checked = true;
+            }
+
             Polymer.dom(tdSelectable).appendChild(paperCheckbox);
             Polymer.dom(pgTr).appendChild(tdSelectable);
             Polymer.dom.flush();
@@ -454,7 +493,12 @@ Custom property                                   | Description                 
         var tr = Polymer.dom(localTarget).parentNode.parentNode;
 
         var rowData = localTarget.rowData;
+
         var rowId = localTarget.rowIndex;
+        if (this.selectableDataKey !== undefined && rowData[this.selectableDataKey] !== undefined) {
+          rowId = rowData[this.selectableDataKey];
+        }
+
         var eventData = {};
         if (localTarget.checked) {
           this.push('selectedRows', rowId);
@@ -467,6 +511,7 @@ Custom property                                   | Description                 
           this.splice('selectedRows', this.selectedRows.indexOf(rowId), 1);
           eventData = {
             deselected: [rowId],
+            data: rowData,
           };
           tr.classList.remove('selected');
         }
@@ -484,6 +529,14 @@ Custom property                                   | Description                 
             .forEach(function (input) {
               input.style.width = input.parentNode.parentNode.offsetWidth - 52 + 'px';
             });
+
+          if (this.positionSortIcon === 'right') {
+            var cssQuery = 'thead tr:first-child th:not(:first-child) div.frozen';
+            Polymer.dom(this.root).querySelectorAll(cssQuery)
+              .forEach(function (div) {
+                div.style.width = div.parentNode.offsetWidth - 36 + 'px';
+              });
+          }
         }
       },
 

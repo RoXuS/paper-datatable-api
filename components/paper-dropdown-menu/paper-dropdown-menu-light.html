@@ -268,7 +268,7 @@ To style it:
     </style>
 
     <!-- this div fulfills an a11y requirement for combobox, do not remove -->
-    <div role="button"></div>
+    <span role="button"></span>
     <paper-menu-button
       id="menuButton"
       vertical-align="[[verticalAlign]]"
@@ -279,6 +279,7 @@ To style it:
       on-iron-select="_onIronSelect"
       on-iron-deselect="_onIronDeselect"
       opened="{{opened}}"
+      close-on-activate
       allow-outside-scroll="[[allowOutsideScroll]]">
       <div class="dropdown-trigger">
         <label hidden$="[[!label]]"

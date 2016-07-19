@@ -231,6 +231,15 @@ Custom property | Description | Default
           },
 
           /**
+           * Set to true to enable automatically closing the dropdown after an
+           * item has been activated, even if the selection did not change.
+           */
+          closeOnActivate: {
+            type: Boolean,
+            value: false
+          },
+
+          /**
            * An animation config. If provided, this will be used to animate the
            * opening of the dropdown.
            */
@@ -305,6 +314,7 @@ Custom property | Description | Default
         },
 
         listeners: {
+          'iron-activate': '_onIronActivate',
           'iron-select': '_onIronSelect'
         },
 
@@ -365,6 +375,18 @@ Custom property | Description | Default
          */
         _onIronSelect: function(event) {
           if (!this.ignoreSelect) {
+            this.close();
+          }
+        },
+
+        /**
+         * Closes the dropdown when an `iron-activate` event is received if
+         * `closeOnActivate` is true.
+         *
+         * @param {CustomEvent} event A CustomEvent of type 'iron-activate'.
+         */
+        _onIronActivate: function(event) {
+          if (this.closeOnActivate) {
             this.close();
           }
         },

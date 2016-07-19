@@ -76,7 +76,8 @@
               selected-rows={{selectedRows}}
               on-selection-changed="_handleSelectionChanged"
               total-elements="[[totalElements]]"
-              total-pages="[[totalPages]]">
+              total-pages="[[totalPages]]"
+              selectable-data-key="fruit">
               <paper-datatable-api-column header="Fruit" property="fruit" sortable hideable>
                 <template>
                   <span>[[value]]</span>

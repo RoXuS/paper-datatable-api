@@ -1,5 +1,19 @@
 # Change Log
 
+## [v0.0.5](https://github.com/RoXuS/paper-datatable-api/tree/0.0.5) (2016-07-14)
+- Refactor frozen mode, fix code following airbnb style guide ([commit](https://github.com/RoXuS/paper-datatable-api/commit/247816b))
+- Add mixin applied to the sorted columns header, fix some graphical bug ([commit](https://github.com/RoXuS/paper-datatable-api/commit/950ac2d))
+- Add mixin to set the backgroud hover of the tr ([commit](https://github.com/RoXuS/paper-datatable-api/commit/0d501f9))
+- Add a way to choose which columns can be hidden/show ([commit](https://github.com/RoXuS/paper-datatable-api/commit/f54ddbc))
+- Add mixin to define color of unchecked checkbox ([commit](https://github.com/RoXuS/paper-datatable-api/commit/7842762))
+- Add mixin to apply style on columns header ([commit](https://github.com/RoXuS/paper-datatable-api/commit/4c77711))
+- Add a mixin to set the color of the paper-checkbox ([commit](https://github.com/RoXuS/paper-datatable-api/commit/e15cb72))
+- Add a mixin to set background of selected tr ([commit](https://github.com/RoXuS/paper-datatable-api/commit/ddb9899))
+- Add transition on tbody height change ([commit](https://github.com/RoXuS/paper-datatable-api/commit/4e6cbdd))
+- Fix size of header in frozen header mode ([commit](https://github.com/RoXuS/paper-datatable-api/commit/23553b0))
+- Add filter feature ([commit](https://github.com/RoXuS/paper-datatable-api/commit/189aa6a))
+- Add checkbox in header to select all rows ([commit](https://github.com/RoXuS/paper-datatable-api/commit/b7b9af9))
+
 ## [v0.0.4](https://github.com/RoXuS/paper-datatable-api/tree/0.0.4) (2016-07-04)
 - Fix bug in case of shadow dom ([commit](https://github.com/RoXuS/paper-datatable-api/commit/502de4e))
 - Increase i18n compatibility ([commit](https://github.com/RoXuS/paper-datatable-api/commit/28101d8))
