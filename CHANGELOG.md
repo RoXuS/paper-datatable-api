@@ -1,5 +1,13 @@
 # Change Log
 
+## [v0.0.6](https://github.com/RoXuS/paper-datatable-api/tree/0.0.6) (2016-07-19)
+- Fix code following airbnb style guide ([commit](https://github.com/RoXuS/paper-datatable-api/commit/f9fec19))
+- Add possibility to change the position of the sort icon in the header ([commit](https://github.com/RoXuS/paper-datatable-api/commit/ab0e619))
+- Add rowData in selection-changed event in case of deselection ([commit](https://github.com/RoXuS/paper-datatable-api/commit/a99fcbc))
+- Fix bug in filter mode ([commit](https://github.com/RoXuS/paper-datatable-api/commit/685b36e))
+- Add missing file in previous commit ([commit](https://github.com/RoXuS/paper-datatable-api/commit/865c543))
+- Add a way to keep selection throught the pages ([commit](https://github.com/RoXuS/paper-datatable-api/commit/fc78a14))
+
 ## [v0.0.5](https://github.com/RoXuS/paper-datatable-api/tree/0.0.5) (2016-07-14)
 - Refactor frozen mode, fix code following airbnb style guide ([commit](https://github.com/RoXuS/paper-datatable-api/commit/247816b))
 - Add mixin applied to the sorted columns header, fix some graphical bug ([commit](https://github.com/RoXuS/paper-datatable-api/commit/950ac2d))
