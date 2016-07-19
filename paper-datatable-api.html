@@ -88,8 +88,14 @@ Custom property                                   | Description                 
                 <th class="pgTh" on-tap="_handleSort" data-column="[[column]]" sort-direction$="[[column.sortDirection]]" sorted$="[[column.sorted]]" sortable$="[[column.sortable]]">
                   <div class$="[[_generateClass(frozenHeader)]]">
                     <div class="layout horizontal center">
-                      <iron-icon icon="arrow-downward" class="sort"></iron-icon>
-                      <div>[[column.header]]</div>
+                      <template is="dom-if" if="[[equals(positionSortIcon, 'right')]]">
+                        <div class="flex">[[column.header]]</div>
+                        <iron-icon icon="arrow-downward" class="sort"></iron-icon>
+                      </template>
+                      <template is="dom-if" if="[[equals(positionSortIcon, 'left')]]">
+                        <iron-icon icon="arrow-downward" class="sort"></iron-icon>
+                        <div class="flex">[[column.header]]</div>
+                      </template>
                     </div>
                   </div>
                 </th>
@@ -271,6 +277,13 @@ Custom property                                   | Description                 
         selectableDataKey: {
           type: String,
         },
+        /**
+         * Change the position of the sort icon in the header.
+         */
+        positionSortIcon: {
+          type: String,
+          value: 'left',
+        },
         language: {
           type: String,
           value: 'en',
@@ -316,6 +329,10 @@ Custom property                                   | Description                 
         this._setColumns();
         var userLang = navigator.language || navigator.userLanguage;
         this.language = userLang;
+      },
+
+      equals: function (targetedValue, value) {
+        return value === targetedValue;
       },
 
       _generateClass: function (frozenHeader, filters, paginate) {
@@ -505,6 +522,14 @@ Custom property                                   | Description                 
             .forEach(function (input) {
               input.style.width = input.parentNode.parentNode.offsetWidth - 52 + 'px';
             });
+
+          if (this.positionSortIcon === 'right') {
+            var cssQuery = 'thead tr:first-child th:not(:first-child) div.frozen';
+            Polymer.dom(this.root).querySelectorAll(cssQuery)
+              .forEach(function (div) {
+                div.style.width = div.parentNode.offsetWidth - 36 + 'px';
+              });
+          }
         }
       },
 
