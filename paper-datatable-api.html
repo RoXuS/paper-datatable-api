@@ -580,7 +580,7 @@ Custom property                                   | Description                 
        * @param {Number} columnPosition The number of column which will be toggled.
        */
       toggleColumn: function (columnPosition) {
-        var column = this.toggleColumns[columnPosition];
+        var column = this._columns[columnPosition];
         if (column && column.hideable) {
           var isShow = column.show;
           var indexColumn = this.selectable ? columnPosition + 2 : columnPosition + 1;
