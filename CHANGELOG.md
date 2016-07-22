@@ -1,5 +1,9 @@
 # Change Log
 
+## [v0.0.7](https://github.com/RoXuS/paper-datatable-api/tree/0.0.7) (2016-07-22)
+- Increase code coverage, fix #1 ([commit](https://github.com/RoXuS/paper-datatable-api/commit/137eb2f))
+- Fix bug on hideable columns ([commit](https://github.com/RoXuS/paper-datatable-api/commit/9010a06))
+
 ## [v0.0.6](https://github.com/RoXuS/paper-datatable-api/tree/0.0.6) (2016-07-19)
 - Fix code following airbnb style guide ([commit](https://github.com/RoXuS/paper-datatable-api/commit/f9fec19))
 - Add possibility to change the position of the sort icon in the header ([commit](https://github.com/RoXuS/paper-datatable-api/commit/ab0e619))
