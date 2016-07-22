@@ -26,7 +26,7 @@
               <div>[[value]]</div>
             </template>
           </paper-datatable-api-column>
-          <paper-datatable-api-column header="Color + fruit" property="color" other-properties='["fruit"]'>
+          <paper-datatable-api-column header="Color + fruit" property="color" hideable other-properties='["fruit"]'>
             <template>
               <div>[[otherValues.fruit]] is [[value]]</div>
             </template>
@@ -104,7 +104,8 @@
           assert.equal(tr1tds[1].style.display, '');
           assert.equal(tr1tds[2].style.display, '');
           paperDatatableApi.toggleColumn(2);
-          assert.equal(tr1tds[2].style.display, '');
+          assert.equal(tr1tds[0].style.display, 'table-cell');
+          assert.equal(tr1tds[1].style.display, '');
         });
 
       });
