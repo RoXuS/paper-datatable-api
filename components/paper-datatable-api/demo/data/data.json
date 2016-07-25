@@ -14,5 +14,37 @@
       "kg": "0.12gr",
       "gr": "120gr"
     }
+  },
+  {
+    "fruit": "Pear",
+    "color": "green",
+    "weight": {
+      "kg": "0.12gr",
+      "gr": "120gr"
+    }
+  },
+  {
+    "fruit": "Watermelon",
+    "color": "orange",
+    "weight": {
+      "kg": "0.12gr",
+      "gr": "120gr"
+    }
+  },
+  {
+    "fruit": "Grapes",
+    "color": "purple",
+    "weight": {
+      "kg": "0.12gr",
+      "gr": "120gr"
+    }
+  },
+  {
+    "fruit": "Cherry",
+    "color": "red",
+    "weight": {
+      "kg": "0.12gr",
+      "gr": "120gr"
+    }
   }
 ]
