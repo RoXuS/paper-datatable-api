@@ -390,7 +390,8 @@ Custom property                                   | Description                 
       },
 
       _computeCurrentMaxSize: function (page, size) {
-        return size * (page + 1);
+        var maxSize = size * (page + 1);
+        return (maxSize > this.totalElements ? this.totalElements : maxSize);
       },
 
       _dataChanged: function (data) {
