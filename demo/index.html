@@ -22,6 +22,7 @@
     <link rel="import" href="simple-demo.html">
     <link rel="import" href="frozen-demo.html">
     <link rel="import" href="firebase-demo.html">
+    <link rel="import" href="advanced-pagination-front-side-demo.html">
 
     <style>
       .container {
@@ -47,6 +48,7 @@
               <paper-tab demo="simple">Simple demo</paper-tab>
               <paper-tab demo="frozen">Frozen header demo</paper-tab>
               <paper-tab demo="firebase">Firebase demo</paper-tab>
+              <paper-tab demo="frontpagination">Front side pagination</paper-tab>
             </paper-tabs>
           </paper-toolbar>
           <div class="main">
@@ -61,6 +63,9 @@
             </template>
             <template is="dom-if" if="[[equals('firebase', selected)]]">
               <firebase-demo></firebase-demo>
+            </template>
+            <template is="dom-if" if="[[equals('frontpagination', selected)]]">
+              <advanced-pagination-front-side-demo></advanced-pagination-front-side-demo>
             </template>
           </div>
         </paper-header-panel>
