@@ -1,5 +1,9 @@
 # Change Log
 
+## [v0.0.8](https://github.com/RoXuS/paper-datatable-api/tree/0.0.8) (2016-07-25)
+- Fix height of footer in frozen mode ([commit](https://github.com/RoXuS/paper-datatable-api/commit/7273b3c))
+- Add example to fake the api ([commit](https://github.com/RoXuS/paper-datatable-api/commit/3b0d621))
+
 ## [v0.0.7](https://github.com/RoXuS/paper-datatable-api/tree/0.0.7) (2016-07-22)
 - Increase code coverage, fix #1 ([commit](https://github.com/RoXuS/paper-datatable-api/commit/137eb2f))
 - Fix bug on hideable columns ([commit](https://github.com/RoXuS/paper-datatable-api/commit/9010a06))
