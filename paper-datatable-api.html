@@ -80,7 +80,9 @@ Custom property                                   | Description                 
               <template is="dom-if" if="[[selectable]]" restamp>
                 <th class="selectable">
                   <div class$="[[_generateClass(frozenHeader)]]">
-                    <paper-checkbox on-change="_selectAllCheckbox"></paper-checkbox>
+                    <template is="dom-if" if="[[allowTheSelectionOfAllTheElements]]" restamp>
+                      <paper-checkbox on-change="_selectAllCheckbox"></paper-checkbox>
+                    </template>
                   </div>
                 </th>
               </template>
@@ -261,6 +263,13 @@ Custom property                                   | Description                 
         selectable: {
           type: Boolean,
           value: false,
+        },
+        /**
+         * If false, the paper-checkbox in the header which allow to select all rows is hidden.
+         */
+        allowTheSelectionOfAllTheElements: {
+          type: Boolean,
+          value: true,
         },
         /**
          * Contains the positions of selected columns.
