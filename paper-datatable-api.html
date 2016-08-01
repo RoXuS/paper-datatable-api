@@ -475,6 +475,12 @@ Custom property                                   | Description                 
 
             var valueFromRowData = this._extractData(rowData, paperDatatableApiColumn.property);
 
+            var isHidden = false;
+
+            if (this.toggleColumns[paperDatatableApiColumn.position] && !this.toggleColumns[paperDatatableApiColumn.position].show) {
+              isHidden = true;
+            }
+
             var otherPropertiesValue = {};
             paperDatatableApiColumn.otherProperties.forEach(function (property) {
               otherPropertiesValue[property] = this._extractData(rowData, property);
@@ -485,6 +491,10 @@ Custom property                                   | Description                 
               valueFromRowData,
               otherPropertiesValue
             );
+
+            if (isHidden) {
+              tdLocal.style.display = 'none';
+            }
             Polymer.dom(tdLocal).appendChild(template.root);
             Polymer.dom(pgTr).appendChild(tdLocal);
 
