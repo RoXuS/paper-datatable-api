@@ -9,6 +9,7 @@
 <link rel="import" href="../paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../iron-input/iron-input.html">
 <link rel="import" href="../app-localize-behavior/app-localize-behavior.html">
+<link rel="import"href="../vaadin-date-picker/vaadin-date-picker-light.html">
 
 <!--
 
@@ -103,7 +104,6 @@ Custom property                                   | Description                 
                 </th>
               </template>
             </tr>
-
             <template is="dom-if" if="[[filters]]" restamp>
               <tr class="filters">
                 <template is="dom-if" if="[[selectable]]" restamp>
@@ -117,7 +117,14 @@ Custom property                                   | Description                 
                   <th class="pgTh">
                     <div class$="[[_generateClass(frozenHeader)]]">
                       <template is="dom-if" if="[[column.filter]]" restamp>
-                        <input on-keyup="_handleFilter" is="iron-input" data-column="[[column]]"></input>
+                        <template is="dom-if" if="[[!column.date]]" restamp>
+                          <input on-keyup="_handleFilter" is="iron-input" data-column="[[column]]"></input>
+                        </template>
+                        <template is="dom-if" if="[[column.date]]" restamp>
+                          <vaadin-date-picker-light>
+                            <input is="iron-input">
+                          </vaadin-date-picker-light>
+                        </template>
                       </template>
                       <template is="dom-if" if="[[!column.filter]]" restamp>
                         <input disabled is="iron-input"></input>
@@ -297,6 +304,13 @@ Custom property                                   | Description                 
           type: String,
           value: 'en',
         },
+        /**
+         * If it is setted, the date picker is localized with this object.
+         * See https://vaadin.com/docs/-/part/elements/vaadin-date-picker/vaadin-date-picker-localization.html.
+         */
+        localeDatePicker: {
+          type: Object,
+        },
         resources: {
           value: function () {
             return {
@@ -408,6 +422,7 @@ Custom property                                   | Description                 
         this._fillRows(data);
         this._fillColumns();
         this._resizeHeader();
+        this.localizePicker();
       },
 
       _removeRows: function () {
@@ -662,6 +677,15 @@ Custom property                                   | Description                 
           },
           column: column,
         });
+      },
+
+      localizePicker: function () {
+        if (this.localeDatePicker) {
+          Polymer.dom(this.root).querySelectorAll('vaadin-date-picker-light').forEach(function(datePicker) {
+            datePicker.i18n = this.localeDatePicker;
+          }, this);
+        }
+
       },
     });
   </script>
