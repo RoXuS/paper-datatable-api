@@ -477,7 +477,8 @@ Custom property                                   | Description                 
 
             var isHidden = false;
 
-            if (this.toggleColumns[paperDatatableApiColumn.position] && !this.toggleColumns[paperDatatableApiColumn.position].show) {
+            if (this.toggleColumns[paperDatatableApiColumn.position] &&
+              !this.toggleColumns[paperDatatableApiColumn.position].show) {
               isHidden = true;
             }
 
@@ -495,6 +496,7 @@ Custom property                                   | Description                 
             if (isHidden) {
               tdLocal.style.display = 'none';
             }
+
             Polymer.dom(tdLocal).appendChild(template.root);
             Polymer.dom(pgTr).appendChild(tdLocal);
 
@@ -691,11 +693,11 @@ Custom property                                   | Description                 
 
       localizePicker: function () {
         if (this.localeDatePicker) {
-          Polymer.dom(this.root).querySelectorAll('vaadin-date-picker-light').forEach(function(datePicker) {
-            datePicker.i18n = this.localeDatePicker;
-          }, this);
+          Polymer.dom(this.root).querySelectorAll('vaadin-date-picker-light')
+            .forEach(function (datePicker) {
+              datePicker.i18n = this.localeDatePicker;
+            }, this);
         }
-
       },
     });
   </script>
