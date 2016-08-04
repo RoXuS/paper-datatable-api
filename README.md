@@ -60,3 +60,5 @@ $ polymer test
 
 ## License
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License version 3 of the License as published by the Free Software Foundation.
+
+## Inspired by [by the work of David-Mulder on paper-datatable](https://github.com/David-Mulder/paper-datatable)
