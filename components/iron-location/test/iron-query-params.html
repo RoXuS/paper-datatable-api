@@ -90,6 +90,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           expect(paramsElem.paramsString).to.be.equal(mapping.string);
         });
       });
+      test('query strings with alternative encodings', function() {
+        // Check the mapping for querystrings with + instead of %20.
+        paramsElem.paramsString = 'key=value+with+spaces';
+        expect(paramsElem.paramsObject).to.deep.equal(
+            {key: 'value with spaces'});
+      });
     });
 
   </script>

@@ -1,5 +1,20 @@
 # Change Log
 
+## [v0.0.9](https://github.com/RoXuS/paper-datatable-api/tree/0.0.9) (2016-08-22)
+- Add html tag ([commit](https://github.com/RoXuS/paper-datatable-api/commit/b557db0))
+- Fix code following airbnb style guide ([commit](https://github.com/RoXuS/paper-datatable-api/commit/cd55d63))
+- Fixed misspelling ([commit](https://github.com/RoXuS/paper-datatable-api/commit/95ed955))
+- Add inspired by ([commit](https://github.com/RoXuS/paper-datatable-api/commit/352655a))
+- Add LICENSE ([commit](https://github.com/RoXuS/paper-datatable-api/commit/3b1e137))
+- Fix bug with hidden column on change page ([commit](https://github.com/RoXuS/paper-datatable-api/commit/c1442c4))
+- Add date picker on date filter ([commit](https://github.com/RoXuS/paper-datatable-api/commit/6757ce5))
+- Add allowTheSelectionOfAllTheElements property ([commit](https://github.com/RoXuS/paper-datatable-api/commit/761f2fb))
+- set max size to not exceed total elements ([commit](https://github.com/RoXuS/paper-datatable-api/commit/f277639))
+
+## [v0.0.8](https://github.com/RoXuS/paper-datatable-api/tree/0.0.8) (2016-07-25)
+- Fix height of footer in frozen mode ([commit](https://github.com/RoXuS/paper-datatable-api/commit/7273b3c))
+- Add example to fake the api ([commit](https://github.com/RoXuS/paper-datatable-api/commit/3b0d621))
+
 ## [v0.0.7](https://github.com/RoXuS/paper-datatable-api/tree/0.0.7) (2016-07-22)
 - Increase code coverage, fix #1 ([commit](https://github.com/RoXuS/paper-datatable-api/commit/137eb2f))
 - Fix bug on hideable columns ([commit](https://github.com/RoXuS/paper-datatable-api/commit/9010a06))

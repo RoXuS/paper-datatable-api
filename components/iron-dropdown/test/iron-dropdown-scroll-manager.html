@@ -159,6 +159,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             grandChildOne.dispatchEvent(event);
             expect(event.defaultPrevented).to.be.eql(false);
           });
+
+          test('arrow keyboard events not prevented by manager', function() {
+            // Even if these events might cause scrolling, they should not be
+            // prevented because they might cause a11y issues (e.g. arrow keys
+            // used for navigating the content). iron-dropdown is capable of
+            // restoring the scroll position of the document if necessary.
+            var left = MockInteractions.keyboardEventFor('keydown', 37);
+            var up = MockInteractions.keyboardEventFor('keydown', 38);
+            var right = MockInteractions.keyboardEventFor('keydown', 39);
+            var down = MockInteractions.keyboardEventFor('keydown', 40);
+            grandChildOne.dispatchEvent(left);
+            grandChildOne.dispatchEvent(up);
+            grandChildOne.dispatchEvent(right);
+            grandChildOne.dispatchEvent(down);
+            expect(left.defaultPrevented).to.be.eql(false);
+            expect(up.defaultPrevented).to.be.eql(false);
+            expect(right.defaultPrevented).to.be.eql(false);
+            expect(down.defaultPrevented).to.be.eql(false);
+          });
         });
       });
     });

@@ -57,7 +57,7 @@ https://github.com/firebase/polymerfire/blob/master/LICENSE
      * @override
      */
     get isNew() {
-      return !this.path;
+      return this.disabled || !this.__pathReady(this.path);
     },
 
     /**
@@ -163,7 +163,7 @@ https://github.com/firebase/polymerfire/blob/master/LICENSE
             resolve(this.zeroValue);
           }
           resolve(value);
-        }, this);
+        }, this.__onError, this);
       }.bind(this));
     },
 
@@ -180,7 +180,7 @@ https://github.com/firebase/polymerfire/blob/master/LICENSE
       }
 
       if (ref) {
-        ref.on('value', this.__onFirebaseValue, this);
+        ref.on('value', this.__onFirebaseValue, this.__onError, this);
       }
     },
 

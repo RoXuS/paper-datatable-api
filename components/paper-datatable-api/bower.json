@@ -1,6 +1,6 @@
 {
   "name": "paper-datatable-api",
-  "version": "0.0.7",
+  "version": "0.0.9",
   "description": "A material design implementation of a data table",
   "authors": [
     "Julien Rousseau <RoXuS>"
@@ -30,7 +30,8 @@
     "paper-listbox": "PolymerElements/paper-listbox#^1.1.2",
     "iron-resizable-behavior": "PolymerElements/iron-resizable-behavior#^1.0.3",
     "paper-checkbox": "PolymerElements/paper-checkbox#^1.2.1",
-    "app-localize-behavior": "PolymerElements/app-localize-behavior#^0.9.1"
+    "app-localize-behavior": "PolymerElements/app-localize-behavior#^0.9.1",
+    "vaadin-date-picker": "^1.1.2"
   },
   "devDependencies": {
     "paper-menu-button": "PolymerElements/paper-menu-button#^1.1.1",
