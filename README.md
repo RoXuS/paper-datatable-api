@@ -7,20 +7,22 @@ paper-datatable-api web component
 
 See the [component page](https://roxus.github.io/paper-datatable-api/components/paper-datatable-api/) for more information.
 
-    <iron-ajax auto url="data.json" last-response="{{data}}"></iron-ajax>
+```html
+<iron-ajax auto url="data.json" last-response="{{data}}"></iron-ajax>
 
-    <paper-datatable-api data="[[data]]">
-      <paper-datatable-api-column header="Fruit" property="fruit">
-        <template>
-          <span>{{value}}</span>
-        </template>
-      </paper-datatable-api-column>
-      <paper-datatable-api-column header="Color" property="color">
-        <template>
-          <span>{{value}}</span>
-        </template>
-      </paper-datatable-api-column>
-    </paper-datatable-api>
+<paper-datatable-api data="[[data]]">
+  <paper-datatable-api-column header="Fruit" property="fruit">
+    <template>
+      <span>{{value}}</span>
+    </template>
+  </paper-datatable-api-column>
+  <paper-datatable-api-column header="Color" property="color">
+    <template>
+      <span>{{value}}</span>
+    </template>
+  </paper-datatable-api-column>
+</paper-datatable-api>
+```
 
 ## Features
 
