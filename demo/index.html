@@ -20,7 +20,6 @@
 
     <link rel="import" href="advanced-demo.html">
     <link rel="import" href="simple-demo.html">
-    <link rel="import" href="frozen-demo.html">
     <link rel="import" href="firebase-demo.html">
     <link rel="import" href="advanced-pagination-front-side-demo.html">
 
@@ -46,7 +45,6 @@
             <paper-tabs attr-for-selected="demo" selected="{{selected}}">
               <paper-tab demo="advanced">Advanced demo</paper-tab>
               <paper-tab demo="simple">Simple demo</paper-tab>
-              <paper-tab demo="frozen">Frozen header demo</paper-tab>
               <paper-tab demo="firebase">Firebase demo</paper-tab>
               <paper-tab demo="frontpagination">Front side pagination</paper-tab>
             </paper-tabs>
@@ -57,9 +55,6 @@
             </template>
             <template is="dom-if" if="[[equals('simple', selected)]]">
               <simple-demo></simple-demo>
-            </template>
-            <template is="dom-if" if="[[equals('frozen', selected)]]">
-              <frozen-demo></frozen-demo>
             </template>
             <template is="dom-if" if="[[equals('firebase', selected)]]">
               <firebase-demo></firebase-demo>
