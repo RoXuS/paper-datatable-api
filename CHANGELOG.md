@@ -1,5 +1,9 @@
 # Change Log
 
+## [v0.0.11](https://github.com/RoXuS/paper-datatable-api/tree/0.0.11) (2016-09-08)
+- Rework filter feature ([commit](https://github.com/RoXuS/paper-datatable-api/commit/257bf56))
+- Delete freeze header feature ([commit](https://github.com/RoXuS/paper-datatable-api/commit/032cb66))
+
 ## [v0.0.10](https://github.com/RoXuS/paper-datatable-api/tree/0.0.10) (2016-08-26)
 - Fix header bug on chrome ([commit](https://github.com/RoXuS/paper-datatable-api/commit/ae5b9dd))
 
