@@ -21,12 +21,12 @@
               <span>[[value]]</span>
             </template>
           </paper-datatable-api-column>
-          <paper-datatable-api-column header="Color" property="color">
+          <paper-datatable-api-column date filter header="Color" property="color">
             <template>
               <div>[[value]]</div>
             </template>
           </paper-datatable-api-column>
-          <paper-datatable-api-column filter date header="Color + fruit" property="color" hideable other-properties='["fruit"]'>
+          <paper-datatable-api-column header="Color + fruit" property="color" hideable other-properties='["fruit"]'>
             <template>
               <div>[[otherValues.fruit]] is [[value]]</div>
             </template>
@@ -53,24 +53,38 @@
           var paperDatatableApi = fixture('date');
           paperDatatableApi.data = data;
 
+          var toFullDate = function (date) {
+            return (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
+          };
+
+          paperDatatableApi.localeDatePicker = {
+            today: 'today',
+            cancel: 'cancel',
+            formatDate: function(d) {
+              var date = new Date(d);
+              return toFullDate(date);
+            },
+          };
 
           flush(function() {
-            let vaadinInput = paperDatatableApi.querySelector('tr.filters th:nth-child(4) input');
-            assert.isFalse(paperDatatableApi.querySelector('tr.filters th:nth-child(4) vaadin-date-picker-light').opened);
-            vaadinInput.click();
-            assert.isTrue(paperDatatableApi.querySelector('tr.filters th:nth-child(4) vaadin-date-picker-light').opened);
-            let today = paperDatatableApi.querySelector('thead vaadin-date-picker-overlay #scrollers div[today]');
-            today.click();
+            let filterButton = paperDatatableApi.querySelector('thead th div paper-icon-button[icon="sort"]');
+            filterButton.click();
+            paperDatatableApi.async(function() {
+              assert.isFalse(paperDatatableApi.querySelector('thead tr th:nth-child(3) div vaadin-date-picker-light').opened);
+              let vaadinInput = paperDatatableApi.querySelector('thead th:nth-child(3) vaadin-date-picker-light paper-input');
+              vaadinInput.click();
+              assert.isTrue(paperDatatableApi.querySelector('thead th:nth-child(3) vaadin-date-picker-light').opened);
 
-            let currentDate = new Date()
-            let day = currentDate.getDate()
-            let month = currentDate.getMonth() + 1
-            let year = currentDate.getFullYear()
-            let todayDate = month + '/' + day + '/' + year;
+              let today = paperDatatableApi.querySelector('thead vaadin-date-picker-overlay #scrollers div[today]');
+              today.click();
 
-            assert.equal(vaadinInput.value, todayDate);
+              let currentDate = new Date()
+              let todayDate = toFullDate(currentDate);
 
-            done();
+              assert.equal(vaadinInput.value, todayDate);
+
+              done();
+            }, 200);
           });
         });
 

@@ -108,7 +108,7 @@
                 assert.equal(event.detail.sort.direction, 'asc');
                 flush(function() {
                   i++;
-                  paperDatatableApi.querySelector('th[sortable]').click();
+                  paperDatatableApi.querySelector('th[sortable] div paper-icon-button[icon="arrow-downward"]').click();
                 });
               } else {
                 assert.equal(event.detail.sort.property, 'fruit');
@@ -116,7 +116,7 @@
                 done();
               }
             });
-            paperDatatableApi.querySelector('th[sortable]').click();
+            paperDatatableApi.querySelector('th[sortable] div paper-icon-button[icon="arrow-downward"]').click();
           });
         });
 

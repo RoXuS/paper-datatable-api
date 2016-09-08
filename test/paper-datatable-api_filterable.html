@@ -49,10 +49,13 @@
           paperDatatableApi.data = data;
 
           flush(function() {
-            var inputs = paperDatatableApi.querySelectorAll('thead tr th input');
-            assert.equal(inputs.length, 2);
-            assert.equal(inputs[0].getAttribute('disabled'), null);
-            assert.equal(typeof inputs[1].getAttribute('disabled'), 'string');
+            let filterButton = paperDatatableApi.querySelector('thead th div paper-icon-button[icon="sort"]');
+            filterButton.click();
+
+            flush(function() {
+              var input = paperDatatableApi.querySelector('thead tr th paper-input');
+              assert.isTrue(input.focused);
+            });
             done();
           });
         });

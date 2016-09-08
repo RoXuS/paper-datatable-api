@@ -35,7 +35,6 @@
 - [Follows the guideline of Material Design](https://material.google.com/components/data-tables.html#)
 - Hide/Show columns
 - Choose which columns can be hidden or show
-- Freeze header
 - Sort
 - Pagination
 - Checkboxes to select or manipulate data
@@ -83,52 +82,68 @@ Custom property                                   | Description                 
               </th>
             </template>
             <template is="dom-repeat" items="[[_columns]]" as="column">
-              <th class="pgTh" on-tap="_handleSort" data-column="[[column]]" sort-direction$="[[column.sortDirection]]" sorted$="[[column.sorted]]" sortable$="[[column.sortable]]">
-                <div>
-                  <div class="layout horizontal center">
-                    <template is="dom-if" if="[[equals(positionSortIcon, 'right')]]">
-                      <div class="flex">[[column.header]]</div>
-                      <iron-icon icon="arrow-downward" class="sort"></iron-icon>
+              <th class$="[[_generateClass(filters)]] pgTh" data-column="[[column]]" sort-direction$="[[column.sortDirection]]" sorted$="[[column.sorted]]" sortable$="[[column.sortable]]">
+
+                <div class="layout horizontal center">
+
+                  <template is="dom-if" if="[[equals(positionSortIcon, 'right')]]">
+                    <template is="dom-if" if="[[column.activeFilter]]" on-dom-change="_handleActiveFilterChange">
+                      <template is="dom-if" if="[[!column.date]]" restamp>
+                        <paper-input class="flex" no-label-float placeholder="[[column.header]]" data-column="[[column]]" on-keydown="_handleKeyDownInput" on-blur="_handlePaperInputChange"></paper-input>
+                      </template>
+                      <template is="dom-if" if="[[column.date]]" restamp>
+                        <vaadin-date-picker-light attr-for-value="value">
+                          <paper-input class="flex" no-label-float placeholder="[[column.header]]" data-column="[[column]]" on-blur="_handleVaadinDatePickerLight"></paper-input>
+                        </vaadin-date-picker-light>
+                      </template>
                     </template>
-                    <template is="dom-if" if="[[equals(positionSortIcon, 'left')]]">
-                      <iron-icon icon="arrow-downward" class="sort"></iron-icon>
-                      <div class="flex">[[column.header]]</div>
+                    <template is="dom-if" if="[[!column.activeFilter]]">
+                      <div class="flex">
+                        [[column.header]]
+                      </div>
                     </template>
-                  </div>
+                    <paper-icon-button icon="arrow-downward" class="sort" on-tap="_handleSort" data-column="[[column]]"></paper-icon-button>
+                    <template is="dom-if" if="[[column.filter]]">
+                      <template is="dom-if" if="[[column.activeFilter]]">
+                        <paper-icon-button icon="sort" class="filter active" data-column="[[column]]" on-tap="_handleFilter"></paper-icon-button>
+                      </template>
+                      <template is="dom-if" if="[[!column.activeFilter]]">
+                        <paper-icon-button icon="sort" class="filter" data-column="[[column]]" on-tap="_handleFilter"></paper-icon-button>
+                      </template>
+                    </template>
+                  </template>
+
+                  <template is="dom-if" if="[[equals(positionSortIcon, 'left')]]">
+                    <paper-icon-button icon="arrow-downward" class="sort" on-tap="_handleSort" data-column="[[column]]"></paper-icon-button>
+                    <template is="dom-if" if="[[column.filter]]">
+                      <template is="dom-if" if="[[column.activeFilter]]">
+                        <paper-icon-button icon="sort" class="filter active" data-column="[[column]]" on-tap="_handleFilter"></paper-icon-button>
+                      </template>
+                      <template is="dom-if" if="[[!column.activeFilter]]">
+                        <paper-icon-button icon="sort" class="filter" data-column="[[column]]" on-tap="_handleFilter"></paper-icon-button>
+                      </template>
+                    </template>
+                    <template is="dom-if" if="[[column.activeFilter]]" on-dom-change="_handleActiveFilterChange">
+                      <template is="dom-if" if="[[!column.date]]" restamp>
+                        <paper-input class="flex" no-label-float placeholder="[[column.header]]" data-column="[[column]]" on-keydown="_handleKeyDownInput" on-blur="_handlePaperInputChange"></paper-input>
+                      </template>
+                      <template is="dom-if" if="[[column.date]]" restamp>
+                        <vaadin-date-picker-light attr-for-value="value">
+                          <paper-input class="flex" no-label-float placeholder="[[column.header]]" data-column="[[column]]" on-blur="_handleVaadinDatePickerLight"></paper-input>
+                        </vaadin-date-picker-light>
+                      </template>
+                    </template>
+                    <template is="dom-if" if="[[!column.activeFilter]]">
+                      <div class="flex">
+                        [[column.header]]
+                      </div>
+                    </template>
+                  </template>
+
                 </div>
               </th>
             </template>
           </tr>
-          <template is="dom-if" if="[[filters]]" restamp>
-            <tr class="filters">
-              <template is="dom-if" if="[[selectable]]" restamp>
-                <th>
-                  <div>
-                    <input disabled is="iron-input"></input>
-                  </div>
-                </th>
-              </template>
-              <template is="dom-repeat" items="[[_columns]]" as="column">
-                <th class="pgTh">
-                  <div>
-                    <template is="dom-if" if="[[column.filter]]" restamp>
-                      <template is="dom-if" if="[[!column.date]]" restamp>
-                        <input on-keyup="_handleFilter" is="iron-input" data-column="[[column]]"></input>
-                      </template>
-                      <template is="dom-if" if="[[column.date]]" restamp>
-                        <vaadin-date-picker-light>
-                          <input is="iron-input">
-                        </vaadin-date-picker-light>
-                      </template>
-                    </template>
-                    <template is="dom-if" if="[[!column.filter]]" restamp>
-                      <input disabled is="iron-input"></input>
-                    </template>
-                  </div>
-                </th>
-              </template>
-            </tr>
-          </template>
         </thead>
         <tbody class$="[[_generateClass(filters)]]">
         </tbody>
@@ -386,7 +401,6 @@ Custom property                                   | Description                 
         this._removeRows();
         this._fillRows(data);
         this._fillColumns();
-        this.localizePicker();
       },
 
       _removeRows: function () {
@@ -591,7 +605,22 @@ Custom property                                   | Description                 
 
       _handleSort: function (event) {
         var column = event.model.column;
-        var th = event.currentTarget;
+        var paperIconButton = event.currentTarget;
+        var th = paperIconButton.parentNode.parentNode;
+
+        var queryPaperIconButton = 'thead th[sortable][sorted] paper-icon-button.sort';
+        Polymer.dom(this.root).querySelectorAll(queryPaperIconButton)
+          .forEach(function (paperIconButton) {
+            var thSorted = paperIconButton.parentNode.parentNode;
+
+            if (thSorted.dataColumn !== column) {
+              thSorted.removeAttribute('sort-direction');
+              thSorted.removeAttribute('sorted');
+              thSorted.dataColumn.set('sortDirection', sortDirection);
+              thSorted.dataColumn.set('sorted', true);
+            }
+          });
+
         if (column.sortable) {
           var sortDirection = column.sortDirection === 'asc' ? 'desc' : 'asc';
           th.setAttribute('sort-direction', sortDirection);
@@ -615,15 +644,64 @@ Custom property                                   | Description                 
         }
       },
 
-      _handleFilter: function (event) {
+      _handleActiveFilterChange: function(event) {
+        var parentDiv = event.currentTarget.parentNode;
+        this.async(() => {
+          var paperInput = parentDiv.querySelector(':scope > paper-input');
+          if (paperInput) {
+            paperInput.focus();
+          } else {
+            var datePicker = parentDiv.querySelector('vaadin-date-picker-light');
+            if (datePicker) {
+              paperInput = datePicker.querySelector('paper-input');
+              datePicker.i18n = this.localeDatePicker;
+            }
+          }
+        });
+      },
+
+      _handlePaperInputChange: function(event) {
         var column = event.model.column;
         var input = event.currentTarget;
 
+        this.async(() => {
+          if (input.value !== '') {
+            this._launchFilterEvent(input, column);
+          } else if (!input.focused) {
+            this._toggleFilter(column);
+          }
+        });
+      },
+
+      _handleVaadinDatePickerLight: function(event) {
+        var column = event.model.column;
+        var input = event.currentTarget;
+
+        this.async(() => {
+          if (input.value !== '') {
+            this._launchFilterEvent(input, column);
+          }
+        });
+      },
+
+      _toggleFilter: function(column) {
+        var columnIndex = this._columns.findIndex(function(_column) {
+          return _column.property === column.property;
+        });
+
+        if (column.activeFilter) {
+          this.set('_columns.' + columnIndex + '.activeFilter', false);
+        } else {
+          this.set('_columns.' + columnIndex + '.activeFilter', true);
+        }
+      },
+
+      _launchFilterEvent: function(input, column) {
         /**
          * Fired when a filters inputs changed.
          * @event filter
          * Event param: {{node: Object}} detail Contains sort object.
-         * { sort: { property: STRING, value: STRING }, column: OBJECT }
+         * { filter: { property: STRING, value: STRING }, column: OBJECT }
          */
         this.fire('filter', {
           filter: {
@@ -634,12 +712,23 @@ Custom property                                   | Description                 
         });
       },
 
-      localizePicker: function () {
-        if (this.localeDatePicker) {
-          Polymer.dom(this.root).querySelectorAll('vaadin-date-picker-light')
-            .forEach(function (datePicker) {
-              datePicker.i18n = this.localeDatePicker;
-            }, this);
+      _handleFilter: function (event) {
+        var paperIconButton = event.currentTarget;
+        var column = event.model.column;
+
+        if (column.activeFilter) {
+          var input = paperIconButton.parentNode.querySelector('paper-input');
+          input.value = '';
+          this._launchFilterEvent(input, column);
+        }
+        this._toggleFilter(column);
+      },
+
+      _handleKeyDownInput: function (event) {
+        if (event.keyCode === 13) {
+          var column = event.model.column;
+          var input = event.currentTarget;
+          this._launchFilterEvent(input, column);
         }
       },
     });
