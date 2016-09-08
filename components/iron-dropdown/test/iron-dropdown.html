@@ -135,6 +135,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </template>
   </test-fixture>
 
+  <test-fixture id="sizingTarget">
+    <template>
+      <iron-dropdown>
+        <div class="dropdown-content">
+          <div class="subcontent"></div>
+        </div>
+      </iron-dropdown>
+    </template>
+  </test-fixture>
 
   <script>
     function elementIsVisible(element) {
@@ -471,6 +480,34 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             dropdownRect = dropdown.getBoundingClientRect();
             expect(dropdownRect.top).to.be.equal(0);
             expect(dropdownRect.left).to.be.equal(0);
+            done();
+          });
+        });
+      });
+
+      suite('sizing target', function() {
+        setup(function() {
+          dropdown = fixture('sizingTarget');
+          content = Polymer.dom(dropdown).querySelector('.dropdown-content');
+        });
+
+        test('sizingTarget is the content element by default', function(done) {
+          runAfterOpen(dropdown, function() {
+            expect(dropdown.sizingTarget).to.be.equal(content);
+            expect(content.style.maxHeight).to.be.not.empty;
+            expect(content.style.maxWidth).to.be.not.empty;
+            done();
+          });
+        });
+
+        test('sizingTarget can be set to a child element', function(done) {
+          var subcontent = Polymer.dom(dropdown).querySelector('.subcontent');
+          dropdown.sizingTarget = subcontent;
+
+          runAfterOpen(dropdown, function() {
+            expect(dropdown.sizingTarget).to.be.equal(subcontent);
+            expect(subcontent.style.maxHeight).to.be.not.empty;
+            expect(subcontent.style.maxWidth).to.be.not.empty;
             done();
           });
         });
