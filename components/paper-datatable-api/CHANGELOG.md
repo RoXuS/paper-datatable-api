@@ -1,5 +1,15 @@
 # Change Log
 
+## [v0.0.12](https://github.com/RoXuS/paper-datatable-api/tree/0.0.11) (2016-09-12)
+- Add border-top on the footer ([commit](https://github.com/RoXuS/paper-datatable-api/commit/38ee6f8))
+
+## [v0.0.11](https://github.com/RoXuS/paper-datatable-api/tree/0.0.11) (2016-09-08)
+- Rework filter feature ([commit](https://github.com/RoXuS/paper-datatable-api/commit/257bf56))
+- Delete freeze header feature ([commit](https://github.com/RoXuS/paper-datatable-api/commit/032cb66))
+
+## [v0.0.10](https://github.com/RoXuS/paper-datatable-api/tree/0.0.10) (2016-08-26)
+- Fix header bug on chrome ([commit](https://github.com/RoXuS/paper-datatable-api/commit/ae5b9dd))
+
 ## [v0.0.9](https://github.com/RoXuS/paper-datatable-api/tree/0.0.9) (2016-08-22)
 - Add html tag ([commit](https://github.com/RoXuS/paper-datatable-api/commit/b557db0))
 - Fix code following airbnb style guide ([commit](https://github.com/RoXuS/paper-datatable-api/commit/cd55d63))

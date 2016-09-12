@@ -23,58 +23,59 @@
 	font-weight: 500;
 	text-align: left;
 	white-space: nowrap;
+	padding: 6px 26px;
+	height: 44px;
       }
 
-      thead.filters th:not(:first-child) input {
-	width: 100%;
-	padding: 4px;
+      vaadin-date-picker-light input {
+	min-width: 70px;
       }
 
-      thead.filters th input[disabled] {
-	background: var(--paper-grey-100);
+      thead th paper-input {
+	min-width: 150px;
+	--paper-input-container-underline-focus: {
+	  display: block;
+	};
+	--paper-input-container-label: {
+	  position: initial;
+	};
       }
 
-      thead th:not(.selectable):not(.filters) {
-	padding: 0 26px;
-      }
-
-      thead th[sortable] {
-	cursor: pointer;
-      }
-
-      thead th:not([sortable]) iron-icon.sort {
-	display: none;
-      }
-
-      thead th[sortable] iron-icon.sort {
+      thead th[sortable] paper-icon-button.filter {
 	color: rgba(0,0,0, .26);
       }
 
-      thead th[sortable][sorted],
-      thead th[sortable]:hover {
-	color: rgba(0,0,0, .87);
+      thead th[sortable] paper-icon-button.filter.active {
 	@apply(--paper-datatable-api-header-sorted);
       }
 
-      thead th iron-icon.sort {
-	width: 16px;
-	height: 16px;
+      thead th:not([sortable]) paper-icon-button.sort {
+	display: none;
+      }
+
+      thead th[sortable] paper-icon-button.sort {
+	color: rgba(0,0,0, .26);
+      }
+
+      thead th paper-icon-button {
+	--paper-icon-button-hover: {
+	  @apply(--paper-datatable-api-header-sorted);
+	};
+	width: 36px;
+	height: 36px;
 	transition: transform .2s linear;
       }
 
-      thead th[sortable][sorted] iron-icon.sort {
-	color: rgba(0,0,0, .87);
+      thead th[sortable][sorted] paper-icon-button.sort {
+	@apply(--paper-datatable-api-header-sorted);
       }
 
-      thead th[sortable]:not([sorted]) iron-icon.sort {
-	transform: rotate(180deg);
-      }
-
-      thead th[sortable]:not([sorted]):not([sort-direction='desc']) iron-icon.sort {
+      thead th[sortable]:not([sorted]):not([sort-direction='desc']) paper-icon-button.sort {
 	transform: rotate(0deg);
       }
 
-      thead th[sortable][sorted]:not([sort-direction='desc']) iron-icon.sort {
+      thead th[sortable][sorted]:not([sort-direction='desc']) paper-icon-button.sort,
+      thead th[sortable]:not([sorted]) paper-icon-button.sort {
 	transform: rotate(180deg);
       }
 
@@ -115,14 +116,12 @@
 	padding: 6px 0 6px 26px;
       }
 
-      thead.filters tr.filters th:first-child {
-	padding-right: 0;
-      }
-
       tfoot tr td {
 	font-size: 12px;
 	font-weight: normal;
-	height: 56px;
+	height: 55px;
+	border-top: 1px solid;
+	border-color: rgba(0, 0, 0, var(--dark-divider-opacity));
 	padding: 0 6px 0 0;
 	color: rgba(0, 0, 0, var(--dark-secondary-opacity));
       }
@@ -164,107 +163,6 @@
         --paper-checkbox-unchecked-color: var(--paper-datatable-api-unchecked-checkbox-color, --primary-text-color);
       }
 
-      /* Frozen mode */
-
-      #wrapper.frozen {
-	width: 100%;
-	position: relative;
-	padding-top: 38px;
-	padding-bottom: 56px;
-	height: var(--paper-datatable-api-height, 48px);
-	transition: all 500ms cubic-bezier(0.4, 0, 0.2, 1);
-      }
-
-      #wrapper.frozen:not(.paginate) {
-	padding-bottom: 0;
-      }
-
-      #wrapper.frozen.filters {
-	padding-top: 90px;
-      }
-
-      #wrapper.frozen .inner {
-	overflow-x: hidden;
-	overflow-y: auto;
-	height: 100%;
-      }
-
-      #wrapper.frozen.filters .backgroundFrozen {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 90px;
-      }
-
-      #wrapper.filters.frozen .backgroundFrozen > div {
-	height: 38px;
-	border-bottom: 2px solid rgba(0, 0, 0, var(--dark-divider-opacity));
-      }
-
-      thead tr th div.frozen {
-	position: absolute;
-	top: 10px;
-      }
-
-      thead tr.filters th div.frozen {
-	position: absolute;
-	top: 50px;
-      }
-
-      thead:not(.frozen) th {
-	height: 36px;
-      }
-
-      thead:not(.frozen).filters tr:nth-child(1) th {
-	height: 26px;
-	padding-top: 10px;
-	padding-bottom: 10px;
-	border-bottom: 2px solid rgba(0, 0, 0, var(--dark-divider-opacity));
-      }
-
-      thead:not(.frozen).filters tr:nth-child(2) th {
-	height: 38px;
-      }
-
-      thead.filters th input {
-	height: 20px;
-	padding: 4px 0;
-	width: calc(100% - 10px);
-	border: 1px solid rgba(0, 0, 0, var(--dark-divider-opacity));
-      }
-
-      thead.filters th input {
-	width: 16px;
-      }
-
-      :host ::content thead.frozen th.selectable,
-      thead.frozen th.selectable {
-	padding: 0 0 0 26px;
-      }
-
-      thead:not(.frozen).filters tr.filters th {
-	padding: 8px 26px;
-      }
-
-      tfoot.paginate.frozen tr td {
-	height: auto;
-      }
-
-      tfoot.paginate.frozen tr td > div.frozen {
-	position: absolute;
-	bottom: 0px;
-	width: 100%;
-	height: 56px;
-      }
-
-      tfoot.paginate.frozen tr td > div.frozen > div {
-	height: 56px;
-      }
-
-      vaadin-date-picker-light input {
-	min-width: 70px;
-      }
     </style>
   </template>
 </dom-module>
