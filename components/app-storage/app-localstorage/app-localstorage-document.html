@@ -204,10 +204,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       __onAppLocalStorageChanged: function(event) {
-        if (event.detail === this) {
+        if (event.detail === this ||
+            event.detail.key !== this.key ||
+            event.detail.storage !== this.storage) {
           return;
         }
-
         this.syncToMemory(function() {
           this.set('data', event.detail.data);
         });
