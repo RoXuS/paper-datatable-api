@@ -5,7 +5,8 @@
     "weight": {
       "kg": "0.12gr",
       "gr": "120gr"
-    }
+    },
+    "hiddenColumn": 1
   },
   {
     "fruit": "apple",
@@ -13,7 +14,8 @@
     "weight": {
       "kg": "0.12gr",
       "gr": "120gr"
-    }
+    },
+    "hiddenColumn": 1
   },
   {
     "fruit": "Pear",
@@ -21,7 +23,8 @@
     "weight": {
       "kg": "0.12gr",
       "gr": "120gr"
-    }
+    },
+    "hiddenColumn": 1
   },
   {
     "fruit": "Watermelon",
@@ -29,7 +32,8 @@
     "weight": {
       "kg": "0.12gr",
       "gr": "120gr"
-    }
+    },
+    "hiddenColumn": 1
   },
   {
     "fruit": "Grapes",
@@ -37,7 +41,8 @@
     "weight": {
       "kg": "0.12gr",
       "gr": "120gr"
-    }
+    },
+    "hiddenColumn": 1
   },
   {
     "fruit": "Cherry",
@@ -45,6 +50,7 @@
     "weight": {
       "kg": "0.12gr",
       "gr": "120gr"
-    }
+    },
+    "hiddenColumn": 1
   }
 ]

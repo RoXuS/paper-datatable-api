@@ -1,6 +1,6 @@
 {
   "name": "accessibility-developer-tools",
-  "version": "2.10.0",
+  "version": "2.11.0",
   "homepage": "https://github.com/GoogleChrome/accessibility-developer-tools",
   "authors": [
     "Google"
@@ -28,11 +28,11 @@
     "Gruntfile.js",
     "package.json"
   ],
-  "_release": "2.10.0",
+  "_release": "2.11.0",
   "_resolution": {
     "type": "version",
-    "tag": "v2.10.0",
-    "commit": "1a46baa0c53becec01f1892eeb2d70afbf2b060a"
+    "tag": "v2.11.0",
+    "commit": "69978c7db88ee71e78b3b02ab9614653c961ec9d"
   },
   "_source": "https://github.com/GoogleChrome/accessibility-developer-tools.git",
   "_target": "^2.10.0",

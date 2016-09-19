@@ -4,11 +4,12 @@
 <link rel="import" href="../../paper-menu-button/paper-menu-button.html">
 <link rel="import" href="../../paper-item/paper-icon-item.html">
 <link rel="import" href="../../paper-card/paper-card.html">
+<link rel="import" href="../../paper-input/paper-input.html">
 <link rel="import" href="../../iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="../../iron-icon/iron-icon.html">
 
-<link rel="import" href="../paper-datatable-api.html">
-<link rel="import" href="../paper-datatable-api-column.html">
+<link rel="import" href="../dist/paper-datatable-api.html">
+<link rel="import" href="../dist/paper-datatable-api-column.html">
 <link rel="import" href="api-sample.html">
 
 <dom-module id="advanced-demo">
@@ -28,6 +29,10 @@
       div > paper-card:not(:first-child) {
         margin-top: 16px;
       }
+
+      paper-input iron-icon {
+        color: var(--paper-grey-600);
+      }
     </style>
 
     <div class="layout horizontal center-justified">
@@ -42,7 +47,11 @@
         </api-sample>
 
         <paper-card heading="Sortable, paginable, filterable, with toggle column">
-          <div class="horizontal end-justified layout">
+
+          <div class="horizontal end-justified center layout">
+            <paper-input no-label-float label="Search">
+              <iron-icon icon="search" prefix></iron-icon>
+            </paper-input>
             <paper-menu-button ignore-select horizontal-align="right">
               <paper-icon-button icon="menu" class="dropdown-trigger"></paper-icon-button>
               <paper-menu class="dropdown-content">

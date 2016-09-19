@@ -1,0 +1,168 @@
+<link rel="import" href="../../paper-styles/color.html">
+<link rel="import" href="../../paper-styles/default-theme.html">
+<link rel="import" href="../../paper-styles/typography.html">
+
+<dom-module id="paper-datatable-api-shared-styles">
+  <template>
+    <style>
+      :host {
+	display: block;
+      }
+
+      table {
+	width: 100%;
+	border-spacing: 0px;
+	border-collapse: seperate;
+	@apply(--paper-font-common-base);
+      }
+
+      thead th {
+	font-size: 12px;
+	@apply(--paper-datatable-api-header);
+	color: rgba(0, 0, 0, var(--dark-secondary-opacity));
+	font-weight: 500;
+	text-align: left;
+	white-space: nowrap;
+	padding: 6px 26px;
+	height: 44px;
+      }
+
+      vaadin-date-picker-light input {
+	min-width: 70px;
+      }
+
+      thead th paper-input {
+	min-width: 150px;
+	--paper-input-container-underline-focus: {
+	  display: block;
+	};
+	--paper-input-container-label: {
+	  position: initial;
+	};
+      }
+
+      thead th[sortable] paper-icon-button.filter {
+	color: rgba(0,0,0, .26);
+      }
+
+      thead th[sortable] paper-icon-button.filter.active {
+	@apply(--paper-datatable-api-header-sorted);
+      }
+
+      thead th:not([sortable]) paper-icon-button.sort {
+	display: none;
+      }
+
+      thead th[sortable] paper-icon-button.sort {
+	color: rgba(0,0,0, .26);
+      }
+
+      thead th paper-icon-button {
+	--paper-icon-button-hover: {
+	  @apply(--paper-datatable-api-header-sorted);
+	};
+	width: 36px;
+	height: 36px;
+	transition: transform .2s linear;
+      }
+
+      thead th[sortable][sorted] paper-icon-button.sort {
+	@apply(--paper-datatable-api-header-sorted);
+      }
+
+      thead th[sortable]:not([sorted]):not([sort-direction='desc']) paper-icon-button.sort {
+	transform: rotate(0deg);
+      }
+
+      thead th[sortable][sorted]:not([sort-direction='desc']) paper-icon-button.sort,
+      thead th[sortable]:not([sorted]) paper-icon-button.sort {
+	transform: rotate(180deg);
+      }
+
+      :host ::content tbody tr,
+      tbody tr {
+	height: 48px;
+      }
+
+      :host ::content tbody tr:hover,
+      tbody tr:hover {
+	background: var(--paper-datatable-api-tr-hover-background-color, none);
+      }
+
+      :host ::content tbody tr.selected,
+      tbody tr.selected {
+	background-color: var(--paper-datatable-api-tr-selected-background, --paper-grey-100);
+      }
+
+      :host ::content tbody td,
+      tbody td {
+	font-size: 13px;
+	font-weight: normal;
+	color: rgba(0, 0, 0, var(--dark-primary-opacity));
+	padding: 6px 26px;
+	border-top: 1px solid;
+	border-color: rgba(0, 0, 0, var(--dark-divider-opacity));
+      }
+
+      :host ::content thead th.selectable,
+      thead th.selectable {
+	width: 26px;
+      }
+
+      :host ::content thead th.selectable,
+      :host ::content tbody td.selectable,
+      thead th.selectable,
+      tbody td.selectable {
+	padding: 6px 0 6px 26px;
+      }
+
+      tfoot tr td {
+	font-size: 12px;
+	font-weight: normal;
+	height: 55px;
+	border-top: 1px solid;
+	border-color: rgba(0, 0, 0, var(--dark-divider-opacity));
+	padding: 0 6px 0 0;
+	color: rgba(0, 0, 0, var(--dark-secondary-opacity));
+      }
+
+      tfoot tr td paper-icon-button {
+	width: 24px;
+	height: 24px;
+	padding: 0;
+	margin-left: 24px;
+      }
+
+      tfoot tr td .status {
+	margin: 0 8px 0 32px;
+      }
+
+      tfoot tr td div .size {
+	width: 64px;
+	text-align: right;
+
+      }
+
+      .size paper-dropdown-menu {
+	--paper-input-container-underline: {
+	  display: none;
+	};
+	--paper-input-container-input: {
+	  text-align: right;
+	  font-size: 12px;
+	  font-weight: 500;
+	  color: var(--paper-datatable-navigation-bar-text-color, rgba(0,0,0,.54));
+	};
+	--paper-dropdown-menu-icon: {
+	  color: var(--paper-datatable-navigation-bar-text-color, rgba(0,0,0,.54));
+	};
+      }
+
+      paper-checkbox {
+        --paper-checkbox-checked-color: var(--paper-datatable-api-checked-checkbox-color, --primary-color);
+        --paper-checkbox-unchecked-color: var(--paper-datatable-api-unchecked-checkbox-color, --primary-text-color);
+      }
+
+    </style>
+  </template>
+</dom-module>

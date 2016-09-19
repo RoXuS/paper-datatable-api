@@ -4,8 +4,8 @@
 <link rel="import" href="../../iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="../../paper-card/paper-card.html">
 
-<link rel="import" href="../paper-datatable-api.html">
-<link rel="import" href="../paper-datatable-api-column.html">
+<link rel="import" href="../dist/paper-datatable-api.html">
+<link rel="import" href="../dist/paper-datatable-api-column.html">
 
 <dom-module id="simple-demo">
 
@@ -44,6 +44,11 @@
                   <span>[[value]]</span>
                 </template>
               </paper-datatable-api-column>
+              <paper-datatable-api-column header="Hidden by default" property="hiddenColumn" hideable>
+                <template>
+                  <span>[[value]]</span>
+                </template>
+              </paper-datatable-api-column>
             </paper-datatable-api>
           </div>
         </paper-card>
@@ -54,6 +59,22 @@
   <script>
     Polymer({
       is: 'simple-demo',
+      properties: {
+        data: {
+          type: Array,
+          observer: '_dataChanged',
+        },
+        alreadyHidden: {
+          type: Boolean,
+          value: false,
+        },
+      },
+      _dataChanged: function() {
+        if (!this.alreadyHidden) {
+          this.$$('paper-datatable-api').toggleColumn(3);
+          this.alreadyHidden = true;
+        }
+      },
     });
   </script>
 </dom-module>
