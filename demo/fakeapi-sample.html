@@ -49,13 +49,12 @@
       },
       _handleResponse: function(event) {
         this._response = event.detail.response;
-        console.log(this._response);
 
         /*
          * Keep only first element (this.size)
          */
         this.data = this._response.slice(0, this.size);
-        this.totalElements = 6; 
+        this.totalElements = 6;
         this.totalPages = 3;
       },
       _handleSizeChanged: function(size) {

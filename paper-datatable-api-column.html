@@ -53,11 +53,11 @@
           value: false,
         },
         /**
-         * If false, the column is hidden.
+         * If true, the column is hidden.
          */
-        show: {
+        hidden: {
           type: Boolean,
-          value: true,
+          value: false,
         },
         /**
          * Current sort direction (asc or desc).
@@ -85,7 +85,7 @@
           value: false,
         },
         /**
-         * If true, the column can be hide.
+         * If true, the column will be hidden.
          */
         hideable: {
           type: Boolean,
@@ -104,7 +104,7 @@
       behaviors: [
         Polymer.Templatizer
       ],
-      
+
       ready: function() {
         var props = {};
         props.__key__ = true;
@@ -124,7 +124,7 @@
        */
       fillTemplate: function(value, otherValues) {
         var instance = this.stamp({ value: value, otherValues: otherValues });
-        return instance; 
+        return instance;
       },
     });
   </script>

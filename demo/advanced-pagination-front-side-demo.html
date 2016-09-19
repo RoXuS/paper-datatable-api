@@ -48,10 +48,10 @@
               <paper-menu class="dropdown-content">
                 <template is="dom-repeat" items="[[toggleColumns]]" as="column" index-as="index">
                   <paper-icon-item position="[[column.position]]" on-tap="_hideColumn">
-                    <template is="dom-if" if="[[column.show]]">
+                    <template is="dom-if" if="[[column.hidden]]">
                       <iron-icon icon="visibility-off" item-icon></iron-icon>
                     </template>
-                    <template is="dom-if" if="[[!column.show]]">
+                    <template is="dom-if" if="[[!column.hidden]]">
                       <iron-icon disabled icon="visibility" item-icon></iron-icon>
                     </template>
                     [[column.header]]
