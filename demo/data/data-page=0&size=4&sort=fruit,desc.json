@@ -9,19 +9,35 @@
     "data": [
       {
         "fruit": "strawberry",
-        "color": "pink"
+        "color": "pink",
+        "weight": {
+          "kg": "0.12gr",
+          "gr": "120gr"
+        }
       },
       {
         "color": "orange",
-        "fruit": "orange"
+        "fruit": "orange",
+        "weight": {
+          "kg": "0.12gr",
+          "gr": "120gr"
+        }
       },
       {
         "fruit": "apple",
-        "color": "green"
+        "color": "green",
+        "weight": {
+          "kg": "0.12gr",
+          "gr": "120gr"
+        }
       },
       {
         "color": "yellow",
-        "fruit": "banana"
+        "fruit": "banana",
+        "weight": {
+          "kg": "0.12gr",
+          "gr": "120gr"
+        }
       }
     ]
   }
