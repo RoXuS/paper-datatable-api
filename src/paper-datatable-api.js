@@ -147,7 +147,7 @@ class DtPaperDatatableApi {
     };
   }
 
-  static get behaviors() {
+  get behaviors() {
     return [
       Polymer.AppLocalizeBehavior,
     ];
@@ -159,11 +159,11 @@ class DtPaperDatatableApi {
     this.language = userLang;
   }
 
-  static equals(targetedValue, value) {
+  equals(targetedValue, value) {
     return value === targetedValue;
   }
 
-  static _generateClass(filters, paginate) {
+  _generateClass(filters, paginate) {
     if (filters && paginate) {
       return 'paginate filters';
     } else if (filters) {
@@ -185,15 +185,15 @@ class DtPaperDatatableApi {
     }
   }
 
-  static _nextButtonEnabled(page, totalPages) {
+  _nextButtonEnabled(page, totalPages) {
     return (page + 1) < totalPages;
   }
 
-  static _prevButtonEnabled(page) {
+  _prevButtonEnabled(page) {
     return page > 0;
   }
 
-  static _computeCurrentSize(page, size) {
+  _computeCurrentSize(page, size) {
     return (page * size) + 1;
   }
 
@@ -336,7 +336,7 @@ class DtPaperDatatableApi {
     this.fire('selection-changed', eventData);
   }
 
-  static _extractData(rowData, columnProperty) {
+  _extractData(rowData, columnProperty) {
     if (columnProperty) {
       const splittedProperties = columnProperty.split('.');
       if (splittedProperties.length > 1) {
@@ -471,7 +471,7 @@ class DtPaperDatatableApi {
     });
   }
 
-  static _handleTapClear(event) {
+  _handleTapClear(event) {
     const input = event.currentTarget.parentNode.parentNode.parentNode;
     input.value = '';
   }

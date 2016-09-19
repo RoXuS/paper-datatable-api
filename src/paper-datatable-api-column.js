@@ -77,7 +77,7 @@ class DtPaperDatatableApiColumn {
     };
   }
 
-  static get behaviors() {
+  get behaviors() {
     return [
       Polymer.Templatizer,
     ];
