@@ -147,7 +147,7 @@ class DtPaperDatatableApi {
     };
   }
 
-  get behaviors() {
+  static get behaviors() {
     return [
       Polymer.AppLocalizeBehavior,
     ];
@@ -159,11 +159,11 @@ class DtPaperDatatableApi {
     this.language = userLang;
   }
 
-  equals(targetedValue, value) {
+  static equals(targetedValue, value) {
     return value === targetedValue;
   }
 
-  _generateClass(filters, paginate) {
+  static _generateClass(filters, paginate) {
     if (filters && paginate) {
       return 'paginate filters';
     } else if (filters) {
@@ -185,15 +185,15 @@ class DtPaperDatatableApi {
     }
   }
 
-  _nextButtonEnabled(page, totalPages) {
+  static _nextButtonEnabled(page, totalPages) {
     return (page + 1) < totalPages;
   }
 
-  _prevButtonEnabled(page) {
+  static _prevButtonEnabled(page) {
     return page > 0;
   }
 
-  _computeCurrentSize(page, size) {
+  static _computeCurrentSize(page, size) {
     return (page * size) + 1;
   }
 
@@ -210,13 +210,11 @@ class DtPaperDatatableApi {
 
   _removeRows() {
     const pgTrs = Polymer.dom(this.root).querySelectorAll('.paper-datatable-api-tr');
-    pgTrs.forEach(pgTr => {
-      Polymer.dom(this.$$('tbody')).removeChild(pgTr);
-    });
+    pgTrs.forEach(pgTr => Polymer.dom(this.$$('tbody')).removeChild(pgTr));
   }
 
   _fillRows(data) {
-    data.forEach(rowData => {
+    data.forEach((rowData) => {
       const trLocal = document.createElement('tr');
       trLocal.rowData = rowData;
       trLocal.className = 'paper-datatable-api-tr';
@@ -250,7 +248,7 @@ class DtPaperDatatableApi {
         Polymer.dom.flush();
       }
 
-      this._columns.forEach(paperDatatableApiColumn => {
+      this._columns.forEach((paperDatatableApiColumn) => {
         const valueFromRowData = this._extractData(rowData, paperDatatableApiColumn.property);
 
         let isHidden = false;
@@ -261,7 +259,7 @@ class DtPaperDatatableApi {
         }
 
         const otherPropertiesValue = {};
-        paperDatatableApiColumn.otherProperties.forEach(property => {
+        paperDatatableApiColumn.otherProperties.forEach((property) => {
           otherPropertiesValue[property] = this._extractData(rowData, property);
         });
 
@@ -285,7 +283,7 @@ class DtPaperDatatableApi {
     const localTarget = Polymer.dom(event).localTarget;
     const allPaperCheckbox = Polymer.dom(this.root)
       .querySelectorAll('tbody tr td paper-checkbox');
-    allPaperCheckbox.forEach(paperCheckboxParams => {
+    allPaperCheckbox.forEach((paperCheckboxParams) => {
       const paperCheckbox = paperCheckboxParams;
       if (localTarget.checked) {
         paperCheckbox.checked = true;
@@ -338,7 +336,7 @@ class DtPaperDatatableApi {
     this.fire('selection-changed', eventData);
   }
 
-  _extractData(rowData, columnProperty) {
+  static _extractData(rowData, columnProperty) {
     if (columnProperty) {
       const splittedProperties = columnProperty.split('.');
       if (splittedProperties.length > 1) {
@@ -380,7 +378,7 @@ class DtPaperDatatableApi {
       const isShow = column.show;
       const indexColumn = this.selectable ? columnPosition + 2 : columnPosition + 1;
       const cssQuery = `tr th:nth-of-type(${indexColumn}), tr td:nth-of-type(${indexColumn})`;
-      Polymer.dom(this.root).querySelectorAll(cssQuery).forEach(tdThParams => {
+      Polymer.dom(this.root).querySelectorAll(cssQuery).forEach((tdThParams) => {
         const tdTh = tdThParams;
         const displayMode = isShow ? 'none' : 'table-cell';
         tdTh.style.display = displayMode;
@@ -410,7 +408,7 @@ class DtPaperDatatableApi {
 
     const queryPaperIconButton = 'thead th[sortable][sorted] paper-icon-button.sort';
     Polymer.dom(this.root).querySelectorAll(queryPaperIconButton)
-      .forEach(otherPaperIconButton => {
+      .forEach((otherPaperIconButton) => {
         const thSorted = otherPaperIconButton.parentNode.parentNode;
 
         if (thSorted.dataColumn !== column) {
@@ -473,7 +471,7 @@ class DtPaperDatatableApi {
     });
   }
 
-  _handleTapClear(event) {
+  static _handleTapClear(event) {
     const input = event.currentTarget.parentNode.parentNode.parentNode;
     input.value = '';
   }
