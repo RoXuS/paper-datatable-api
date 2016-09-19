@@ -19,6 +19,8 @@ before_script:
   - "sh -e /etc/init.d/xvfb start"
   - npm install -g web-component-tester@4.2.2
   - npm install -g bower
+  - npm install -g eslint-config-airbnb eslint eslint-plugin-jsx-a11y eslint-plugin-import eslint-plugin-react
   - bower install
 script:
+  - eslint src/
   - wct --skip-plugin sauce --plugin local -l chrome

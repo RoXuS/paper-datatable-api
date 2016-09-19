@@ -8,6 +8,9 @@ paper-datatable-api web component
 See the [component page](https://roxus.github.io/paper-datatable-api/components/paper-datatable-api/) for more information.
 
 ```html
+<link rel="import" href="bower_components/paper-datatable-api/dist/paper-datatable-api-column.html">
+<link rel="import" href="bower_components/paper-datatable-api/dist/paper-datatable-api.html">
+
 <iron-ajax auto url="data.json" last-response="{{data}}"></iron-ajax>
 
 <paper-datatable-api data="[[data]]">
@@ -57,6 +60,13 @@ $ polymer serve --open
 
 ```
 $ polymer test
+```
+
+## Build dist
+
+```
+$ npm install
+$ gulp build
 ```
 
 ## License

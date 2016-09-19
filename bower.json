@@ -14,8 +14,8 @@
     "table"
   ],
   "main": [
-    "paper-datatable-api.html",
-    "paper-datatable-api-column.html"
+    "dist/paper-datatable-api.html",
+    "dist/paper-datatable-api-column.html"
   ],
   "ignore": [
     "/.*",

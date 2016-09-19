@@ -1,0 +1,21 @@
+{
+  "extends": "airbnb",
+  "rules": {
+    "no-underscore-dangle": "off",
+    "new-cap": "off",
+    "import/no-extraneous-dependencies": "off"
+  },
+  "env": {
+    "mocha": true,
+    "browser": true
+  },
+  "globals": { 
+    "Polymer": true,
+    "sinon": true,
+    "flush": true,
+    "expect": true,
+    "fixture": true,
+    "moment": true,
+    "assert": true
+  }
+}
