@@ -89,7 +89,9 @@ Custom property                                   | Description                 
                   <template is="dom-if" if="[[equals(positionSortIcon, 'right')]]">
                     <template is="dom-if" if="[[column.activeFilter]]" on-dom-change="_handleActiveFilterChange">
                       <template is="dom-if" if="[[!column.date]]" restamp>
-                        <paper-input class="flex" no-label-float placeholder="[[column.header]]" data-column="[[column]]" on-keydown="_handleKeyDownInput" on-blur="_handlePaperInputChange"></paper-input>
+                        <paper-input class="flex" no-label-float placeholder="[[column.header]]" data-column="[[column]]" on-keydown="_handleKeyDownInput">
+                          <paper-icon-button on-tap="_handleTapClear" suffix icon="clear"></paper-icon-button>
+                        </paper-input>
                       </template>
                       <template is="dom-if" if="[[column.date]]" restamp>
                         <vaadin-date-picker-light attr-for-value="value">
@@ -105,10 +107,10 @@ Custom property                                   | Description                 
                     <paper-icon-button icon="arrow-downward" class="sort" on-tap="_handleSort" data-column="[[column]]"></paper-icon-button>
                     <template is="dom-if" if="[[column.filter]]">
                       <template is="dom-if" if="[[column.activeFilter]]">
-                        <paper-icon-button icon="sort" class="filter active" data-column="[[column]]" on-tap="_handleFilter"></paper-icon-button>
+                        <paper-icon-button icon="search" class="filter active" data-column="[[column]]" on-tap="_handleFilter"></paper-icon-button>
                       </template>
                       <template is="dom-if" if="[[!column.activeFilter]]">
-                        <paper-icon-button icon="sort" class="filter" data-column="[[column]]" on-tap="_handleFilter"></paper-icon-button>
+                        <paper-icon-button icon="search" class="filter" data-column="[[column]]" on-tap="_handleFilter"></paper-icon-button>
                       </template>
                     </template>
                   </template>
@@ -117,15 +119,17 @@ Custom property                                   | Description                 
                     <paper-icon-button icon="arrow-downward" class="sort" on-tap="_handleSort" data-column="[[column]]"></paper-icon-button>
                     <template is="dom-if" if="[[column.filter]]">
                       <template is="dom-if" if="[[column.activeFilter]]">
-                        <paper-icon-button icon="sort" class="filter active" data-column="[[column]]" on-tap="_handleFilter"></paper-icon-button>
+                        <paper-icon-button icon="search" class="filter active" data-column="[[column]]" on-tap="_handleFilter"></paper-icon-button>
                       </template>
                       <template is="dom-if" if="[[!column.activeFilter]]">
-                        <paper-icon-button icon="sort" class="filter" data-column="[[column]]" on-tap="_handleFilter"></paper-icon-button>
+                        <paper-icon-button icon="search" class="filter" data-column="[[column]]" on-tap="_handleFilter"></paper-icon-button>
                       </template>
                     </template>
                     <template is="dom-if" if="[[column.activeFilter]]" on-dom-change="_handleActiveFilterChange">
                       <template is="dom-if" if="[[!column.date]]" restamp>
-                        <paper-input class="flex" no-label-float placeholder="[[column.header]]" data-column="[[column]]" on-keydown="_handleKeyDownInput" on-blur="_handlePaperInputChange"></paper-input>
+                        <paper-input class="flex" no-label-float placeholder="[[column.header]]" data-column="[[column]]" on-keydown="_handleKeyDownInput">
+                          <paper-icon-button on-tap="_handleTapClear" suffix icon="clear"></paper-icon-button>
+                        </paper-input>
                       </template>
                       <template is="dom-if" if="[[column.date]]" restamp>
                         <vaadin-date-picker-light attr-for-value="value">
@@ -339,6 +343,7 @@ Custom property                                   | Description                 
           },
         },
       },
+      timeoutFilter: Number,
 
       behaviors: [
         Polymer.AppLocalizeBehavior,
@@ -673,6 +678,11 @@ Custom property                                   | Description                 
         });
       },
 
+      _handleTapClear: function(event) {
+        var input = event.currentTarget.parentNode.parentNode.parentNode;
+        input.value = '';
+      },
+
       _handleVaadinDatePickerLight: function(event) {
         var column = event.model.column;
         var input = event.currentTarget;
@@ -725,10 +735,21 @@ Custom property                                   | Description                 
       },
 
       _handleKeyDownInput: function (event) {
-        if (event.keyCode === 13) {
-          var column = event.model.column;
-          var input = event.currentTarget;
-          this._launchFilterEvent(input, column);
+        var column = event.model.column;
+        var input = event.currentTarget;
+        if (input.previousValue !== input.value) {
+          if (event.keyCode === 13) {
+            this._launchFilterEvent(input, column);
+            input.previousValue = input.value;
+          } else {
+            clearTimeout(this.timeoutFilter);
+            this.timeoutFilter = setTimeout(function() {
+              if (input.previousValue !== input.value) {
+                this._launchFilterEvent(input, column);
+              }
+              input.previousValue = input.value;
+            }.bind(this), 1000);
+          }
         }
       },
     });

@@ -67,7 +67,7 @@
           };
 
           flush(function() {
-            let filterButton = paperDatatableApi.querySelector('thead th div paper-icon-button[icon="sort"]');
+            let filterButton = paperDatatableApi.querySelector('thead th div paper-icon-button[icon="search"]');
             filterButton.click();
             paperDatatableApi.async(function() {
               assert.isFalse(paperDatatableApi.querySelector('thead tr th:nth-child(3) div vaadin-date-picker-light').opened);
