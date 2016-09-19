@@ -1,5 +1,17 @@
 # Change Log
 
+## [v0.1.0](https://github.com/RoXuS/paper-datatable-api/tree/0.0.11) (2016-09-19)
+- Don't use static method ([commit](https://github.com/RoXuS/paper-datatable-api/commit/f4617fb))
+- Ignore class-methods-use-this eslint rule ([commit](https://github.com/RoXuS/paper-datatable-api/commit/9f1bea8))
+- Fix path of src files ([commit](https://github.com/RoXuS/paper-datatable-api/commit/e5c9ab3))
+- Fix indent ([commit](https://github.com/RoXuS/paper-datatable-api/commit/26ae194))
+- Fix es2015 style ([commit](https://github.com/RoXuS/paper-datatable-api/commit/376f5ea))
+- Use ES2015 ([commit](https://github.com/RoXuS/paper-datatable-api/commit/445923c))
+- Some fixes on the filters ([commit](https://github.com/RoXuS/paper-datatable-api/commit/fcf2775))
+- Fix version of wct ([commit](https://github.com/RoXuS/paper-datatable-api/commit/0f52c3a))
+- Add search input example ([commit](https://github.com/RoXuS/paper-datatable-api/commit/fa3607e))
+- Add an example to hide a column by default ([commit](https://github.com/RoXuS/paper-datatable-api/commit/0cae0c6))
+
 ## [v0.0.12](https://github.com/RoXuS/paper-datatable-api/tree/0.0.11) (2016-09-12)
 - Add border-top on the footer ([commit](https://github.com/RoXuS/paper-datatable-api/commit/38ee6f8))
 
