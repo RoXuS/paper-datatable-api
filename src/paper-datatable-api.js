@@ -251,13 +251,6 @@ class DtPaperDatatableApi {
       this._columns.forEach((paperDatatableApiColumn) => {
         const valueFromRowData = this._extractData(rowData, paperDatatableApiColumn.property);
 
-        let isHidden = false;
-
-        if (this.toggleColumns[paperDatatableApiColumn.position] &&
-          !this.toggleColumns[paperDatatableApiColumn.position].show) {
-          isHidden = true;
-        }
-
         const otherPropertiesValue = {};
         paperDatatableApiColumn.otherProperties.forEach((property) => {
           otherPropertiesValue[property] = this._extractData(rowData, property);
@@ -269,7 +262,7 @@ class DtPaperDatatableApi {
           otherPropertiesValue
         );
 
-        if (isHidden) {
+        if (paperDatatableApiColumn.hideable && paperDatatableApiColumn.hidden) {
           tdLocal.style.display = 'none';
         }
 
@@ -375,22 +368,29 @@ class DtPaperDatatableApi {
   toggleColumn(columnPosition) {
     const column = this._columns[columnPosition];
     if (column && column.hideable) {
-      const isShow = column.show;
+      const isHidden = column.hidden;
       const indexColumn = this.selectable ? columnPosition + 2 : columnPosition + 1;
       const cssQuery = `tr th:nth-of-type(${indexColumn}), tr td:nth-of-type(${indexColumn})`;
       Polymer.dom(this.root).querySelectorAll(cssQuery).forEach((tdThParams) => {
         const tdTh = tdThParams;
-        const displayMode = isShow ? 'none' : 'table-cell';
-        tdTh.style.display = displayMode;
+        tdTh.style.display = isHidden ? 'table-cell' : 'none';
       });
 
-      column.show = !isShow;
+      column.hidden = !isHidden;
       const toggleColumnIndex = this.toggleColumns.findIndex(
         toggleColumn => toggleColumn.position === columnPosition
       );
 
-      this.set(`toggleColumns.${toggleColumnIndex}.show`, !isShow);
+      this.set(`toggleColumns.${toggleColumnIndex}.hidden`, !isHidden);
     }
+  }
+
+  _getThDisplayStyle(hidden) {
+    if (hidden) {
+      return 'none';
+    }
+
+    return 'table-cell';
   }
 
   _newSizeIsSelected() {
