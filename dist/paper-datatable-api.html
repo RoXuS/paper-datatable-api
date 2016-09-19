@@ -15,6 +15,8 @@
 
 `paper-datatable-api` is a material design implementation of a data table.
 
+    <link rel="import" href="bower_components/paper-datatable-api/dist/paper-datatable-api-column.html">
+    <link rel="import" href="bower_components/paper-datatable-api/dist/paper-datatable-api.html">
     <iron-ajax auto url="data.json" last-response="{{data}}"></iron-ajax>
 
     <paper-datatable-api data="[[data]]">
@@ -34,7 +36,7 @@
 
 - [Follows the guideline of Material Design](https://material.google.com/components/data-tables.html#)
 - Hide/Show columns
-- Choose which columns can be hidden or show
+- Choose which columns can be hidden or shown
 - Sort
 - Pagination
 - Checkboxes to select or manipulate data
@@ -82,7 +84,13 @@ Custom property                                   | Description                 
               </th>
             </template>
             <template is="dom-repeat" items="[[_columns]]" as="column">
-              <th class$="[[_generateClass(filters)]] pgTh" data-column="[[column]]" sort-direction$="[[column.sortDirection]]" sorted$="[[column.sorted]]" sortable$="[[column.sortable]]">
+              <th
+                class$="[[_generateClass(filters)]] pgTh"
+                data-column="[[column]]"
+                sort-direction$="[[column.sortDirection]]"
+                sorted$="[[column.sorted]]"
+                sortable$="[[column.sortable]]"
+                style="display: [[_getThDisplayStyle(column.hidden)]];">
 
                 <div class="layout horizontal center">
 

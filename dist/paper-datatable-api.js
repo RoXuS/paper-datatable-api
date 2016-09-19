@@ -229,7 +229,7 @@ var DtPaperDatatableApi = function () {
 
       var pgTrs = Polymer.dom(this.root).querySelectorAll('.paper-datatable-api-tr');
       pgTrs.forEach(function (pgTr) {
-        Polymer.dom(_this.$$('tbody')).removeChild(pgTr);
+        return Polymer.dom(_this.$$('tbody')).removeChild(pgTr);
       });
     }
   }, {
@@ -275,12 +275,6 @@ var DtPaperDatatableApi = function () {
         _this3._columns.forEach(function (paperDatatableApiColumn) {
           var valueFromRowData = _this3._extractData(rowData, paperDatatableApiColumn.property);
 
-          var isHidden = false;
-
-          if (_this3.toggleColumns[paperDatatableApiColumn.position] && !_this3.toggleColumns[paperDatatableApiColumn.position].show) {
-            isHidden = true;
-          }
-
           var otherPropertiesValue = {};
           paperDatatableApiColumn.otherProperties.forEach(function (property) {
             otherPropertiesValue[property] = _this3._extractData(rowData, property);
@@ -289,7 +283,7 @@ var DtPaperDatatableApi = function () {
           var tdLocal = document.createElement('td');
           var template = paperDatatableApiColumn.fillTemplate(valueFromRowData, otherPropertiesValue);
 
-          if (isHidden) {
+          if (paperDatatableApiColumn.hideable && paperDatatableApiColumn.hidden) {
             tdLocal.style.display = 'none';
           }
 
@@ -407,23 +401,31 @@ var DtPaperDatatableApi = function () {
       var column = this._columns[columnPosition];
       if (column && column.hideable) {
         (function () {
-          var isShow = column.show;
+          var isHidden = column.hidden;
           var indexColumn = _this5.selectable ? columnPosition + 2 : columnPosition + 1;
           var cssQuery = 'tr th:nth-of-type(' + indexColumn + '), tr td:nth-of-type(' + indexColumn + ')';
           Polymer.dom(_this5.root).querySelectorAll(cssQuery).forEach(function (tdThParams) {
             var tdTh = tdThParams;
-            var displayMode = isShow ? 'none' : 'table-cell';
-            tdTh.style.display = displayMode;
+            tdTh.style.display = isHidden ? 'table-cell' : 'none';
           });
 
-          column.show = !isShow;
+          column.hidden = !isHidden;
           var toggleColumnIndex = _this5.toggleColumns.findIndex(function (toggleColumn) {
             return toggleColumn.position === columnPosition;
           });
 
-          _this5.set('toggleColumns.' + toggleColumnIndex + '.show', !isShow);
+          _this5.set('toggleColumns.' + toggleColumnIndex + '.hidden', !isHidden);
         })();
       }
+    }
+  }, {
+    key: '_getThDisplayStyle',
+    value: function _getThDisplayStyle(hidden) {
+      if (hidden) {
+        return 'none';
+      }
+
+      return 'table-cell';
     }
   }, {
     key: '_newSizeIsSelected',

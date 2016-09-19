@@ -9,11 +9,19 @@
     "data": [
       {
         "fruit": "apple",
-        "color": "green"
+        "color": "green",
+        "weight": {
+          "kg": "0.12gr",
+          "gr": "120gr"
+        }
       },
       {
         "color": "yellow",
-        "fruit": "banana"
+        "fruit": "banana",
+        "weight": {
+          "kg": "0.12gr",
+          "gr": "120gr"
+        }
       }
     ]
   }

@@ -39,11 +39,11 @@ var DtPaperDatatableApiColumn = function () {
           value: false
         },
         /**
-         * If false, the column is hidden.
+         * If true, the column is hidden.
          */
-        show: {
+        hidden: {
           type: Boolean,
-          value: true
+          value: false
         },
         /**
          * Current sort direction (asc or desc).
@@ -71,7 +71,7 @@ var DtPaperDatatableApiColumn = function () {
           value: false
         },
         /**
-         * If true, the column can be hide.
+         * If true, the column can be hidden.
          */
         hideable: {
           type: Boolean,

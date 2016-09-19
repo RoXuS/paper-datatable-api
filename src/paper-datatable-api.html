@@ -36,7 +36,7 @@
 
 - [Follows the guideline of Material Design](https://material.google.com/components/data-tables.html#)
 - Hide/Show columns
-- Choose which columns can be hidden or show
+- Choose which columns can be hidden or shown
 - Sort
 - Pagination
 - Checkboxes to select or manipulate data
@@ -84,7 +84,13 @@ Custom property                                   | Description                 
               </th>
             </template>
             <template is="dom-repeat" items="[[_columns]]" as="column">
-              <th class$="[[_generateClass(filters)]] pgTh" data-column="[[column]]" sort-direction$="[[column.sortDirection]]" sorted$="[[column.sorted]]" sortable$="[[column.sortable]]">
+              <th
+                class$="[[_generateClass(filters)]] pgTh"
+                data-column="[[column]]"
+                sort-direction$="[[column.sortDirection]]"
+                sorted$="[[column.sorted]]"
+                sortable$="[[column.sortable]]"
+                style="display: [[_getThDisplayStyle(column.hidden)]];">
 
                 <div class="layout horizontal center">
 
