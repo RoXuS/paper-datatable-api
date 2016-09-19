@@ -3,7 +3,8 @@
   "rules": {
     "no-underscore-dangle": "off",
     "new-cap": "off",
-    "import/no-extraneous-dependencies": "off"
+    "import/no-extraneous-dependencies": "off",
+    "class-methods-use-this": "off"
   },
   "env": {
     "mocha": true,
