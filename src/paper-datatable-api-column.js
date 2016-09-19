@@ -4,71 +4,71 @@ class DtPaperDatatableApiColumn {
     this.is = 'paper-datatable-api-column';
 
     this.properties = {
-        /**
-         * The name of the header for this column.
-         */
+      /**
+       * The name of the header for this column.
+       */
       header: String,
-        /**
-         * Property which will be available in data (throught paper-datatable-api).
-         */
+      /**
+       * Property which will be available in data (throught paper-datatable-api).
+       */
       property: String,
-        /**
-         * If set, these other properties will be available in data (throught paper-datatable-api).
-         * Usefull to keep id of the object.
-         */
+      /**
+       * If set, these other properties will be available in data (throught paper-datatable-api).
+       * Usefull to keep id of the object.
+       */
       otherProperties: {
         type: Array,
         value: [],
       },
-        /**
-         * If true, the colum can be sort.
-         */
+      /**
+       * If true, the colum can be sort.
+       */
       sortable: {
         type: Boolean,
         value: false,
       },
-        /**
-         * If false, the column is hidden.
-         */
+      /**
+       * If false, the column is hidden.
+       */
       show: {
         type: Boolean,
         value: true,
       },
-        /**
-         * Current sort direction (asc or desc).
-         */
+      /**
+       * Current sort direction (asc or desc).
+       */
       sortDirection: String,
-        /**
-         * If true, the column is currently sorted.
-         */
+      /**
+       * If true, the column is currently sorted.
+       */
       sorted: {
         type: Boolean,
         value: false,
       },
-        /**
-         * If true, the column can be filtered.
-         */
+      /**
+       * If true, the column can be filtered.
+       */
       filter: {
         type: Boolean,
         value: false,
       },
-        /**
-         * If true, a date picker is displayed when the column is sorted.
-         */
+      /**
+       * If true, a date picker is displayed when the column is sorted.
+       */
       date: {
         type: Boolean,
         value: false,
       },
-        /**
-         * If true, the column can be hide.
-         */
+      /**
+       * If true, the column can be hide.
+       */
       hideable: {
         type: Boolean,
         value: false,
       },
-        /**
-         * Position of the column in the table.
-         */
+      /**
+       * Position of the column in the table.
+       */
       position: Number,
       activeFilter: {
         type: Boolean,
