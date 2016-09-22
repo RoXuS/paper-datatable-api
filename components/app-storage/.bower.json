@@ -3,7 +3,7 @@
   "authors": [
     "The Polymer Authors"
   ],
-  "version": "0.9.5",
+  "version": "0.9.6",
   "description": "Web Components for managing user data in web apps",
   "main": [
     "app-storage-behavior.html",
@@ -33,11 +33,11 @@
     "platinum-sw": "polymerelements/platinum-sw#^1.3.0"
   },
   "ignore": [],
-  "_release": "0.9.5",
+  "_release": "0.9.6",
   "_resolution": {
     "type": "version",
-    "tag": "v0.9.5",
-    "commit": "498a32135fc661102e30f345498268c2efd303ae"
+    "tag": "v0.9.6",
+    "commit": "f5ea7ba1926c1ded4af236b3c41a3a58dc53f05b"
   },
   "_source": "git://github.com/polymerelements/app-storage.git",
   "_target": "^0.9.0",
