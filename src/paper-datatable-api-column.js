@@ -32,7 +32,7 @@ class DtPaperDatatableApiColumn {
        */
       hidden: {
         type: Boolean,
-        value: false
+        value: false,
       },
       /**
        * Current sort direction (asc or desc).

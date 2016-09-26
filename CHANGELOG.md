@@ -1,5 +1,8 @@
 # Change Log
 
+## [v0.1.1](https://github.com/RoXuS/paper-datatable-api/tree/0.0.11) (2016-09-22)
+- Change to the column visibility attribute ([commit](https://github.com/RoXuS/paper-datatable-api/commit/54ee269))
+
 ## [v0.1.0](https://github.com/RoXuS/paper-datatable-api/tree/0.0.11) (2016-09-19)
 - Don't use static method ([commit](https://github.com/RoXuS/paper-datatable-api/commit/f4617fb))
 - Ignore class-methods-use-this eslint rule ([commit](https://github.com/RoXuS/paper-datatable-api/commit/9f1bea8))
