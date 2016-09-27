@@ -1,9 +1,13 @@
 # Change Log
 
-## [v0.1.1](https://github.com/RoXuS/paper-datatable-api/tree/0.0.11) (2016-09-22)
+## [v0.1.2](https://github.com/RoXuS/paper-datatable-api/tree/0.1.2) (2016-09-27)
+- Add styling options and a demo for the style options. ([commit](https://github.com/RoXuS/paper-datatable-api/commit/67bd764))
+- Removed 2 files that are not longer needed. ([commit](https://github.com/RoXuS/paper-datatable-api/commit/c8f9b0e))
+
+## [v0.1.1](https://github.com/RoXuS/paper-datatable-api/tree/0.1.1) (2016-09-22)
 - Change to the column visibility attribute ([commit](https://github.com/RoXuS/paper-datatable-api/commit/54ee269))
 
-## [v0.1.0](https://github.com/RoXuS/paper-datatable-api/tree/0.0.11) (2016-09-19)
+## [v0.1.0](https://github.com/RoXuS/paper-datatable-api/tree/0.1.0) (2016-09-19)
 - Don't use static method ([commit](https://github.com/RoXuS/paper-datatable-api/commit/f4617fb))
 - Ignore class-methods-use-this eslint rule ([commit](https://github.com/RoXuS/paper-datatable-api/commit/9f1bea8))
 - Fix path of src files ([commit](https://github.com/RoXuS/paper-datatable-api/commit/e5c9ab3))
@@ -15,7 +19,7 @@
 - Add search input example ([commit](https://github.com/RoXuS/paper-datatable-api/commit/fa3607e))
 - Add an example to hide a column by default ([commit](https://github.com/RoXuS/paper-datatable-api/commit/0cae0c6))
 
-## [v0.0.12](https://github.com/RoXuS/paper-datatable-api/tree/0.0.11) (2016-09-12)
+## [v0.0.12](https://github.com/RoXuS/paper-datatable-api/tree/0.0.12) (2016-09-12)
 - Add border-top on the footer ([commit](https://github.com/RoXuS/paper-datatable-api/commit/38ee6f8))
 
 ## [v0.0.11](https://github.com/RoXuS/paper-datatable-api/tree/0.0.11) (2016-09-08)
