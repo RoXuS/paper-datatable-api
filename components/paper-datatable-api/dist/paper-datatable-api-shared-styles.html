@@ -14,17 +14,18 @@
 	border-spacing: 0px;
 	border-collapse: seperate;
 	@apply(--paper-font-common-base);
+	@apply(--paper-datatable-api-table);
       }
 
       thead th {
 	font-size: 12px;
-	@apply(--paper-datatable-api-header);
 	color: rgba(0, 0, 0, var(--dark-secondary-opacity));
 	font-weight: 500;
 	text-align: left;
 	white-space: nowrap;
 	padding: 6px 26px;
 	height: 44px;
+	@apply(--paper-datatable-api-header);
       }
 
       vaadin-date-picker-light input {
@@ -82,6 +83,14 @@
       :host ::content tbody tr,
       tbody tr {
 	height: 48px;
+      }
+
+      tbody tr:nth-child(even) {
+	background-color: var(--paper-datatable-api-tr-even-background-color, none);
+      }
+
+      tbody tr:nth-child(odd) {
+	background-color: var(--paper-datatable-api-tr-odd-background-color, none);
       }
 
       :host ::content tbody tr:hover,
