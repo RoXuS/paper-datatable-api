@@ -1,5 +1,9 @@
 # Change Log
 
+## [v0.1.3](https://github.com/RoXuS/paper-datatable-api/tree/0.1.3) (2016-09-30)
+- Add frozen header feature ([commit](https://github.com/RoXuS/paper-datatable-api/commit/99cc385))
+- Add task to build the project on changes ([commit](https://github.com/RoXuS/paper-datatable-api/commit/41ed730))
+
 ## [v0.1.2](https://github.com/RoXuS/paper-datatable-api/tree/0.1.2) (2016-09-27)
 - Add styling options and a demo for the style options. ([commit](https://github.com/RoXuS/paper-datatable-api/commit/67bd764))
 - Removed 2 files that are not longer needed. ([commit](https://github.com/RoXuS/paper-datatable-api/commit/c8f9b0e))
