@@ -85,6 +85,7 @@
         test('New size is selected', function(done) {
           var paperDatatableApi = fixture('pagination');
           paperDatatableApi.data = data;
+          paperDatatableApi.oldPage = 0;
           paperDatatableApi.page = 1;
           paperDatatableApi.size = 2;
           flush(function() {

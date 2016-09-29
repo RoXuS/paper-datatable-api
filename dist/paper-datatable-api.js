@@ -1,5 +1,7 @@
 'use strict';
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -49,7 +51,8 @@ var DtPaperDatatableApi = function () {
          */
         page: {
           type: Number,
-          notify: true
+          notify: true,
+          observer: '_pageChanged'
         },
         /**
          * The current size.
@@ -128,6 +131,10 @@ var DtPaperDatatableApi = function () {
         localeDatePicker: {
           type: Object
         },
+        frozenHeader: {
+          type: Boolean,
+          value: false
+        },
         resources: {
           value: function value() {
             return {
@@ -156,7 +163,132 @@ var DtPaperDatatableApi = function () {
         },
         timeoutFilter: Number
       };
+
+      this.listeners = {
+        'iron-resize': '_resizeHeader'
+      };
     }
+  }, {
+    key: '_resizeHeader',
+
+
+    /** Frozen Mode **/
+
+    value: function _resizeHeader() {
+      if (this.frozenHeader) {
+        var bodyWidth = this._getTbodyWidths();
+        var headerWidth = this._getTheadWidths();
+
+        if (headerWidth && bodyWidth) {
+          /**
+           * Set all width to auto.
+           */
+          this._resizeAllWidthToAuto(bodyWidth);
+          /**
+           * Resize header width following body width.
+           */
+          this._resizeWidth(bodyWidth, headerWidth, 'header');
+          bodyWidth = this._getTbodyWidths();
+          headerWidth = this._getTheadWidths();
+          /**
+           * Resize body width following header width.
+           */
+          this._resizeWidth(headerWidth, bodyWidth, 'body');
+          bodyWidth = this._getTbodyWidths();
+          headerWidth = this._getTheadWidths();
+          /**
+           * Reajust header width with the new width of body.
+           */
+          this._resizeWidth(bodyWidth, headerWidth, 'header', true);
+        }
+      }
+    }
+  }, {
+    key: '_resizeAllWidthToAuto',
+    value: function _resizeAllWidthToAuto(bodyWidth) {
+      var _this = this;
+
+      bodyWidth.forEach(function (bodyTrWidth, index) {
+        _this._resizeTd('auto', index, 'header');
+        _this._resizeTd('auto', index, 'body');
+      });
+    }
+  }, {
+    key: '_resizeWidth',
+    value: function _resizeWidth(iterateArray, arrayWidth, type) {
+      var _this2 = this;
+
+      var force = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+
+      iterateArray.forEach(function (width, index) {
+        if (width > arrayWidth[index] || force) {
+          _this2._resizeTd(width, index, type);
+        }
+      });
+    }
+  }, {
+    key: '_getTheadWidths',
+    value: function _getTheadWidths() {
+      var frozenHeaderTable = this.$$('#frozenHeaderTable');
+      if (frozenHeaderTable) {
+        var _ret = function () {
+          var allTheadTrTh = frozenHeaderTable.querySelectorAll('thead tr th');
+          return {
+            v: Object.keys(allTheadTrTh).map(function (headerThIndex) {
+              return allTheadTrTh[headerThIndex].offsetWidth;
+            })
+          };
+        }();
+
+        if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
+      }
+      return null;
+    }
+  }, {
+    key: '_getTbodyWidths',
+    value: function _getTbodyWidths() {
+      var table = this.$$('table:not(#frozenHeaderTable)');
+      var tbody = table.querySelector('tbody tr');
+
+      if (tbody) {
+        var _ret2 = function () {
+          var allTbodyTd = tbody.querySelectorAll('td');
+          return {
+            v: Object.keys(allTbodyTd).map(function (bodyTdIndex) {
+              return allTbodyTd[bodyTdIndex].offsetWidth;
+            })
+          };
+        }();
+
+        if ((typeof _ret2 === 'undefined' ? 'undefined' : _typeof(_ret2)) === "object") return _ret2.v;
+      }
+      return null;
+    }
+  }, {
+    key: '_resizeTd',
+    value: function _resizeTd(size, columnIndex, type) {
+      var allTheadTrTh = this.$$('tbody tr').querySelectorAll('td');
+      if (type === 'header') {
+        allTheadTrTh = this.$$('#frozenHeaderTable thead tr').querySelectorAll('th');
+      }
+
+      if (size !== 'auto' && size - 52 !== 0) {
+        var sizeWithoutPad = size - 52;
+        Polymer.dom(allTheadTrTh[columnIndex]).firstElementChild.style.width = sizeWithoutPad + 'px';
+      } else if (size === 'auto') {
+        Polymer.dom(allTheadTrTh[columnIndex]).firstElementChild.style.width = 'auto';
+      }
+    }
+  }, {
+    key: '_handleWrapperScroll',
+    value: function _handleWrapperScroll(event) {
+      if (this.frozenHeader) {
+        this.$$('#headerWrapper').scrollLeft = event.target.scrollLeft;
+      }
+    }
+
+    /** End of frozen mode **/
+
   }, {
     key: 'attached',
     value: function attached() {
@@ -171,14 +303,29 @@ var DtPaperDatatableApi = function () {
     }
   }, {
     key: '_generateClass',
-    value: function _generateClass(filters, paginate) {
+    value: function _generateClass(frozenHeader, filters, paginate) {
+      if (frozenHeader && filters && paginate) {
+        return 'filters frozen paginate';
+      }
+      if (frozenHeader && filters) {
+        return 'filters frozen';
+      }
+      if (frozenHeader && paginate) {
+        return 'paginate frozen';
+      }
       if (filters && paginate) {
         return 'paginate filters';
-      } else if (filters) {
+      }
+      if (filters) {
         return 'filters';
       }
-
-      return 'paginate';
+      if (paginate) {
+        return 'paginate';
+      }
+      if (frozenHeader) {
+        return 'frozen';
+      }
+      return '';
     }
   }, {
     key: '_nextPage',
@@ -221,49 +368,55 @@ var DtPaperDatatableApi = function () {
       this._removeRows();
       this._fillRows(data);
       this._fillColumns();
+      this._resizeHeader();
+    }
+  }, {
+    key: '_pageChanged',
+    value: function _pageChanged(page, oldPage) {
+      this.oldPage = oldPage;
     }
   }, {
     key: '_removeRows',
     value: function _removeRows() {
-      var _this = this;
+      var _this3 = this;
 
       var pgTrs = Polymer.dom(this.root).querySelectorAll('.paper-datatable-api-tr');
       pgTrs.forEach(function (pgTr) {
-        return Polymer.dom(_this.$$('tbody')).removeChild(pgTr);
+        return Polymer.dom(_this3.$$('tbody')).removeChild(pgTr);
       });
     }
   }, {
     key: '_fillRows',
     value: function _fillRows(data) {
-      var _this2 = this;
+      var _this4 = this;
 
       data.forEach(function (rowData) {
         var trLocal = document.createElement('tr');
         trLocal.rowData = rowData;
         trLocal.className = 'paper-datatable-api-tr';
 
-        Polymer.dom(_this2.$$('tbody')).appendChild(trLocal);
+        Polymer.dom(_this4.$$('tbody')).appendChild(trLocal);
       });
     }
   }, {
     key: '_fillColumns',
     value: function _fillColumns() {
-      var _this3 = this;
+      var _this5 = this;
 
       var pgTrs = Polymer.dom(this.root).querySelectorAll('.paper-datatable-api-tr');
 
       pgTrs.forEach(function (pgTr, i) {
         var rowData = pgTr.rowData;
 
-        if (_this3.selectable) {
+        if (_this5.selectable) {
           var tdSelectable = document.createElement('td');
           tdSelectable.className = 'selectable';
           var paperCheckbox = document.createElement('paper-checkbox');
-          _this3.listen(paperCheckbox, 'change', '_selectChange');
+          _this5.listen(paperCheckbox, 'change', '_selectChange');
           paperCheckbox.rowData = rowData;
           paperCheckbox.rowIndex = i;
 
-          if (_this3.selectableDataKey !== undefined && rowData[_this3.selectableDataKey] !== undefined && _this3.selectedRows.indexOf(rowData[_this3.selectableDataKey]) !== -1) {
+          if (_this5.selectableDataKey !== undefined && rowData[_this5.selectableDataKey] !== undefined && _this5.selectedRows.indexOf(rowData[_this5.selectableDataKey]) !== -1) {
             paperCheckbox.checked = true;
           }
 
@@ -272,12 +425,12 @@ var DtPaperDatatableApi = function () {
           Polymer.dom.flush();
         }
 
-        _this3._columns.forEach(function (paperDatatableApiColumn) {
-          var valueFromRowData = _this3._extractData(rowData, paperDatatableApiColumn.property);
+        _this5._columns.forEach(function (paperDatatableApiColumn) {
+          var valueFromRowData = _this5._extractData(rowData, paperDatatableApiColumn.property);
 
           var otherPropertiesValue = {};
           paperDatatableApiColumn.otherProperties.forEach(function (property) {
-            otherPropertiesValue[property] = _this3._extractData(rowData, property);
+            otherPropertiesValue[property] = _this5._extractData(rowData, property);
           });
 
           var tdLocal = document.createElement('td');
@@ -295,7 +448,7 @@ var DtPaperDatatableApi = function () {
   }, {
     key: '_selectAllCheckbox',
     value: function _selectAllCheckbox(event) {
-      var _this4 = this;
+      var _this6 = this;
 
       var localTarget = Polymer.dom(event).localTarget;
       var allPaperCheckbox = Polymer.dom(this.root).querySelectorAll('tbody tr td paper-checkbox');
@@ -307,7 +460,7 @@ var DtPaperDatatableApi = function () {
           paperCheckbox.checked = false;
         }
 
-        _this4._selectChange(paperCheckbox);
+        _this6._selectChange(paperCheckbox);
       });
     }
   }, {
@@ -396,27 +549,28 @@ var DtPaperDatatableApi = function () {
   }, {
     key: 'toggleColumn',
     value: function toggleColumn(columnPosition) {
-      var _this5 = this;
+      var _this7 = this;
 
       var column = this._columns[columnPosition];
       if (column && column.hideable) {
         (function () {
           var isHidden = column.hidden;
-          var indexColumn = _this5.selectable ? columnPosition + 2 : columnPosition + 1;
+          var indexColumn = _this7.selectable ? columnPosition + 2 : columnPosition + 1;
           var cssQuery = 'tr th:nth-of-type(' + indexColumn + '), tr td:nth-of-type(' + indexColumn + ')';
-          Polymer.dom(_this5.root).querySelectorAll(cssQuery).forEach(function (tdThParams) {
+          Polymer.dom(_this7.root).querySelectorAll(cssQuery).forEach(function (tdThParams) {
             var tdTh = tdThParams;
             tdTh.style.display = isHidden ? 'table-cell' : 'none';
           });
 
           column.hidden = !isHidden;
-          var toggleColumnIndex = _this5.toggleColumns.findIndex(function (toggleColumn) {
+          var toggleColumnIndex = _this7.toggleColumns.findIndex(function (toggleColumn) {
             return toggleColumn.position === columnPosition;
           });
 
-          _this5.set('toggleColumns.' + toggleColumnIndex + '.hidden', !isHidden);
+          _this7.set('toggleColumns.' + toggleColumnIndex + '.hidden', !isHidden);
         })();
       }
+      this._resizeHeader();
     }
   }, {
     key: '_getThDisplayStyle',
@@ -432,7 +586,9 @@ var DtPaperDatatableApi = function () {
     value: function _newSizeIsSelected() {
       var newSize = this.$$('paper-listbox').selected;
       if (newSize) {
-        this.page = 0;
+        if (this.oldPage !== null && this.oldPage !== undefined) {
+          this.page = 0;
+        }
         this.size = newSize;
       }
     }
@@ -480,7 +636,7 @@ var DtPaperDatatableApi = function () {
   }, {
     key: '_handleActiveFilterChange',
     value: function _handleActiveFilterChange(event) {
-      var _this6 = this;
+      var _this8 = this;
 
       var parentDiv = event.currentTarget.parentNode;
       this.async(function () {
@@ -491,7 +647,7 @@ var DtPaperDatatableApi = function () {
           var datePicker = parentDiv.querySelector('vaadin-date-picker-light');
           if (datePicker) {
             paperInput = datePicker.querySelector('paper-input');
-            datePicker.i18n = _this6.localeDatePicker;
+            datePicker.i18n = _this8.localeDatePicker;
           }
         }
       });
@@ -499,16 +655,16 @@ var DtPaperDatatableApi = function () {
   }, {
     key: '_handlePaperInputChange',
     value: function _handlePaperInputChange(event) {
-      var _this7 = this;
+      var _this9 = this;
 
       var column = event.model.column;
       var input = event.currentTarget;
 
       this.async(function () {
         if (input.value !== '') {
-          _this7._launchFilterEvent(input, column);
+          _this9._launchFilterEvent(input, column);
         } else if (!input.focused) {
-          _this7._toggleFilter(column);
+          _this9._toggleFilter(column);
         }
       });
     }
@@ -521,14 +677,14 @@ var DtPaperDatatableApi = function () {
   }, {
     key: '_handleVaadinDatePickerLight',
     value: function _handleVaadinDatePickerLight(event) {
-      var _this8 = this;
+      var _this10 = this;
 
       var column = event.model.column;
       var input = event.currentTarget;
 
       this.async(function () {
         if (input.value !== '') {
-          _this8._launchFilterEvent(input, column);
+          _this10._launchFilterEvent(input, column);
         }
       });
     }
@@ -578,7 +734,7 @@ var DtPaperDatatableApi = function () {
   }, {
     key: '_handleKeyDownInput',
     value: function _handleKeyDownInput(event) {
-      var _this9 = this;
+      var _this11 = this;
 
       var column = event.model.column;
       var input = event.currentTarget;
@@ -590,7 +746,7 @@ var DtPaperDatatableApi = function () {
           clearTimeout(this.timeoutFilter);
           this.timeoutFilter = setTimeout(function () {
             if (input.previousValue !== input.value) {
-              _this9._launchFilterEvent(input, column);
+              _this11._launchFilterEvent(input, column);
             }
             input.previousValue = input.value;
           }, 1000);
@@ -600,7 +756,7 @@ var DtPaperDatatableApi = function () {
   }, {
     key: 'behaviors',
     get: function get() {
-      return [Polymer.AppLocalizeBehavior];
+      return [Polymer.AppLocalizeBehavior, Polymer.IronResizableBehavior];
     }
   }]);
 
