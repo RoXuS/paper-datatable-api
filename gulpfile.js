@@ -12,5 +12,9 @@ gulp.task('build', () => {
   .pipe(gulp.dest('./dist'));
 });
 
+gulp.task('watch', function() {
+  gulp.watch('src/*', ['build']);
+});
+
 // Default Task
 gulp.task('default', ['build']);
