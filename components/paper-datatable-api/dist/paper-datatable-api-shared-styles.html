@@ -9,8 +9,11 @@
 	display: block;
       }
 
-      table {
+      table:not(#frozenHeaderTable) {
 	width: 100%;
+      }
+
+      table {
 	border-spacing: 0px;
 	border-collapse: seperate;
 	@apply(--paper-font-common-base);
@@ -116,6 +119,7 @@
       :host ::content thead th.selectable,
       thead th.selectable {
 	width: 26px;
+	min-width: 26px;
       }
 
       :host ::content thead th.selectable,
@@ -172,6 +176,16 @@
         --paper-checkbox-unchecked-color: var(--paper-datatable-api-unchecked-checkbox-color, --primary-text-color);
       }
 
+      /* Frozen mode */
+
+      #wrapper.frozen {
+	overflow: auto;
+	height: var(--paper-datatable-api-height, 48px);
+      }
+
+      #headerWrapper {
+	overflow: hidden;
+      }
     </style>
   </template>
 </dom-module>

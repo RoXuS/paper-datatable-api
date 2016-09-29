@@ -1,6 +1,6 @@
 {
   "name": "firebase",
-  "version": "3.4.0",
+  "version": "3.4.1",
   "homepage": "https://firebase.google.com",
   "authors": [
     "Firebase <firebase-support@google.com>"
@@ -23,11 +23,11 @@
     "test",
     "tests"
   ],
-  "_release": "3.4.0",
+  "_release": "3.4.1",
   "_resolution": {
     "type": "version",
-    "tag": "v3.4.0",
-    "commit": "255097a09f8f2ab9a1e6f903ebf68a6b9eb8c3cf"
+    "tag": "v3.4.1",
+    "commit": "82b24fbe04b115ac21348302ed323fbb19644056"
   },
   "_source": "https://github.com/firebase/firebase-bower.git",
   "_target": "^3.0",

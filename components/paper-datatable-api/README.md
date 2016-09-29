@@ -38,6 +38,7 @@ See the [component page](https://roxus.github.io/paper-datatable-api/components/
 - Keep the selected data throught the pages
 - Filter a column
 - Ability to filter columns
+- Frozen header
 
 ## Roadmap
 
@@ -67,6 +68,13 @@ $ polymer test
 ```
 $ npm install
 $ gulp build
+```
+
+## Development
+
+To build the project on changes in the src folder
+```
+$ gulp watch
 ```
 
 ## License
