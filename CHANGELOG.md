@@ -1,5 +1,8 @@
 # Change Log
 
+## [v0.1.4](https://github.com/RoXuS/paper-datatable-api/tree/0.1.4) (2016-09-30)
+- Fix eslint version ([commit](https://github.com/RoXuS/paper-datatable-api/commit/8c55cbb))
+
 ## [v0.1.3](https://github.com/RoXuS/paper-datatable-api/tree/0.1.3) (2016-09-30)
 - Add frozen header feature ([commit](https://github.com/RoXuS/paper-datatable-api/commit/99cc385))
 - Add task to build the project on changes ([commit](https://github.com/RoXuS/paper-datatable-api/commit/41ed730))
