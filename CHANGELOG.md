@@ -1,5 +1,9 @@
 # Change Log
 
+## [v0.1.5](https://github.com/RoXuS/paper-datatable-api/tree/0.1.5) (2016-10-04)
+- Fix, use  to bind style attribute ([commit](https://github.com/RoXuS/paper-datatable-api/commit/2308290))
+- Update link for the demo ([commit](https://github.com/RoXuS/paper-datatable-api/commit/29cfe4f))
+
 ## [v0.1.4](https://github.com/RoXuS/paper-datatable-api/tree/0.1.4) (2016-09-30)
 - Fix eslint version ([commit](https://github.com/RoXuS/paper-datatable-api/commit/8c55cbb))
 
