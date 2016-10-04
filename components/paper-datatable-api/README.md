@@ -5,7 +5,7 @@ paper-datatable-api web component
 
 `paper-datatable-api` is a material design implementation of a data table.
 
-See the [component page](https://roxus.github.io/paper-datatable-api/components/paper-datatable-api/) for more information.
+See the [component page](https://roxus.github.io/paper-datatable-api/components/paper-datatable-api/#paper-datatable-api) for more information.
 
 ```html
 <link rel="import" href="bower_components/paper-datatable-api/dist/paper-datatable-api-column.html">

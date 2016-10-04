@@ -3,7 +3,7 @@
   "authors": [
     "The Polymer Authors"
   ],
-  "version": "0.9.6",
+  "version": "0.9.7",
   "description": "Web Components for managing user data in web apps",
   "main": [
     "app-storage-behavior.html",
@@ -12,7 +12,7 @@
     "app-indexeddb-mirror/app-indexeddb-mirror.html"
   ],
   "moduleType": [],
-  "license": "MIT",
+  "license": "http://polymer.github.io/LICENSE.txt",
   "homepage": "",
   "private": true,
   "dependencies": {

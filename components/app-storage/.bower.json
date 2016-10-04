@@ -3,7 +3,7 @@
   "authors": [
     "The Polymer Authors"
   ],
-  "version": "0.9.6",
+  "version": "0.9.7",
   "description": "Web Components for managing user data in web apps",
   "main": [
     "app-storage-behavior.html",
@@ -12,7 +12,7 @@
     "app-indexeddb-mirror/app-indexeddb-mirror.html"
   ],
   "moduleType": [],
-  "license": "MIT",
+  "license": "http://polymer.github.io/LICENSE.txt",
   "homepage": "https://github.com/polymerelements/app-storage",
   "private": true,
   "dependencies": {
@@ -33,11 +33,11 @@
     "platinum-sw": "polymerelements/platinum-sw#^1.3.0"
   },
   "ignore": [],
-  "_release": "0.9.6",
+  "_release": "0.9.7",
   "_resolution": {
     "type": "version",
-    "tag": "v0.9.6",
-    "commit": "f5ea7ba1926c1ded4af236b3c41a3a58dc53f05b"
+    "tag": "v0.9.7",
+    "commit": "3a2284d09f6abb40832b8f8c4847ec27456e056b"
   },
   "_source": "git://github.com/polymerelements/app-storage.git",
   "_target": "^0.9.0",

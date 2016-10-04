@@ -57,6 +57,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * the session has been validated.
        */
       validateSession: function(session) {
+        if (session === undefined) {
+          // Ignore session `undefined` conventionally, as it means the session
+          // (such as the user ID) has not been initialized yet.
+          return;
+        }
+
         return this.post({
           type: 'app-mirror-validate-session',
           session: session

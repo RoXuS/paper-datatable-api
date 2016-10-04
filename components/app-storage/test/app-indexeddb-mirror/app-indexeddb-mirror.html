@@ -35,7 +35,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <template>
       <app-indexeddb-mirror
           session="test"
-          key="basic-mirror" log>
+          key="basic-mirror">
+      </app-indexeddb-mirror>
+    </template>
+  </test-fixture>
+
+  <test-fixture id="NoSessionMirror">
+    <template>
+      <app-indexeddb-mirror
+          key="basic-mirror">
       </app-indexeddb-mirror>
     </template>
   </test-fixture>
@@ -109,6 +117,32 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             return mirror.transactionsComplete.then(function() {
               return expectPersistedValue(mirror.key, mirror.data);
+            });
+          });
+        });
+
+        suite('when session is set lazily', function() {
+          var secondMirror;
+
+          setup(function() {
+            mirror.data = {
+              foo: 'bar'
+            };
+            secondMirror = fixture('NoSessionMirror');
+            return Promise.all([
+              mirror.transactionsComplete,
+              secondMirror.transactionsComplete
+            ]);
+          });
+
+          test('the data is preserved', function() {
+            if (!mirror.client.supportsMirroring) {
+              return;
+            }
+
+            secondMirror.session = 'test';
+            return secondMirror.transactionsComplete.then(function() {
+              return expectPersistedValue('basic-mirror', mirror.data);
             });
           });
         });
