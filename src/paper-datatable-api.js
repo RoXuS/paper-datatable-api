@@ -529,40 +529,59 @@ class DtPaperDatatableApi {
     const column = event.model.column;
     const paperIconButton = event.currentTarget;
     const th = paperIconButton.parentNode.parentNode;
+    const sortDirection = column.sortDirection === 'asc' ? 'desc' : 'asc';
 
-    const queryPaperIconButton = 'thead th[sortable][sorted] paper-icon-button.sort';
-    Polymer.dom(this.root).querySelectorAll(queryPaperIconButton)
-      .forEach((otherPaperIconButton) => {
-        const thSorted = otherPaperIconButton.parentNode.parentNode;
+    this.sortColumn(column, sortDirection, th);
 
-        if (thSorted.dataColumn !== column) {
-          thSorted.removeAttribute('sort-direction');
-          thSorted.removeAttribute('sorted');
-          thSorted.dataColumn.set('sortDirection', undefined);
-          thSorted.dataColumn.set('sorted', true);
-        }
-      });
+    /**
+     * Fired when a column is sorted.
+     * @event sort
+     * Event param: {{node: Object}} detail Contains sort object.
+     * { sort: { property: STRING, direction: asc|desc }, column: OBJECT }
+     */
+    this.fire('sort', {
+      sort: {
+        property: column.property,
+        direction: column.sortDirection,
+      },
+      column,
+    });
+  }
 
+  /**
+   * Sort a column if it is sortable.
+   *
+   * @property toggleColumn
+   * @param {Object} column Column element.
+   * @param {sortDirection} The sort direction.
+   * @param {th} column Th element.
+   */
+  sortColumn(column, sortDirection, targetTh) {
     if (column.sortable) {
-      const sortDirection = column.sortDirection === 'asc' ? 'desc' : 'asc';
-      th.setAttribute('sort-direction', sortDirection);
-      th.setAttribute('sorted', true);
-      column.set('sortDirection', sortDirection);
-      column.set('sorted', true);
+      let th = targetTh;
+      const queryPaperIconButton = 'thead th[sortable][sorted] paper-icon-button.sort';
+      Polymer.dom(this.root).querySelectorAll(queryPaperIconButton)
+        .forEach((otherPaperIconButton) => {
+          const thSorted = otherPaperIconButton.parentNode.parentNode;
 
-      /**
-       * Fired when a column is sorted.
-       * @event sort
-       * Event param: {{node: Object}} detail Contains sort object.
-       * { sort: { property: STRING, direction: asc|desc }, column: OBJECT }
-       */
-      this.fire('sort', {
-        sort: {
-          property: column.property,
-          direction: column.sortDirection,
-        },
-        column,
-      });
+          if (thSorted.dataColumn !== column) {
+            thSorted.removeAttribute('sort-direction');
+            thSorted.removeAttribute('sorted');
+            thSorted.dataColumn.set('sortDirection', undefined);
+            thSorted.dataColumn.set('sorted', true);
+          }
+        });
+
+      if (!th) {
+        th = Polymer.dom(this.root).querySelector(`thead th[property="${column.property}"]`);
+      }
+
+      if (th) {
+        th.setAttribute('sort-direction', sortDirection);
+        th.setAttribute('sorted', true);
+        column.set('sortDirection', sortDirection);
+        column.set('sorted', true);
+      }
     }
   }
 
