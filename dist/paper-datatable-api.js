@@ -161,7 +161,14 @@ var DtPaperDatatableApi = function () {
             };
           }
         },
-        timeoutFilter: Number
+        timeoutFilter: Number,
+        /**
+         * Change the position of the footer.
+         */
+        footerPosition: {
+          type: String,
+          value: 'right'
+        }
       };
 
       this.listeners = {
@@ -369,6 +376,7 @@ var DtPaperDatatableApi = function () {
       this._fillRows(data);
       this._fillColumns();
       this._resizeHeader();
+      this._footerPositionChange(this.footerPosition);
     }
   }, {
     key: '_pageChanged',
@@ -772,6 +780,19 @@ var DtPaperDatatableApi = function () {
             }
             input.previousValue = input.value;
           }, 1000);
+        }
+      }
+    }
+  }, {
+    key: '_footerPositionChange',
+    value: function _footerPositionChange(position) {
+      var footerDiv = Polymer.dom(this.root).querySelector('tfoot > tr > td > div > div');
+
+      if (footerDiv) {
+        if (position === 'right') {
+          footerDiv.classList.add('end-justified');
+        } else {
+          footerDiv.classList.remove('end-justified');
         }
       }
     }

@@ -149,6 +149,13 @@ class DtPaperDatatableApi {
         },
       },
       timeoutFilter: Number,
+      /**
+       * Change the position of the footer.
+       */
+      footerPosition: {
+        type: String,
+        value: 'right',
+      },
     };
 
     this.listeners = {
@@ -323,6 +330,7 @@ class DtPaperDatatableApi {
     this._fillRows(data);
     this._fillColumns();
     this._resizeHeader();
+    this._footerPositionChange(this.footerPosition);
   }
 
   _pageChanged(page, oldPage) {
@@ -683,6 +691,18 @@ class DtPaperDatatableApi {
           }
           input.previousValue = input.value;
         }, 1000);
+      }
+    }
+  }
+
+  _footerPositionChange(position) {
+    const footerDiv = Polymer.dom(this.root).querySelector('tfoot > tr > td > div > div');
+
+    if (footerDiv) {
+      if (position === 'right') {
+        footerDiv.classList.add('end-justified');
+      } else {
+        footerDiv.classList.remove('end-justified');
       }
     }
   }
