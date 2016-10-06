@@ -1,5 +1,13 @@
 # Change Log
 
+## [v0.1.7](https://github.com/RoXuS/paper-datatable-api/tree/0.1.7) (2016-10-06)
+- Open the filter when user click on a header ([commit](https://github.com/RoXuS/paper-datatable-api/commit/6f8079e))
+- Add over event on td/tr element ([commit](https://github.com/RoXuS/paper-datatable-api/commit/cde088c))
+- Add way to custom style of a td element ([commit](https://github.com/RoXuS/paper-datatable-api/commit/b62b2e9))
+- Get the padding dynamically ([commit](https://github.com/RoXuS/paper-datatable-api/commit/61e8524))
+- Add property to choose index of the selectable column ([commit](https://github.com/RoXuS/paper-datatable-api/commit/7c565b0))
+- Add way to change footer position ([commit](https://github.com/RoXuS/paper-datatable-api/commit/e1ab612))
+
 ## [v0.1.6](https://github.com/RoXuS/paper-datatable-api/tree/0.1.6) (2016-10-04)
 - Add way to sort a column from outside of the component ([commit](https://github.com/RoXuS/paper-datatable-api/commit/94cdea7))
 
