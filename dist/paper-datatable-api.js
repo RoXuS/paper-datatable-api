@@ -416,8 +416,31 @@ var DtPaperDatatableApi = function () {
         trLocal.rowData = rowData;
         trLocal.className = 'paper-datatable-api-tr';
 
+        _this4.listen(trLocal, 'mouseover', 'onOverTr');
+        _this4.listen(trLocal, 'mouseout', 'onOutTr');
+
         Polymer.dom(_this4.$$('tbody')).appendChild(trLocal);
       });
+    }
+  }, {
+    key: 'onOverTd',
+    value: function onOverTd(e) {
+      this.fire('td-over', e.currentTarget);
+    }
+  }, {
+    key: 'onOutTd',
+    value: function onOutTd(e) {
+      this.fire('td-out', e.currentTarget);
+    }
+  }, {
+    key: 'onOverTr',
+    value: function onOverTr(e) {
+      this.fire('tr-over', e.currentTarget);
+    }
+  }, {
+    key: 'onOutTr',
+    value: function onOutTr(e) {
+      this.fire('tr-out', e.currentTarget);
     }
   }, {
     key: '_fillColumns',
@@ -458,6 +481,9 @@ var DtPaperDatatableApi = function () {
           if (paperDatatableApiColumn.tdCustomStyle) {
             tdLocal.classList.add('customTd');
           }
+
+          _this5.listen(tdLocal, 'mouseover', 'onOverTd');
+          _this5.listen(tdLocal, 'mouseout', 'onOutTd');
 
           var template = paperDatatableApiColumn.fillTemplate(valueFromRowData, otherPropertiesValue);
 
