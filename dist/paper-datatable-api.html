@@ -61,6 +61,7 @@ Custom property                                   | Description                 
 `--paper-datatable-api-tr-hover-background-color` | Define color of the tr background hover        | `none`
 `--paper-datatable-api-header-sorted`             | Mixin applied to the sorted columns header     | `{}`
 `--paper-datatable-api-height`                    | Mixin applied to the wrapper in frozen mode    | `48px`
+`--paper-datatable-api-custom-td`                 | Mixin applied to the custom style td           | `{}`
 
 @element paper-datatable-api
 @demo demo/index.html
@@ -93,7 +94,7 @@ Custom property                                   | Description                 
                   </template>
                 </template>
                 <th
-                  class$="[[_generateClass(filters)]] pgTh"
+                  class$="[[_generateClass(filters)]] pgTh [[_addCustomTdClass(column.tdCustomStyle)]]"
                   data-column="[[column]]"
                   sort-direction$="[[column.sortDirection]]"
                   sorted$="[[column.sorted]]"
@@ -188,7 +189,7 @@ Custom property                                   | Description                 
                   </template>
                 </template>
                 <th
-                  class$="[[_generateClass(filters)]] pgTh"
+                  class$="[[_generateClass(filters)]] pgTh [[_addCustomTdClass(column.tdCustomStyle)]]"
                   data-column="[[column]]"
                   sort-direction$="[[column.sortDirection]]"
                   sorted$="[[column.sorted]]"

@@ -446,6 +446,7 @@ var DtPaperDatatableApi = function () {
             Polymer.dom(pgTr).appendChild(tdSelectable);
             Polymer.dom.flush();
           }
+
           var valueFromRowData = _this5._extractData(rowData, paperDatatableApiColumn.property);
 
           var otherPropertiesValue = {};
@@ -454,6 +455,10 @@ var DtPaperDatatableApi = function () {
           });
 
           var tdLocal = document.createElement('td');
+          if (paperDatatableApiColumn.tdCustomStyle) {
+            tdLocal.classList.add('customTd');
+          }
+
           var template = paperDatatableApiColumn.fillTemplate(valueFromRowData, otherPropertiesValue);
 
           if (paperDatatableApiColumn.hideable && paperDatatableApiColumn.hidden) {
@@ -807,6 +812,14 @@ var DtPaperDatatableApi = function () {
           footerDiv.classList.remove('end-justified');
         }
       }
+    }
+  }, {
+    key: '_addCustomTdClass',
+    value: function _addCustomTdClass(isTdCustomStyle) {
+      if (isTdCustomStyle) {
+        return 'customTd';
+      }
+      return '';
     }
   }, {
     key: 'behaviors',

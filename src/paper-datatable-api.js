@@ -390,6 +390,7 @@ class DtPaperDatatableApi {
           Polymer.dom(pgTr).appendChild(tdSelectable);
           Polymer.dom.flush();
         }
+
         const valueFromRowData = this._extractData(rowData, paperDatatableApiColumn.property);
 
         const otherPropertiesValue = {};
@@ -398,6 +399,10 @@ class DtPaperDatatableApi {
         });
 
         const tdLocal = document.createElement('td');
+        if (paperDatatableApiColumn.tdCustomStyle) {
+          tdLocal.classList.add('customTd');
+        }
+
         const template = paperDatatableApiColumn.fillTemplate(
           valueFromRowData,
           otherPropertiesValue
@@ -717,6 +722,13 @@ class DtPaperDatatableApi {
         footerDiv.classList.remove('end-justified');
       }
     }
+  }
+
+  _addCustomTdClass(isTdCustomStyle) {
+    if (isTdCustomStyle) {
+      return 'customTd';
+    }
+    return '';
   }
 }
 

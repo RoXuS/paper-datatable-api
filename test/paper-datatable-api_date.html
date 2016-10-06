@@ -70,10 +70,10 @@
             let filterButton = paperDatatableApi.querySelector('thead th div paper-icon-button[icon="search"]');
             filterButton.click();
             paperDatatableApi.async(function() {
-              assert.isFalse(paperDatatableApi.querySelector('thead tr th:nth-child(3) div vaadin-date-picker-light').opened);
-              let vaadinInput = paperDatatableApi.querySelector('thead th:nth-child(3) vaadin-date-picker-light paper-input');
+              assert.isFalse(paperDatatableApi.querySelector('thead tr th div vaadin-date-picker-light').opened);
+              let vaadinInput = paperDatatableApi.querySelector('thead th vaadin-date-picker-light paper-input');
               vaadinInput.click();
-              assert.isTrue(paperDatatableApi.querySelector('thead th:nth-child(3) vaadin-date-picker-light').opened);
+              assert.isTrue(paperDatatableApi.querySelector('thead th vaadin-date-picker-light').opened);
 
               let today = paperDatatableApi.querySelector('thead vaadin-date-picker-overlay #scrollers div[today]');
               today.click();

@@ -84,6 +84,13 @@ var DtPaperDatatableApiColumn = function () {
         activeFilter: {
           type: Boolean,
           value: false
+        },
+        /**
+         * If true, the column apply the --paper-datatable-api-custom-td mixin.
+         */
+        tdCustomStyle: {
+          type: Boolean,
+          value: false
         }
       };
     }
