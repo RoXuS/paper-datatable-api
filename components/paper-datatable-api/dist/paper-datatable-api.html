@@ -61,6 +61,7 @@ Custom property                                   | Description                 
 `--paper-datatable-api-tr-hover-background-color` | Define color of the tr background hover        | `none`
 `--paper-datatable-api-header-sorted`             | Mixin applied to the sorted columns header     | `{}`
 `--paper-datatable-api-height`                    | Mixin applied to the wrapper in frozen mode    | `48px`
+`--paper-datatable-api-custom-td`                 | Mixin applied to the custom style td           | `{}`
 
 @element paper-datatable-api
 @demo demo/index.html
@@ -78,20 +79,22 @@ Custom property                                   | Description                 
     <template is="dom-if" if="[[frozenHeader]]" restamp>
       <div id="headerWrapper">
         <table id="frozenHeaderTable">
-          <thead class$="[[_generateClass(filters)]]">
+          <thead class$="[[_generateClass(frozenHeader, filters)]]">
             <tr>
-              <template is="dom-if" if="[[selectable]]" restamp>
-                <th class="selectable">
-                  <div>
-                    <template is="dom-if" if="[[allowTheSelectionOfAllTheElements]]" restamp>
-                      <paper-checkbox on-change="_selectAllCheckbox"></paper-checkbox>
-                    </template>
-                  </div>
-                </th>
-              </template>
-              <template is="dom-repeat" items="[[_columns]]" as="column">
+              <template is="dom-repeat" items="[[_columns]]" as="column" index-as="index">
+                <template is="dom-if" if="[[selectable]]" restamp>
+                  <template is="dom-if" if="[[equals(index, checkboxColumnPosition)]]" restamp>
+                    <th class="selectable">
+                      <div>
+                        <template is="dom-if" if="[[allowTheSelectionOfAllTheElements]]" restamp>
+                          <paper-checkbox on-change="_selectAllCheckbox"></paper-checkbox>
+                        </template>
+                      </div>
+                    </th>
+                  </template>
+                </template>
                 <th
-                  class$="[[_generateClass(filters)]] pgTh"
+                  class$="[[_generateClass(frozenHeader, column.filter)]] pgTh [[_addCustomTdClass(column.tdCustomStyle)]]"
                   data-column="[[column]]"
                   sort-direction$="[[column.sortDirection]]"
                   sorted$="[[column.sorted]]"
@@ -115,7 +118,7 @@ Custom property                                   | Description                 
                         </template>
                       </template>
                       <template is="dom-if" if="[[!column.activeFilter]]">
-                        <div class="flex">
+                        <div class="flex" on-tap="_handleFilter">
                           [[column.header]]
                         </div>
                       </template>
@@ -171,20 +174,22 @@ Custom property                                   | Description                 
     <div id="wrapper" on-scroll="_handleWrapperScroll" class$="[[_generateClass(frozenHeader)]]">
       <table>
         <template is="dom-if" if="[[!frozenHeader]]" restamp>
-          <thead class$="[[_generateClass(filters)]]">
+          <thead class$="[[_generateClass(frozenHeader, filters)]]">
             <tr>
-              <template is="dom-if" if="[[selectable]]" restamp>
-                <th class="selectable">
-                  <div>
-                    <template is="dom-if" if="[[allowTheSelectionOfAllTheElements]]" restamp>
-                      <paper-checkbox on-change="_selectAllCheckbox"></paper-checkbox>
-                    </template>
-                  </div>
-                </th>
-              </template>
-              <template is="dom-repeat" items="[[_columns]]" as="column">
+              <template is="dom-repeat" items="[[_columns]]" as="column" index-as="index">
+                <template is="dom-if" if="[[selectable]]" restamp>
+                  <template is="dom-if" if="[[equals(index, checkboxColumnPosition)]]" restamp>
+                    <th class="selectable">
+                      <div>
+                        <template is="dom-if" if="[[allowTheSelectionOfAllTheElements]]" restamp>
+                          <paper-checkbox on-change="_selectAllCheckbox"></paper-checkbox>
+                        </template>
+                      </div>
+                    </th>
+                  </template>
+                </template>
                 <th
-                  class$="[[_generateClass(filters)]] pgTh"
+                  class$="[[_generateClass(frozenHeader, column.filter)]] pgTh [[_addCustomTdClass(column.tdCustomStyle)]]"
                   data-column="[[column]]"
                   sort-direction$="[[column.sortDirection]]"
                   sorted$="[[column.sorted]]"
@@ -208,7 +213,7 @@ Custom property                                   | Description                 
                         </template>
                       </template>
                       <template is="dom-if" if="[[!column.activeFilter]]">
-                        <div class="flex">
+                        <div class="flex" on-tap="_handleFilter">
                           [[column.header]]
                         </div>
                       </template>
@@ -258,13 +263,13 @@ Custom property                                   | Description                 
             </tr>
           </thead>
         </template>
-        <tbody class$="[[_generateClass(filters)]]">
+        <tbody class$="[[_generateClass(frozenHeader, filters)]]">
         </tbody>
         <template is="dom-if" if="[[paginate]]" restamp>
           <template is="dom-if" if="[[!frozenHeader]]" restamp>
-            <tfoot class$="[[_generateClass(filters, paginate)]]">
+            <tfoot class$="[[_generateClass(frozenHeader, filters, paginate)]]">
               <tr>
-                <td colspan$="[[_columnsHeight]]">
+                <td colspan$="[[_columnsHeight]]" class$="[[footerPosition]]">
                   <div>
                     <div class="layout horizontal end-justified center">
                       <div class="layout horizontal center">
@@ -309,9 +314,9 @@ Custom property                                   | Description                 
       <template is="dom-if" if="[[paginate]]" restamp>
         <div id="footerWrapper">
           <table>
-            <tfoot class$="[[_generateClass(filters, paginate)]]">
+            <tfoot class$="[[_generateClass(frozenHeader, filters, paginate)]]">
               <tr>
-                <td colspan$="[[_columnsHeight]]">
+                <td colspan$="[[_columnsHeight]]" class$="[[footerPosition]]">
                   <div>
                     <div class="layout horizontal end-justified center">
                       <div class="layout horizontal center">

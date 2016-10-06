@@ -161,7 +161,21 @@ var DtPaperDatatableApi = function () {
             };
           }
         },
-        timeoutFilter: Number
+        timeoutFilter: Number,
+        /**
+         * Change the position of the footer.
+         */
+        footerPosition: {
+          type: String,
+          value: 'right'
+        },
+        /**
+         * Checkbox column position
+         */
+        checkboxColumnPosition: {
+          type: Number,
+          value: 0
+        }
       };
 
       this.listeners = {
@@ -272,8 +286,14 @@ var DtPaperDatatableApi = function () {
         allTheadTrTh = this.$$('#frozenHeaderTable thead tr').querySelectorAll('th');
       }
 
-      if (size !== 'auto' && size - 52 !== 0) {
-        var sizeWithoutPad = size - 52;
+      var paddingLeftPx = window.getComputedStyle(allTheadTrTh[columnIndex]).paddingLeft;
+      var paddingLeft = paddingLeftPx.split('px')[0];
+      var paddingRightPx = window.getComputedStyle(allTheadTrTh[columnIndex]).paddingRight;
+      var paddingRight = paddingRightPx.split('px')[0];
+      var horizontalPadding = parseInt(paddingRight, 10) + parseInt(paddingLeft, 10);
+
+      if (size !== 'auto' && size - horizontalPadding !== 0) {
+        var sizeWithoutPad = size - horizontalPadding;
         Polymer.dom(allTheadTrTh[columnIndex]).firstElementChild.style.width = sizeWithoutPad + 'px';
       } else if (size === 'auto') {
         Polymer.dom(allTheadTrTh[columnIndex]).firstElementChild.style.width = 'auto';
@@ -369,6 +389,7 @@ var DtPaperDatatableApi = function () {
       this._fillRows(data);
       this._fillColumns();
       this._resizeHeader();
+      this._footerPositionChange(this.footerPosition);
     }
   }, {
     key: '_pageChanged',
@@ -395,8 +416,31 @@ var DtPaperDatatableApi = function () {
         trLocal.rowData = rowData;
         trLocal.className = 'paper-datatable-api-tr';
 
+        _this4.listen(trLocal, 'mouseover', 'onOverTr');
+        _this4.listen(trLocal, 'mouseout', 'onOutTr');
+
         Polymer.dom(_this4.$$('tbody')).appendChild(trLocal);
       });
+    }
+  }, {
+    key: 'onOverTd',
+    value: function onOverTd(e) {
+      this.fire('td-over', e.currentTarget);
+    }
+  }, {
+    key: 'onOutTd',
+    value: function onOutTd(e) {
+      this.fire('td-out', e.currentTarget);
+    }
+  }, {
+    key: 'onOverTr',
+    value: function onOverTr(e) {
+      this.fire('tr-over', e.currentTarget);
+    }
+  }, {
+    key: 'onOutTr',
+    value: function onOutTr(e) {
+      this.fire('tr-out', e.currentTarget);
     }
   }, {
     key: '_fillColumns',
@@ -408,24 +452,24 @@ var DtPaperDatatableApi = function () {
       pgTrs.forEach(function (pgTr, i) {
         var rowData = pgTr.rowData;
 
-        if (_this5.selectable) {
-          var tdSelectable = document.createElement('td');
-          tdSelectable.className = 'selectable';
-          var paperCheckbox = document.createElement('paper-checkbox');
-          _this5.listen(paperCheckbox, 'change', '_selectChange');
-          paperCheckbox.rowData = rowData;
-          paperCheckbox.rowIndex = i;
+        _this5._columns.forEach(function (paperDatatableApiColumn, p) {
+          if (_this5.selectable && p === _this5.checkboxColumnPosition) {
+            var tdSelectable = document.createElement('td');
+            tdSelectable.className = 'selectable';
+            var paperCheckbox = document.createElement('paper-checkbox');
+            _this5.listen(paperCheckbox, 'change', '_selectChange');
+            paperCheckbox.rowData = rowData;
+            paperCheckbox.rowIndex = i;
 
-          if (_this5.selectableDataKey !== undefined && rowData[_this5.selectableDataKey] !== undefined && _this5.selectedRows.indexOf(rowData[_this5.selectableDataKey]) !== -1) {
-            paperCheckbox.checked = true;
+            if (_this5.selectableDataKey !== undefined && rowData[_this5.selectableDataKey] !== undefined && _this5.selectedRows.indexOf(rowData[_this5.selectableDataKey]) !== -1) {
+              paperCheckbox.checked = true;
+            }
+
+            Polymer.dom(tdSelectable).appendChild(paperCheckbox);
+            Polymer.dom(pgTr).appendChild(tdSelectable);
+            Polymer.dom.flush();
           }
 
-          Polymer.dom(tdSelectable).appendChild(paperCheckbox);
-          Polymer.dom(pgTr).appendChild(tdSelectable);
-          Polymer.dom.flush();
-        }
-
-        _this5._columns.forEach(function (paperDatatableApiColumn) {
           var valueFromRowData = _this5._extractData(rowData, paperDatatableApiColumn.property);
 
           var otherPropertiesValue = {};
@@ -434,6 +478,13 @@ var DtPaperDatatableApi = function () {
           });
 
           var tdLocal = document.createElement('td');
+          if (paperDatatableApiColumn.tdCustomStyle) {
+            tdLocal.classList.add('customTd');
+          }
+
+          _this5.listen(tdLocal, 'mouseover', 'onOverTd');
+          _this5.listen(tdLocal, 'mouseout', 'onOutTd');
+
           var template = paperDatatableApiColumn.fillTemplate(valueFromRowData, otherPropertiesValue);
 
           if (paperDatatableApiColumn.hideable && paperDatatableApiColumn.hidden) {
@@ -774,6 +825,27 @@ var DtPaperDatatableApi = function () {
           }, 1000);
         }
       }
+    }
+  }, {
+    key: '_footerPositionChange',
+    value: function _footerPositionChange(position) {
+      var footerDiv = Polymer.dom(this.root).querySelector('tfoot > tr > td > div > div');
+
+      if (footerDiv) {
+        if (position === 'right') {
+          footerDiv.classList.add('end-justified');
+        } else {
+          footerDiv.classList.remove('end-justified');
+        }
+      }
+    }
+  }, {
+    key: '_addCustomTdClass',
+    value: function _addCustomTdClass(isTdCustomStyle) {
+      if (isTdCustomStyle) {
+        return 'customTd';
+      }
+      return '';
     }
   }, {
     key: 'behaviors',

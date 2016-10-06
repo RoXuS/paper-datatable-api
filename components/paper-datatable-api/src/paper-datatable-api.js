@@ -149,6 +149,20 @@ class DtPaperDatatableApi {
         },
       },
       timeoutFilter: Number,
+      /**
+       * Change the position of the footer.
+       */
+      footerPosition: {
+        type: String,
+        value: 'right',
+      },
+      /**
+       * Checkbox column position
+       */
+      checkboxColumnPosition: {
+        type: Number,
+        value: 0,
+      },
     };
 
     this.listeners = {
@@ -238,8 +252,14 @@ class DtPaperDatatableApi {
       allTheadTrTh = this.$$('#frozenHeaderTable thead tr').querySelectorAll('th');
     }
 
-    if (size !== 'auto' && size - 52 !== 0) {
-      const sizeWithoutPad = size - 52;
+    const paddingLeftPx = window.getComputedStyle(allTheadTrTh[columnIndex]).paddingLeft;
+    const paddingLeft = paddingLeftPx.split('px')[0];
+    const paddingRightPx = window.getComputedStyle(allTheadTrTh[columnIndex]).paddingRight;
+    const paddingRight = paddingRightPx.split('px')[0];
+    const horizontalPadding = parseInt(paddingRight, 10) + parseInt(paddingLeft, 10);
+
+    if (size !== 'auto' && (size - horizontalPadding) !== 0) {
+      const sizeWithoutPad = size - horizontalPadding;
       Polymer.dom(allTheadTrTh[columnIndex]).firstElementChild.style.width = `${sizeWithoutPad}px`;
     } else if (size === 'auto') {
       Polymer.dom(allTheadTrTh[columnIndex]).firstElementChild.style.width = 'auto';
@@ -323,6 +343,7 @@ class DtPaperDatatableApi {
     this._fillRows(data);
     this._fillColumns();
     this._resizeHeader();
+    this._footerPositionChange(this.footerPosition);
   }
 
   _pageChanged(page, oldPage) {
@@ -340,8 +361,27 @@ class DtPaperDatatableApi {
       trLocal.rowData = rowData;
       trLocal.className = 'paper-datatable-api-tr';
 
+      this.listen(trLocal, 'mouseover', 'onOverTr');
+      this.listen(trLocal, 'mouseout', 'onOutTr');
+
       Polymer.dom(this.$$('tbody')).appendChild(trLocal);
     });
+  }
+
+  onOverTd(e) {
+    this.fire('td-over', e.currentTarget);
+  }
+
+  onOutTd(e) {
+    this.fire('td-out', e.currentTarget);
+  }
+
+  onOverTr(e) {
+    this.fire('tr-over', e.currentTarget);
+  }
+
+  onOutTr(e) {
+    this.fire('tr-out', e.currentTarget);
   }
 
   _fillColumns() {
@@ -350,26 +390,26 @@ class DtPaperDatatableApi {
     pgTrs.forEach((pgTr, i) => {
       const rowData = pgTr.rowData;
 
-      if (this.selectable) {
-        const tdSelectable = document.createElement('td');
-        tdSelectable.className = 'selectable';
-        const paperCheckbox = document.createElement('paper-checkbox');
-        this.listen(paperCheckbox, 'change', '_selectChange');
-        paperCheckbox.rowData = rowData;
-        paperCheckbox.rowIndex = i;
+      this._columns.forEach((paperDatatableApiColumn, p) => {
+        if (this.selectable && p === this.checkboxColumnPosition) {
+          const tdSelectable = document.createElement('td');
+          tdSelectable.className = 'selectable';
+          const paperCheckbox = document.createElement('paper-checkbox');
+          this.listen(paperCheckbox, 'change', '_selectChange');
+          paperCheckbox.rowData = rowData;
+          paperCheckbox.rowIndex = i;
 
-        if (this.selectableDataKey !== undefined &&
-          rowData[this.selectableDataKey] !== undefined &&
-          this.selectedRows.indexOf(rowData[this.selectableDataKey]) !== -1) {
-          paperCheckbox.checked = true;
+          if (this.selectableDataKey !== undefined &&
+            rowData[this.selectableDataKey] !== undefined &&
+            this.selectedRows.indexOf(rowData[this.selectableDataKey]) !== -1) {
+            paperCheckbox.checked = true;
+          }
+
+          Polymer.dom(tdSelectable).appendChild(paperCheckbox);
+          Polymer.dom(pgTr).appendChild(tdSelectable);
+          Polymer.dom.flush();
         }
 
-        Polymer.dom(tdSelectable).appendChild(paperCheckbox);
-        Polymer.dom(pgTr).appendChild(tdSelectable);
-        Polymer.dom.flush();
-      }
-
-      this._columns.forEach((paperDatatableApiColumn) => {
         const valueFromRowData = this._extractData(rowData, paperDatatableApiColumn.property);
 
         const otherPropertiesValue = {};
@@ -378,6 +418,13 @@ class DtPaperDatatableApi {
         });
 
         const tdLocal = document.createElement('td');
+        if (paperDatatableApiColumn.tdCustomStyle) {
+          tdLocal.classList.add('customTd');
+        }
+
+        this.listen(tdLocal, 'mouseover', 'onOverTd');
+        this.listen(tdLocal, 'mouseout', 'onOutTd');
+
         const template = paperDatatableApiColumn.fillTemplate(
           valueFromRowData,
           otherPropertiesValue
@@ -685,6 +732,25 @@ class DtPaperDatatableApi {
         }, 1000);
       }
     }
+  }
+
+  _footerPositionChange(position) {
+    const footerDiv = Polymer.dom(this.root).querySelector('tfoot > tr > td > div > div');
+
+    if (footerDiv) {
+      if (position === 'right') {
+        footerDiv.classList.add('end-justified');
+      } else {
+        footerDiv.classList.remove('end-justified');
+      }
+    }
+  }
+
+  _addCustomTdClass(isTdCustomStyle) {
+    if (isTdCustomStyle) {
+      return 'customTd';
+    }
+    return '';
   }
 }
 
