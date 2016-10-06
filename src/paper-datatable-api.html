@@ -80,16 +80,18 @@ Custom property                                   | Description                 
         <table id="frozenHeaderTable">
           <thead class$="[[_generateClass(filters)]]">
             <tr>
-              <template is="dom-if" if="[[selectable]]" restamp>
-                <th class="selectable">
-                  <div>
-                    <template is="dom-if" if="[[allowTheSelectionOfAllTheElements]]" restamp>
-                      <paper-checkbox on-change="_selectAllCheckbox"></paper-checkbox>
-                    </template>
-                  </div>
-                </th>
-              </template>
-              <template is="dom-repeat" items="[[_columns]]" as="column">
+              <template is="dom-repeat" items="[[_columns]]" as="column" index-as="index">
+                <template is="dom-if" if="[[selectable]]" restamp>
+                  <template is="dom-if" if="[[equals(index, checkboxColumnPosition)]]" restamp>
+                    <th class="selectable">
+                      <div>
+                        <template is="dom-if" if="[[allowTheSelectionOfAllTheElements]]" restamp>
+                          <paper-checkbox on-change="_selectAllCheckbox"></paper-checkbox>
+                        </template>
+                      </div>
+                    </th>
+                  </template>
+                </template>
                 <th
                   class$="[[_generateClass(filters)]] pgTh"
                   data-column="[[column]]"
@@ -173,16 +175,18 @@ Custom property                                   | Description                 
         <template is="dom-if" if="[[!frozenHeader]]" restamp>
           <thead class$="[[_generateClass(filters)]]">
             <tr>
-              <template is="dom-if" if="[[selectable]]" restamp>
-                <th class="selectable">
-                  <div>
-                    <template is="dom-if" if="[[allowTheSelectionOfAllTheElements]]" restamp>
-                      <paper-checkbox on-change="_selectAllCheckbox"></paper-checkbox>
-                    </template>
-                  </div>
-                </th>
-              </template>
-              <template is="dom-repeat" items="[[_columns]]" as="column">
+              <template is="dom-repeat" items="[[_columns]]" as="column" index-as="index">
+                <template is="dom-if" if="[[selectable]]" restamp>
+                  <template is="dom-if" if="[[equals(index, checkboxColumnPosition)]]" restamp>
+                    <th class="selectable">
+                      <div>
+                        <template is="dom-if" if="[[allowTheSelectionOfAllTheElements]]" restamp>
+                          <paper-checkbox on-change="_selectAllCheckbox"></paper-checkbox>
+                        </template>
+                      </div>
+                    </th>
+                  </template>
+                </template>
                 <th
                   class$="[[_generateClass(filters)]] pgTh"
                   data-column="[[column]]"

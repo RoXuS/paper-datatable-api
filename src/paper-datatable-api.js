@@ -156,6 +156,13 @@ class DtPaperDatatableApi {
         type: String,
         value: 'right',
       },
+      /**
+       * Checkbox column position
+       */
+      checkboxColumnPosition: {
+        type: Number,
+        value: 0,
+      },
     };
 
     this.listeners = {
@@ -358,26 +365,25 @@ class DtPaperDatatableApi {
     pgTrs.forEach((pgTr, i) => {
       const rowData = pgTr.rowData;
 
-      if (this.selectable) {
-        const tdSelectable = document.createElement('td');
-        tdSelectable.className = 'selectable';
-        const paperCheckbox = document.createElement('paper-checkbox');
-        this.listen(paperCheckbox, 'change', '_selectChange');
-        paperCheckbox.rowData = rowData;
-        paperCheckbox.rowIndex = i;
+      this._columns.forEach((paperDatatableApiColumn, p) => {
+        if (this.selectable && p === this.checkboxColumnPosition) {
+          const tdSelectable = document.createElement('td');
+          tdSelectable.className = 'selectable';
+          const paperCheckbox = document.createElement('paper-checkbox');
+          this.listen(paperCheckbox, 'change', '_selectChange');
+          paperCheckbox.rowData = rowData;
+          paperCheckbox.rowIndex = i;
 
-        if (this.selectableDataKey !== undefined &&
-          rowData[this.selectableDataKey] !== undefined &&
-          this.selectedRows.indexOf(rowData[this.selectableDataKey]) !== -1) {
-          paperCheckbox.checked = true;
+          if (this.selectableDataKey !== undefined &&
+            rowData[this.selectableDataKey] !== undefined &&
+            this.selectedRows.indexOf(rowData[this.selectableDataKey]) !== -1) {
+            paperCheckbox.checked = true;
+          }
+
+          Polymer.dom(tdSelectable).appendChild(paperCheckbox);
+          Polymer.dom(pgTr).appendChild(tdSelectable);
+          Polymer.dom.flush();
         }
-
-        Polymer.dom(tdSelectable).appendChild(paperCheckbox);
-        Polymer.dom(pgTr).appendChild(tdSelectable);
-        Polymer.dom.flush();
-      }
-
-      this._columns.forEach((paperDatatableApiColumn) => {
         const valueFromRowData = this._extractData(rowData, paperDatatableApiColumn.property);
 
         const otherPropertiesValue = {};

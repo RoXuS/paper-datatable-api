@@ -168,6 +168,13 @@ var DtPaperDatatableApi = function () {
         footerPosition: {
           type: String,
           value: 'right'
+        },
+        /**
+         * Checkbox column position
+         */
+        checkboxColumnPosition: {
+          type: Number,
+          value: 0
         }
       };
 
@@ -416,24 +423,23 @@ var DtPaperDatatableApi = function () {
       pgTrs.forEach(function (pgTr, i) {
         var rowData = pgTr.rowData;
 
-        if (_this5.selectable) {
-          var tdSelectable = document.createElement('td');
-          tdSelectable.className = 'selectable';
-          var paperCheckbox = document.createElement('paper-checkbox');
-          _this5.listen(paperCheckbox, 'change', '_selectChange');
-          paperCheckbox.rowData = rowData;
-          paperCheckbox.rowIndex = i;
+        _this5._columns.forEach(function (paperDatatableApiColumn, p) {
+          if (_this5.selectable && p === _this5.checkboxColumnPosition) {
+            var tdSelectable = document.createElement('td');
+            tdSelectable.className = 'selectable';
+            var paperCheckbox = document.createElement('paper-checkbox');
+            _this5.listen(paperCheckbox, 'change', '_selectChange');
+            paperCheckbox.rowData = rowData;
+            paperCheckbox.rowIndex = i;
 
-          if (_this5.selectableDataKey !== undefined && rowData[_this5.selectableDataKey] !== undefined && _this5.selectedRows.indexOf(rowData[_this5.selectableDataKey]) !== -1) {
-            paperCheckbox.checked = true;
+            if (_this5.selectableDataKey !== undefined && rowData[_this5.selectableDataKey] !== undefined && _this5.selectedRows.indexOf(rowData[_this5.selectableDataKey]) !== -1) {
+              paperCheckbox.checked = true;
+            }
+
+            Polymer.dom(tdSelectable).appendChild(paperCheckbox);
+            Polymer.dom(pgTr).appendChild(tdSelectable);
+            Polymer.dom.flush();
           }
-
-          Polymer.dom(tdSelectable).appendChild(paperCheckbox);
-          Polymer.dom(pgTr).appendChild(tdSelectable);
-          Polymer.dom.flush();
-        }
-
-        _this5._columns.forEach(function (paperDatatableApiColumn) {
           var valueFromRowData = _this5._extractData(rowData, paperDatatableApiColumn.property);
 
           var otherPropertiesValue = {};
