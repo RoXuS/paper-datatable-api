@@ -79,7 +79,7 @@ Custom property                                   | Description                 
     <template is="dom-if" if="[[frozenHeader]]" restamp>
       <div id="headerWrapper">
         <table id="frozenHeaderTable">
-          <thead class$="[[_generateClass(filters)]]">
+          <thead class$="[[_generateClass(frozenHeader, filters)]]">
             <tr>
               <template is="dom-repeat" items="[[_columns]]" as="column" index-as="index">
                 <template is="dom-if" if="[[selectable]]" restamp>
@@ -94,7 +94,7 @@ Custom property                                   | Description                 
                   </template>
                 </template>
                 <th
-                  class$="[[_generateClass(filters)]] pgTh [[_addCustomTdClass(column.tdCustomStyle)]]"
+                  class$="[[_generateClass(frozenHeader, column.filter)]] pgTh [[_addCustomTdClass(column.tdCustomStyle)]]"
                   data-column="[[column]]"
                   sort-direction$="[[column.sortDirection]]"
                   sorted$="[[column.sorted]]"
@@ -118,7 +118,7 @@ Custom property                                   | Description                 
                         </template>
                       </template>
                       <template is="dom-if" if="[[!column.activeFilter]]">
-                        <div class="flex">
+                        <div class="flex" on-tap="_handleFilter">
                           [[column.header]]
                         </div>
                       </template>
@@ -174,7 +174,7 @@ Custom property                                   | Description                 
     <div id="wrapper" on-scroll="_handleWrapperScroll" class$="[[_generateClass(frozenHeader)]]">
       <table>
         <template is="dom-if" if="[[!frozenHeader]]" restamp>
-          <thead class$="[[_generateClass(filters)]]">
+          <thead class$="[[_generateClass(frozenHeader, filters)]]">
             <tr>
               <template is="dom-repeat" items="[[_columns]]" as="column" index-as="index">
                 <template is="dom-if" if="[[selectable]]" restamp>
@@ -189,7 +189,7 @@ Custom property                                   | Description                 
                   </template>
                 </template>
                 <th
-                  class$="[[_generateClass(filters)]] pgTh [[_addCustomTdClass(column.tdCustomStyle)]]"
+                  class$="[[_generateClass(frozenHeader, column.filter)]] pgTh [[_addCustomTdClass(column.tdCustomStyle)]]"
                   data-column="[[column]]"
                   sort-direction$="[[column.sortDirection]]"
                   sorted$="[[column.sorted]]"
@@ -213,7 +213,7 @@ Custom property                                   | Description                 
                         </template>
                       </template>
                       <template is="dom-if" if="[[!column.activeFilter]]">
-                        <div class="flex">
+                        <div class="flex" on-tap="_handleFilter">
                           [[column.header]]
                         </div>
                       </template>
@@ -263,11 +263,11 @@ Custom property                                   | Description                 
             </tr>
           </thead>
         </template>
-        <tbody class$="[[_generateClass(filters)]]">
+        <tbody class$="[[_generateClass(frozenHeader, filters)]]">
         </tbody>
         <template is="dom-if" if="[[paginate]]" restamp>
           <template is="dom-if" if="[[!frozenHeader]]" restamp>
-            <tfoot class$="[[_generateClass(filters, paginate)]]">
+            <tfoot class$="[[_generateClass(frozenHeader, filters, paginate)]]">
               <tr>
                 <td colspan$="[[_columnsHeight]]" class$="[[footerPosition]]">
                   <div>
@@ -314,7 +314,7 @@ Custom property                                   | Description                 
       <template is="dom-if" if="[[paginate]]" restamp>
         <div id="footerWrapper">
           <table>
-            <tfoot class$="[[_generateClass(filters, paginate)]]">
+            <tfoot class$="[[_generateClass(frozenHeader, filters, paginate)]]">
               <tr>
                 <td colspan$="[[_columnsHeight]]" class$="[[footerPosition]]">
                   <div>
