@@ -286,8 +286,14 @@ var DtPaperDatatableApi = function () {
         allTheadTrTh = this.$$('#frozenHeaderTable thead tr').querySelectorAll('th');
       }
 
-      if (size !== 'auto' && size - 52 !== 0) {
-        var sizeWithoutPad = size - 52;
+      var paddingLeftPx = window.getComputedStyle(allTheadTrTh[columnIndex]).paddingLeft;
+      var paddingLeft = paddingLeftPx.split('px')[0];
+      var paddingRightPx = window.getComputedStyle(allTheadTrTh[columnIndex]).paddingRight;
+      var paddingRight = paddingRightPx.split('px')[0];
+      var horizontalPadding = parseInt(paddingRight, 10) + parseInt(paddingLeft, 10);
+
+      if (size !== 'auto' && size - horizontalPadding !== 0) {
+        var sizeWithoutPad = size - horizontalPadding;
         Polymer.dom(allTheadTrTh[columnIndex]).firstElementChild.style.width = sizeWithoutPad + 'px';
       } else if (size === 'auto') {
         Polymer.dom(allTheadTrTh[columnIndex]).firstElementChild.style.width = 'auto';

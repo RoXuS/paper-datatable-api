@@ -252,8 +252,14 @@ class DtPaperDatatableApi {
       allTheadTrTh = this.$$('#frozenHeaderTable thead tr').querySelectorAll('th');
     }
 
-    if (size !== 'auto' && size - 52 !== 0) {
-      const sizeWithoutPad = size - 52;
+    const paddingLeftPx = window.getComputedStyle(allTheadTrTh[columnIndex]).paddingLeft;
+    const paddingLeft = paddingLeftPx.split('px')[0];
+    const paddingRightPx = window.getComputedStyle(allTheadTrTh[columnIndex]).paddingRight;
+    const paddingRight = paddingRightPx.split('px')[0];
+    const horizontalPadding = parseInt(paddingRight, 10) + parseInt(paddingLeft, 10);
+
+    if (size !== 'auto' && (size - horizontalPadding) !== 0) {
+      const sizeWithoutPad = size - horizontalPadding;
       Polymer.dom(allTheadTrTh[columnIndex]).firstElementChild.style.width = `${sizeWithoutPad}px`;
     } else if (size === 'auto') {
       Polymer.dom(allTheadTrTh[columnIndex]).firstElementChild.style.width = 'auto';
