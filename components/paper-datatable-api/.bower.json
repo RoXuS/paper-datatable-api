@@ -46,11 +46,11 @@
     "polymerfire": "firebase/polymerfire#^0.9.3"
   },
   "homepage": "https://github.com/RoXuS/paper-datatable-api",
-  "_release": "6cc51ea765",
+  "_release": "6838047c7d",
   "_resolution": {
     "type": "branch",
     "branch": "master",
-    "commit": "6cc51ea7654db3a1c04ebd7ea235ed010a422ec6"
+    "commit": "6838047c7de730ac9f1a67d4dd40e6d692a97c38"
   },
   "_source": "https://github.com/RoXuS/paper-datatable-api.git",
   "_target": "master",

@@ -1,5 +1,10 @@
 # Change Log
 
+## [v0.1.8](https://github.com/RoXuS/paper-datatable-api/tree/0.1.8) (2016-10-07)
+- Fix stupid mistake ([commit](https://github.com/RoXuS/paper-datatable-api/commit/504d878))
+- Invert sort button with filter button ([commit](https://github.com/RoXuS/paper-datatable-api/commit/926120e))
+- Add feature to remove a sort ([commit](https://github.com/RoXuS/paper-datatable-api/commit/a356bf5))
+
 ## [v0.1.7](https://github.com/RoXuS/paper-datatable-api/tree/0.1.7) (2016-10-06)
 - Open the filter when user click on a header ([commit](https://github.com/RoXuS/paper-datatable-api/commit/6f8079e))
 - Add over event on td/tr element ([commit](https://github.com/RoXuS/paper-datatable-api/commit/cde088c))
