@@ -122,7 +122,6 @@ Custom property                                   | Description                 
                           [[column.header]]
                         </div>
                       </template>
-                      <paper-icon-button icon="arrow-downward" class="sort" on-tap="_handleSort" data-column="[[column]]"></paper-icon-button>
                       <template is="dom-if" if="[[column.filter]]">
                         <template is="dom-if" if="[[column.activeFilter]]">
                           <paper-icon-button icon="search" class="filter active" data-column="[[column]]" on-tap="_handleFilter"></paper-icon-button>
@@ -131,6 +130,7 @@ Custom property                                   | Description                 
                           <paper-icon-button icon="search" class="filter" data-column="[[column]]" on-tap="_handleFilter"></paper-icon-button>
                         </template>
                       </template>
+                      <paper-icon-button icon="arrow-downward" class="sort" on-tap="_handleSort" data-column="[[column]]"></paper-icon-button>
                     </template>
 
                     <template is="dom-if" if="[[equals(positionSortIcon, 'left')]]">
