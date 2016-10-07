@@ -651,7 +651,11 @@ var DtPaperDatatableApi = function () {
       var th = paperIconButton.parentNode.parentNode;
       var sortDirection = column.sortDirection === 'asc' ? 'desc' : 'asc';
 
-      this.sortColumn(column, sortDirection, th);
+      if (column.sortDirection === undefined || column.sortDirection === 'asc') {
+        this.sortColumn(column, sortDirection, th);
+      } else {
+        this.deleteSortColumn(column, th);
+      }
 
       /**
        * Fired when a column is sorted.
@@ -666,6 +670,38 @@ var DtPaperDatatableApi = function () {
         },
         column: column
       });
+    }
+
+    /**
+     * Undo sort on a column if it is sorted.
+     *
+     * @property toggleColumn
+     * @param {Object} column Column element.
+     * @param {th} column Th element.
+     */
+
+  }, {
+    key: 'deleteSortColumn',
+    value: function deleteSortColumn(column, targetTh) {
+      if (column.sortable, column.sorted) {
+        var th = targetTh;
+
+        if (!th) {
+          th = Polymer.dom(this.root).querySelector('thead th[property="' + column.property + '"]');
+        }
+
+        if (th) {
+          th.setAttribute('sort-direction', 'asc');
+          th.removeAttribute('sorted');
+          column.set('sortDirection', undefined);
+          column.set('sorted', false);
+        }
+
+        this.fire('sort', {
+          sort: {},
+          column: column
+        });
+      }
     }
 
     /**
