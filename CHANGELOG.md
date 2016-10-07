@@ -1,5 +1,8 @@
 # Change Log
 
+## [v0.1.9](https://github.com/RoXuS/paper-datatable-api/tree/0.1.9) (2016-10-07)
+- Fix width of checkbox ([commit](https://github.com/RoXuS/paper-datatable-api/commit/6a01d85))
+
 ## [v0.1.8](https://github.com/RoXuS/paper-datatable-api/tree/0.1.8) (2016-10-07)
 - Fix stupid mistake ([commit](https://github.com/RoXuS/paper-datatable-api/commit/504d878))
 - Invert sort button with filter button ([commit](https://github.com/RoXuS/paper-datatable-api/commit/926120e))
