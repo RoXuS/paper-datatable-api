@@ -607,7 +607,7 @@ class DtPaperDatatableApi {
    * @param {th} column Th element.
    */
   deleteSortColumn(column, targetTh) {
-    if (column.sortable, column.sorted) {
+    if (column.sortable && column.sorted) {
       let th = targetTh;
 
       if (!th) {

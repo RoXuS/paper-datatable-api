@@ -683,7 +683,7 @@ var DtPaperDatatableApi = function () {
   }, {
     key: 'deleteSortColumn',
     value: function deleteSortColumn(column, targetTh) {
-      if (column.sortable, column.sorted) {
+      if (column.sortable && column.sorted) {
         var th = targetTh;
 
         if (!th) {
