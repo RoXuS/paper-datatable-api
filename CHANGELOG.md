@@ -1,5 +1,8 @@
 # Change Log
 
+## [v0.1.10](https://github.com/RoXuS/paper-datatable-api/tree/0.1.10) (2016-10-11)
+- Delete the border on the first column, add it to the bottom header ([commit](https://github.com/RoXuS/paper-datatable-api/commit/117958b))
+
 ## [v0.1.9](https://github.com/RoXuS/paper-datatable-api/tree/0.1.9) (2016-10-07)
 - Fix width of checkbox ([commit](https://github.com/RoXuS/paper-datatable-api/commit/6a01d85))
 
