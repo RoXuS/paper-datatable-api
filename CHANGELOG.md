@@ -1,5 +1,8 @@
 # Change Log
 
+## [v0.1.11](https://github.com/RoXuS/paper-datatable-api/tree/0.1.11) (2016-10-13)
+- Add mixin to style the checkboxes ([commit](https://github.com/RoXuS/paper-datatable-api/commit/720d491))
+
 ## [v0.1.10](https://github.com/RoXuS/paper-datatable-api/tree/0.1.10) (2016-10-11)
 - Delete the border on the first column, add it to the bottom header ([commit](https://github.com/RoXuS/paper-datatable-api/commit/117958b))
 
