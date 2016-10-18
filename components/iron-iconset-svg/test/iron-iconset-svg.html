@@ -22,6 +22,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <link rel="import" href="../iron-iconset-svg.html">
   <link rel="import" href="../../iron-meta/iron-meta.html">
+  <link rel="import" href="../../iron-icon/iron-icon.html">
   <link rel="import" href="../../promise-polyfill/promise-polyfill.html">
   <link rel="import" href="../../test-fixture/test-fixture.html">
 
@@ -66,6 +67,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </svg>
       </iron-iconset-svg>
       <div></div>
+      <iron-icon></iron-icon>
     </template>
   </test-fixture>
 
@@ -176,6 +178,38 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         test('uses the iconset size when viewBox is not defined on the element', function () {
           iconset.applyIcon(div, 'circle');
           expect(div.firstElementChild.getAttribute('viewBox')).to.be.equal('0 0 20 20');
+        });
+      });
+
+      suite('Adding / removal from iron-icon', function () {
+        var iconset;
+        var div;
+        var ironIcon;
+
+        setup(function () {
+          var elements = fixture('StandardIconsetSvg');
+          iconset = elements[0];
+          div = elements[1];
+          ironIcon = elements[2];
+        });
+
+        test('be able to remove an iconset from a standard DOM element', function () {
+          iconset.applyIcon(div, 'circle');
+          Polymer.dom.flush();
+          expect(div.children.length).to.be.equal(1);
+          iconset.removeIcon(div);
+          Polymer.dom.flush();
+          expect(div.children.length).to.be.equal(0);
+        });
+
+        test('be able to remove an iconset from a Polymer element', function () {
+          var baseLength = Polymer.dom(ironIcon.root).children.length;
+          iconset.applyIcon(ironIcon, 'circle');
+          Polymer.dom.flush();
+          expect(Polymer.dom(ironIcon.root).children.length - baseLength).to.be.equal(1);
+          iconset.removeIcon(ironIcon);
+          Polymer.dom.flush();
+          expect(Polymer.dom(ironIcon.root).children.length - baseLength).to.be.equal(0);
         });
 
       });

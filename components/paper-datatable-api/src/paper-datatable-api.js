@@ -720,6 +720,61 @@ class DtPaperDatatableApi {
     }
   }
 
+  /**
+   * Active filter on a column.
+   *
+   * @property activeFilter
+   * @param {Object} column The column where the filer will be applied.
+   * @param {String} value The value of the filter.
+   */
+  activeFilter(column, value) {
+    if (column) {
+      const columnIndex = this._columns.findIndex(_column => _column.property === column.property);
+      this.set(`_columns.${columnIndex}.activeFilter`, true);
+      this.fire('filter', {
+        filter: {
+          property: column.property,
+          value,
+        },
+        column,
+      });
+      this._resizeHeader();
+      this.async(() => {
+        const paperInput = Polymer.dom(this.root).querySelector(`thead th[property="${column.property}"] paper-input`);
+        if (paperInput !== null) {
+          paperInput.value = value;
+        }
+      }, 100);
+    }
+  }
+
+  /**
+   * Toggle filter on a column.
+   *
+   * @property activeFilter
+   * @param {Object} column The column where the filer will be applied.
+   * @param {String} value The value of the filter.
+   */
+  toggleFilter(column, value) {
+    if (column) {
+      this._toggleFilter(column);
+      this.fire('filter', {
+        filter: {
+          property: column.property,
+          value,
+        },
+        column,
+      });
+      this._resizeHeader();
+      this.async(() => {
+        const paperInput = Polymer.dom(this.root).querySelector(`thead th[property="${column.property}"] paper-input`);
+        if (paperInput !== null) {
+          paperInput.value = value;
+        }
+      }, 100);
+    }
+  }
+
   _launchFilterEvent(input, column) {
     /**
      * Fired when a filters inputs changed.

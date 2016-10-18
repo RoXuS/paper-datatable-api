@@ -34,7 +34,7 @@
   "_release": "1.4.3",
   "_resolution": {
     "type": "version",
-    "tag": "1.4.3",
+    "tag": "v1.4.3",
     "commit": "97685a88f7727249fb63667969238faa0e704198"
   },
   "_source": "git://github.com/PolymerElements/iron-ajax.git",

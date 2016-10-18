@@ -138,6 +138,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
      */
     removeIcon: function(element) {
       // Remove old svg element
+      element = element.root || element;
       if (element._svgIcon) {
         Polymer.dom(element).removeChild(element._svgIcon);
         element._svgIcon = null;
