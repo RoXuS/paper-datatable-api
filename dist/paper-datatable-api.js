@@ -810,6 +810,73 @@ var DtPaperDatatableApi = function () {
         this.set('_columns.' + columnIndex + '.activeFilter', true);
       }
     }
+
+    /**
+     * Active filter on a column.
+     *
+     * @property activeFilter
+     * @param {Object} column The column where the filer will be applied.
+     * @param {String} value The value of the filter.
+     */
+
+  }, {
+    key: 'activeFilter',
+    value: function activeFilter(column, value) {
+      var _this11 = this;
+
+      if (column) {
+        var columnIndex = this._columns.findIndex(function (_column) {
+          return _column.property === column.property;
+        });
+        this.set('_columns.' + columnIndex + '.activeFilter', true);
+        this.fire('filter', {
+          filter: {
+            property: column.property,
+            value: value
+          },
+          column: column
+        });
+        this._resizeHeader();
+        this.async(function () {
+          var paperInput = Polymer.dom(_this11.root).querySelector('thead th[property="' + column.property + '"] paper-input');
+          if (paperInput !== null) {
+            paperInput.value = value;
+          }
+        }, 100);
+      }
+    }
+
+    /**
+     * Toggle filter on a column.
+     *
+     * @property activeFilter
+     * @param {Object} column The column where the filer will be applied.
+     * @param {String} value The value of the filter.
+     */
+
+  }, {
+    key: 'toggleFilter',
+    value: function toggleFilter(column, value) {
+      var _this12 = this;
+
+      if (column) {
+        this._toggleFilter(column);
+        this.fire('filter', {
+          filter: {
+            property: column.property,
+            value: value
+          },
+          column: column
+        });
+        this._resizeHeader();
+        this.async(function () {
+          var paperInput = Polymer.dom(_this12.root).querySelector('thead th[property="' + column.property + '"] paper-input');
+          if (paperInput !== null) {
+            paperInput.value = value;
+          }
+        }, 100);
+      }
+    }
   }, {
     key: '_launchFilterEvent',
     value: function _launchFilterEvent(input, column) {
@@ -843,7 +910,7 @@ var DtPaperDatatableApi = function () {
   }, {
     key: '_handleKeyDownInput',
     value: function _handleKeyDownInput(event) {
-      var _this11 = this;
+      var _this13 = this;
 
       var column = event.model.column;
       var input = event.currentTarget;
@@ -855,7 +922,7 @@ var DtPaperDatatableApi = function () {
           clearTimeout(this.timeoutFilter);
           this.timeoutFilter = setTimeout(function () {
             if (input.previousValue !== input.value) {
-              _this11._launchFilterEvent(input, column);
+              _this13._launchFilterEvent(input, column);
             }
             input.previousValue = input.value;
           }, 1000);
