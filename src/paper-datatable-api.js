@@ -734,7 +734,7 @@ class DtPaperDatatableApi {
       this.fire('filter', {
         filter: {
           property: column.property,
-          value: value,
+          value,
         },
         column,
       });
@@ -761,7 +761,7 @@ class DtPaperDatatableApi {
       this.fire('filter', {
         filter: {
           property: column.property,
-          value: value,
+          value,
         },
         column,
       });
