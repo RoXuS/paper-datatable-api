@@ -1,5 +1,9 @@
 # Change Log
 
+## [v0.1.12](https://github.com/RoXuS/paper-datatable-api/tree/0.1.11) (2016-10-18)
+- Fix eslint errors ([commit](https://github.com/RoXuS/paper-datatable-api/commit/caa721d))
+- Add two public function to active/toggle a filter ([commit](https://github.com/RoXuS/paper-datatable-api/commit/5d4e5be))
+
 ## [v0.1.11](https://github.com/RoXuS/paper-datatable-api/tree/0.1.11) (2016-10-13)
 - Add mixin to style the checkboxes ([commit](https://github.com/RoXuS/paper-datatable-api/commit/720d491))
 
