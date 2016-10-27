@@ -92,6 +92,7 @@ class DtPaperDatatableApi {
       selectedRows: {
         type: Array,
         value: [],
+        notify: true,
       },
       /**
        * If it is setted, the selected rows are persistant (throught the pages).
@@ -180,33 +181,35 @@ class DtPaperDatatableApi {
   /** Frozen Mode **/
 
   _resizeHeader() {
-    if (this.frozenHeader) {
-      let bodyWidth = this._getTbodyWidths();
-      let headerWidth = this._getTheadWidths();
+    this.async(() => {
+      if (this.frozenHeader) {
+        let bodyWidth = this._getTbodyWidths();
+        let headerWidth = this._getTheadWidths();
 
-      if (headerWidth && bodyWidth) {
-        /**
-         * Set all width to auto.
-         */
-        this._resizeAllWidthToAuto(bodyWidth);
-        /**
-         * Resize header width following body width.
-         */
-        this._resizeWidth(bodyWidth, headerWidth, 'header');
-        bodyWidth = this._getTbodyWidths();
-        headerWidth = this._getTheadWidths();
-        /**
-         * Resize body width following header width.
-         */
-        this._resizeWidth(headerWidth, bodyWidth, 'body');
-        bodyWidth = this._getTbodyWidths();
-        headerWidth = this._getTheadWidths();
-        /**
-         * Reajust header width with the new width of body.
-         */
-        this._resizeWidth(bodyWidth, headerWidth, 'header', true);
+        if (headerWidth && bodyWidth) {
+          /**
+           * Set all width to auto.
+           */
+          this._resizeAllWidthToAuto(bodyWidth);
+          /**
+           * Resize header width following body width.
+           */
+          this._resizeWidth(bodyWidth, headerWidth, 'header');
+          bodyWidth = this._getTbodyWidths();
+          headerWidth = this._getTheadWidths();
+          /**
+           * Resize body width following header width.
+           */
+          this._resizeWidth(headerWidth, bodyWidth, 'body');
+          bodyWidth = this._getTbodyWidths();
+          headerWidth = this._getTheadWidths();
+          /**
+           * Reajust header width with the new width of body.
+           */
+          this._resizeWidth(bodyWidth, headerWidth, 'header', true);
+        }
       }
-    }
+    }, 10);
   }
 
   _resizeAllWidthToAuto(bodyWidth) {
@@ -252,17 +255,19 @@ class DtPaperDatatableApi {
       allTheadTrTh = this.$$('#frozenHeaderTable thead tr').querySelectorAll('th');
     }
 
-    const paddingLeftPx = window.getComputedStyle(allTheadTrTh[columnIndex]).paddingLeft;
-    const paddingLeft = paddingLeftPx.split('px')[0];
-    const paddingRightPx = window.getComputedStyle(allTheadTrTh[columnIndex]).paddingRight;
-    const paddingRight = paddingRightPx.split('px')[0];
-    const horizontalPadding = parseInt(paddingRight, 10) + parseInt(paddingLeft, 10);
+    if (allTheadTrTh.length > 0) {
+      const paddingLeftPx = window.getComputedStyle(allTheadTrTh[columnIndex]).paddingLeft;
+      const paddingLeft = paddingLeftPx.split('px')[0];
+      const paddingRightPx = window.getComputedStyle(allTheadTrTh[columnIndex]).paddingRight;
+      const paddingRight = paddingRightPx.split('px')[0];
+      const horizontalPadding = parseInt(paddingRight, 10) + parseInt(paddingLeft, 10);
 
-    if (size !== 'auto' && (size - horizontalPadding) !== 0) {
-      const sizeWithoutPad = size - horizontalPadding;
-      Polymer.dom(allTheadTrTh[columnIndex]).firstElementChild.style.width = `${sizeWithoutPad}px`;
-    } else if (size === 'auto') {
-      Polymer.dom(allTheadTrTh[columnIndex]).firstElementChild.style.width = 'auto';
+      if (size !== 'auto' && (size - horizontalPadding) !== 0) {
+        const sizeWithoutPad = size - horizontalPadding;
+        Polymer.dom(allTheadTrTh[columnIndex]).firstElementChild.style.width = `${sizeWithoutPad}px`;
+      } else if (size === 'auto') {
+        Polymer.dom(allTheadTrTh[columnIndex]).firstElementChild.style.width = 'auto';
+      }
     }
   }
 
@@ -339,11 +344,13 @@ class DtPaperDatatableApi {
   }
 
   _dataChanged(data) {
-    this._removeRows();
-    this._fillRows(data);
-    this._fillColumns();
-    this._resizeHeader();
-    this._footerPositionChange(this.footerPosition);
+    this.async(() => {
+      this._removeRows();
+      this._fillRows(data);
+      this._fillColumns();
+      this._resizeHeader();
+      this._footerPositionChange(this.footerPosition);
+    });
   }
 
   _pageChanged(page, oldPage) {
@@ -356,16 +363,18 @@ class DtPaperDatatableApi {
   }
 
   _fillRows(data) {
-    data.forEach((rowData) => {
-      const trLocal = document.createElement('tr');
-      trLocal.rowData = rowData;
-      trLocal.className = 'paper-datatable-api-tr';
+    if (data) {
+      data.forEach((rowData) => {
+        const trLocal = document.createElement('tr');
+        trLocal.rowData = rowData;
+        trLocal.className = 'paper-datatable-api-tr';
 
-      this.listen(trLocal, 'mouseover', 'onOverTr');
-      this.listen(trLocal, 'mouseout', 'onOutTr');
+        this.listen(trLocal, 'mouseover', 'onOverTr');
+        this.listen(trLocal, 'mouseout', 'onOutTr');
 
-      Polymer.dom(this.$$('tbody')).appendChild(trLocal);
-    });
+        Polymer.dom(this.$$('tbody')).appendChild(trLocal);
+      });
+    }
   }
 
   onOverTd(e) {
@@ -447,12 +456,41 @@ class DtPaperDatatableApi {
     allPaperCheckbox.forEach((paperCheckboxParams) => {
       const paperCheckbox = paperCheckboxParams;
       if (localTarget.checked) {
-        paperCheckbox.checked = true;
-      } else {
+        if (!paperCheckbox.checked) {
+          paperCheckbox.checked = true;
+          this._selectChange(paperCheckbox);
+        }
+      } else if (paperCheckbox.checked) {
         paperCheckbox.checked = false;
+        this._selectChange(paperCheckbox);
       }
+    });
+  }
 
-      this._selectChange(paperCheckbox);
+  /**
+   * Check the checkbox
+   *
+   * @property selectRow
+   * @param {String} value The value of the row following the selectableDatakey.
+   */
+  selectRow(value) {
+    const table = this.$$('table:not(#frozenHeaderTable)');
+    const allTr = table.querySelectorAll('tbody tr');
+    allTr.forEach((tr) => {
+      if (tr.rowData[this.selectableDataKey] === value) {
+        const checkbox = tr.querySelector('paper-checkbox');
+        if (checkbox) {
+          checkbox.checked = true;
+
+          let rowId = checkbox.rowIndex;
+          if (this.selectableDataKey !== undefined
+            && tr.rowData[this.selectableDataKey] !== undefined) {
+            rowId = tr.rowData[this.selectableDataKey];
+          }
+          this.push('selectedRows', rowId);
+          tr.classList.add('selected');
+        }
+      }
     });
   }
 

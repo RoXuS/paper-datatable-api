@@ -63,49 +63,60 @@
           });
         });
 
-        test('Have 2 rows', function() {
+        test('Have 2 rows', function(done) {
           var paperDatatableApi = fixture('simple');
           paperDatatableApi.data = data;
 
-          var trs = paperDatatableApi.querySelectorAll('tbody tr');
-          assert.equal(trs.length, 2);
+          flush(function() {
+            var trs = paperDatatableApi.querySelectorAll('tbody tr');
+            assert.equal(trs.length, 2);
+            done();
+          });
         });
 
-        test('Column are filled', function() {
+        test('Column are filled', function(done) {
           var paperDatatableApi = fixture('simple');
           paperDatatableApi.data = data;
-          var trs = paperDatatableApi.querySelectorAll('tbody tr');
-          var tr1tds = trs[0].querySelectorAll('td');
-          assert.equal(tr1tds.length, 3);
-          assert.equal(tr1tds[0].querySelector('span').textContent, 'banana');
-          assert.equal(tr1tds[1].querySelector('div').textContent, 'yellow');
-          assert.equal(tr1tds[2].querySelector('div').textContent, 'banana is yellow');
 
-          var tr2tds = trs[1].querySelectorAll('td');
-          assert.equal(tr2tds.length, 3);
-          assert.equal(tr2tds[0].querySelector('span').textContent, 'apple');
-          assert.equal(tr2tds[1].querySelector('div').textContent, 'green');
-          assert.equal(tr2tds[2].querySelector('div').textContent, 'apple is green');
+          flush(function() {
+            var trs = paperDatatableApi.querySelectorAll('tbody tr');
+            var tr1tds = trs[0].querySelectorAll('td');
+            assert.equal(tr1tds.length, 3);
+            assert.equal(tr1tds[0].querySelector('span').textContent, 'banana');
+            assert.equal(tr1tds[1].querySelector('div').textContent, 'yellow');
+            assert.equal(tr1tds[2].querySelector('div').textContent, 'banana is yellow');
+
+            var tr2tds = trs[1].querySelectorAll('td');
+            assert.equal(tr2tds.length, 3);
+            assert.equal(tr2tds[0].querySelector('span').textContent, 'apple');
+            assert.equal(tr2tds[1].querySelector('div').textContent, 'green');
+            assert.equal(tr2tds[2].querySelector('div').textContent, 'apple is green');
+            done();
+          });
         });
 
-        test('Hide and show column', function() {
+        test('Hide and show column', function(done) {
           var paperDatatableApi = fixture('simple');
           paperDatatableApi.data = data;
-          var trs = paperDatatableApi.querySelectorAll('tbody tr');
 
-          var tr1tds = trs[0].querySelectorAll('td');
-          assert.equal(tr1tds[0].style.display, '');
-          paperDatatableApi.toggleColumn(0);
-          assert.equal(tr1tds[0].style.display, 'none');
-          paperDatatableApi.toggleColumn(0);
-          assert.equal(tr1tds[0].style.display, 'table-cell');
-          assert.equal(tr1tds[1].style.display, '');
-          paperDatatableApi.toggleColumn(1);
-          assert.equal(tr1tds[1].style.display, '');
-          assert.equal(tr1tds[2].style.display, '');
-          paperDatatableApi.toggleColumn(2);
-          assert.equal(tr1tds[0].style.display, 'table-cell');
-          assert.equal(tr1tds[1].style.display, '');
+          flush(function() {
+            var trs = paperDatatableApi.querySelectorAll('tbody tr');
+
+            var tr1tds = trs[0].querySelectorAll('td');
+            assert.equal(tr1tds[0].style.display, '');
+            paperDatatableApi.toggleColumn(0);
+            assert.equal(tr1tds[0].style.display, 'none');
+            paperDatatableApi.toggleColumn(0);
+            assert.equal(tr1tds[0].style.display, 'table-cell');
+            assert.equal(tr1tds[1].style.display, '');
+            paperDatatableApi.toggleColumn(1);
+            assert.equal(tr1tds[1].style.display, '');
+            assert.equal(tr1tds[2].style.display, '');
+            paperDatatableApi.toggleColumn(2);
+            assert.equal(tr1tds[0].style.display, 'table-cell');
+            assert.equal(tr1tds[1].style.display, '');
+            done();
+          });
         });
 
       });
