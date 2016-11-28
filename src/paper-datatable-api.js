@@ -397,7 +397,7 @@ class DtPaperDatatableApi {
   _findSelectableElement(rowData) {
     const splittedSelectableDataKey = this.selectableDataKey.split('.');
     let selectedRow = rowData;
-    splittedSelectableDataKey.forEach(selectableDataKey => {
+    splittedSelectableDataKey.forEach((selectableDataKey) => {
       selectedRow = selectedRow[selectableDataKey];
     });
 
@@ -423,7 +423,7 @@ class DtPaperDatatableApi {
             const selectedRow = this._findSelectableElement(rowData);
             if (selectedRow !== undefined
               && this.selectedRows.indexOf(selectedRow) !== -1) {
-                paperCheckbox.checked = true;
+              paperCheckbox.checked = true;
             }
           }
 
@@ -490,7 +490,6 @@ class DtPaperDatatableApi {
     const table = this.$$('table:not(#frozenHeaderTable)');
     const allTr = table.querySelectorAll('tbody tr');
     allTr.forEach((tr) => {
-
       const selectedRow = this._findSelectableElement(tr.rowData);
 
       if (selectedRow === value) {

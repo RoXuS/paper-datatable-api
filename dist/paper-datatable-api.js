@@ -562,7 +562,6 @@ var DtPaperDatatableApi = function () {
       var table = this.$$('table:not(#frozenHeaderTable)');
       var allTr = table.querySelectorAll('tbody tr');
       allTr.forEach(function (tr) {
-
         var selectedRow = _this9._findSelectableElement(tr.rowData);
 
         if (selectedRow === value) {
