@@ -1,5 +1,9 @@
 # Change Log
 
+## [v0.1.14](https://github.com/RoXuS/paper-datatable-api/tree/0.1.14) (2016-10-28)
+- Fix eslint error ([commit](https://github.com/RoXuS/iron-multi-ajax/commit/c4e6202))
+- Fix some graphical issues ([commit](https://github.com/RoXuS/iron-multi-ajax/commit/b89e676))
+
 ## [v0.1.13](https://github.com/RoXuS/paper-datatable-api/tree/0.1.13) (2016-10-27)
 - Add selectRow method, some fixed ([commit](https://github.com/RoXuS/paper-datatable-api/commit/c55a0ae))
 
