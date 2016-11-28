@@ -30,7 +30,7 @@
     "paper-listbox": "PolymerElements/paper-listbox#^1.1.2",
     "iron-resizable-behavior": "PolymerElements/iron-resizable-behavior#^1.0.3",
     "paper-checkbox": "PolymerElements/paper-checkbox#^1.2.1",
-    "app-localize-behavior": "PolymerElements/app-localize-behavior#^0.9.1",
+    "app-localize-behavior": "PolymerElements/app-localize-behavior#^0.10.0",
     "vaadin-date-picker": "^1.1.2"
   },
   "devDependencies": {
