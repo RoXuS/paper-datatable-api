@@ -1,5 +1,8 @@
 # Change Log
 
+## [v0.1.15](https://github.com/RoXuS/paper-datatable-api/tree/0.1.15) (2016-10-28)
+- Use the last version of app-localize-behavior ([commit](https://github.com/RoXuS/iron-multi-ajax/commit/3e8bede))
+
 ## [v0.1.14](https://github.com/RoXuS/paper-datatable-api/tree/0.1.14) (2016-10-28)
 - Fix eslint error ([commit](https://github.com/RoXuS/iron-multi-ajax/commit/c4e6202))
 - Fix some graphical issues ([commit](https://github.com/RoXuS/iron-multi-ajax/commit/b89e676))
