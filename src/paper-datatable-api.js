@@ -91,7 +91,7 @@ class DtPaperDatatableApi {
        */
       selectedRows: {
         type: Array,
-        value: [],
+        value: () => [],
         notify: true,
       },
       /**
@@ -208,6 +208,7 @@ class DtPaperDatatableApi {
            */
           this._resizeWidth(bodyWidth, headerWidth, 'header', true);
         }
+        this.fire('end-of-resize', { });
       }
     }, 10);
   }
@@ -393,6 +394,16 @@ class DtPaperDatatableApi {
     this.fire('tr-out', e.currentTarget);
   }
 
+  _findSelectableElement(rowData) {
+    const splittedSelectableDataKey = this.selectableDataKey.split('.');
+    let selectedRow = rowData;
+    splittedSelectableDataKey.forEach(selectableDataKey => {
+      selectedRow = selectedRow[selectableDataKey];
+    });
+
+    return selectedRow;
+  }
+
   _fillColumns() {
     const pgTrs = Polymer.dom(this.root).querySelectorAll('.paper-datatable-api-tr');
 
@@ -408,10 +419,12 @@ class DtPaperDatatableApi {
           paperCheckbox.rowData = rowData;
           paperCheckbox.rowIndex = i;
 
-          if (this.selectableDataKey !== undefined &&
-            rowData[this.selectableDataKey] !== undefined &&
-            this.selectedRows.indexOf(rowData[this.selectableDataKey]) !== -1) {
-            paperCheckbox.checked = true;
+          if (this.selectableDataKey !== undefined) {
+            const selectedRow = this._findSelectableElement(rowData);
+            if (selectedRow !== undefined
+              && this.selectedRows.indexOf(selectedRow) !== -1) {
+                paperCheckbox.checked = true;
+            }
           }
 
           Polymer.dom(tdSelectable).appendChild(paperCheckbox);
@@ -477,15 +490,18 @@ class DtPaperDatatableApi {
     const table = this.$$('table:not(#frozenHeaderTable)');
     const allTr = table.querySelectorAll('tbody tr');
     allTr.forEach((tr) => {
-      if (tr.rowData[this.selectableDataKey] === value) {
+
+      const selectedRow = this._findSelectableElement(tr.rowData);
+
+      if (selectedRow === value) {
         const checkbox = tr.querySelector('paper-checkbox');
         if (checkbox) {
           checkbox.checked = true;
 
           let rowId = checkbox.rowIndex;
           if (this.selectableDataKey !== undefined
-            && tr.rowData[this.selectableDataKey] !== undefined) {
-            rowId = tr.rowData[this.selectableDataKey];
+            && selectedRow !== undefined) {
+            rowId = selectedRow;
           }
           this.push('selectedRows', rowId);
           tr.classList.add('selected');
@@ -507,8 +523,12 @@ class DtPaperDatatableApi {
     const rowData = localTarget.rowData;
 
     let rowId = localTarget.rowIndex;
-    if (this.selectableDataKey !== undefined && rowData[this.selectableDataKey] !== undefined) {
-      rowId = rowData[this.selectableDataKey];
+
+    if (this.selectableDataKey !== undefined) {
+      const selectedRow = this._findSelectableElement(rowData);
+      if (selectedRow) {
+        rowId = selectedRow;
+      }
     }
 
     let eventData = {};
@@ -527,6 +547,7 @@ class DtPaperDatatableApi {
       };
       tr.classList.remove('selected');
     }
+
     /**
      * Fired when a row is selected.
      * @event selection-changed
@@ -836,6 +857,7 @@ class DtPaperDatatableApi {
     if (column.activeFilter) {
       const input = paperIconButton.parentNode.querySelector('paper-input');
       input.value = '';
+      input.previousValue = input.value;
       this._launchFilterEvent(input, column);
     }
     this._toggleFilter(column);

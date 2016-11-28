@@ -104,7 +104,9 @@ var DtPaperDatatableApi = function () {
          */
         selectedRows: {
           type: Array,
-          value: [],
+          value: function value() {
+            return [];
+          },
           notify: true
         },
         /**
@@ -219,6 +221,7 @@ var DtPaperDatatableApi = function () {
              */
             _this._resizeWidth(bodyWidth, headerWidth, 'header', true);
           }
+          _this.fire('end-of-resize', {});
         }
       }, 10);
     }
@@ -456,6 +459,17 @@ var DtPaperDatatableApi = function () {
       this.fire('tr-out', e.currentTarget);
     }
   }, {
+    key: '_findSelectableElement',
+    value: function _findSelectableElement(rowData) {
+      var splittedSelectableDataKey = this.selectableDataKey.split('.');
+      var selectedRow = rowData;
+      splittedSelectableDataKey.forEach(function (selectableDataKey) {
+        selectedRow = selectedRow[selectableDataKey];
+      });
+
+      return selectedRow;
+    }
+  }, {
     key: '_fillColumns',
     value: function _fillColumns() {
       var _this7 = this;
@@ -474,8 +488,11 @@ var DtPaperDatatableApi = function () {
             paperCheckbox.rowData = rowData;
             paperCheckbox.rowIndex = i;
 
-            if (_this7.selectableDataKey !== undefined && rowData[_this7.selectableDataKey] !== undefined && _this7.selectedRows.indexOf(rowData[_this7.selectableDataKey]) !== -1) {
-              paperCheckbox.checked = true;
+            if (_this7.selectableDataKey !== undefined) {
+              var selectedRow = _this7._findSelectableElement(rowData);
+              if (selectedRow !== undefined && _this7.selectedRows.indexOf(selectedRow) !== -1) {
+                paperCheckbox.checked = true;
+              }
             }
 
             Polymer.dom(tdSelectable).appendChild(paperCheckbox);
@@ -523,14 +540,20 @@ var DtPaperDatatableApi = function () {
             paperCheckbox.checked = true;
             _this8._selectChange(paperCheckbox);
           }
-        } else {
-          if (paperCheckbox.checked) {
-            paperCheckbox.checked = false;
-            _this8._selectChange(paperCheckbox);
-          }
+        } else if (paperCheckbox.checked) {
+          paperCheckbox.checked = false;
+          _this8._selectChange(paperCheckbox);
         }
       });
     }
+
+    /**
+     * Check the checkbox
+     *
+     * @property selectRow
+     * @param {String} value The value of the row following the selectableDatakey.
+     */
+
   }, {
     key: 'selectRow',
     value: function selectRow(value) {
@@ -538,16 +561,18 @@ var DtPaperDatatableApi = function () {
 
       var table = this.$$('table:not(#frozenHeaderTable)');
       var allTr = table.querySelectorAll('tbody tr');
-      console.log(value, allTr);
       allTr.forEach(function (tr) {
-        if (tr.rowData[_this9.selectableDataKey] === value) {
+
+        var selectedRow = _this9._findSelectableElement(tr.rowData);
+
+        if (selectedRow === value) {
           var checkbox = tr.querySelector('paper-checkbox');
           if (checkbox) {
             checkbox.checked = true;
 
             var rowId = checkbox.rowIndex;
-            if (_this9.selectableDataKey !== undefined && tr.rowData[_this9.selectableDataKey] !== undefined) {
-              rowId = tr.rowData[_this9.selectableDataKey];
+            if (_this9.selectableDataKey !== undefined && selectedRow !== undefined) {
+              rowId = selectedRow;
             }
             _this9.push('selectedRows', rowId);
             tr.classList.add('selected');
@@ -570,8 +595,12 @@ var DtPaperDatatableApi = function () {
       var rowData = localTarget.rowData;
 
       var rowId = localTarget.rowIndex;
-      if (this.selectableDataKey !== undefined && rowData[this.selectableDataKey] !== undefined) {
-        rowId = rowData[this.selectableDataKey];
+
+      if (this.selectableDataKey !== undefined) {
+        var selectedRow = this._findSelectableElement(rowData);
+        if (selectedRow) {
+          rowId = selectedRow;
+        }
       }
 
       var eventData = {};
@@ -590,6 +619,7 @@ var DtPaperDatatableApi = function () {
         };
         tr.classList.remove('selected');
       }
+
       /**
        * Fired when a row is selected.
        * @event selection-changed
@@ -944,6 +974,7 @@ var DtPaperDatatableApi = function () {
       if (column.activeFilter) {
         var input = paperIconButton.parentNode.querySelector('paper-input');
         input.value = '';
+        input.previousValue = input.value;
         this._launchFilterEvent(input, column);
       }
       this._toggleFilter(column);
