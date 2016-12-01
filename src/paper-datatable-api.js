@@ -339,9 +339,9 @@ class DtPaperDatatableApi {
     return (page * size) + 1;
   }
 
-  _computeCurrentMaxSize(page, size) {
+  _computeCurrentMaxSize(page, size, totalElements) {
     const maxSize = size * (page + 1);
-    return (maxSize > this.totalElements ? this.totalElements : maxSize);
+    return (maxSize > totalElements ? totalElements : maxSize);
   }
 
   _dataChanged(data) {

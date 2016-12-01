@@ -290,7 +290,7 @@ Custom property                                   | Description                 
                         </div>
                       </div>
                       <div class="status">
-                        [[_computeCurrentSize(page, size)]]-[[_computeCurrentMaxSize(page, size)]] [[localize('of')]] [[totalElements]]
+                        [[_computeCurrentSize(page, size)]]-[[_computeCurrentMaxSize(page, size, totalElements)]] [[localize('of')]] [[totalElements]]
                       </div>
                       <template is="dom-if" if="[[!_prevButtonEnabled(page)]]">
                         <paper-icon-button icon="chevron-left" disabled on-tap="_prevPage"></paper-icon-button>
@@ -337,7 +337,7 @@ Custom property                                   | Description                 
                         </div>
                       </div>
                       <div class="status">
-                        [[_computeCurrentSize(page, size)]]-[[_computeCurrentMaxSize(page, size)]] [[localize('of')]] [[totalElements]]
+                        [[_computeCurrentSize(page, size)]]-[[_computeCurrentMaxSize(page, size, totalElements)]] [[localize('of')]] [[totalElements]]
                       </div>
                       <template is="dom-if" if="[[!_prevButtonEnabled(page)]]">
                         <paper-icon-button icon="chevron-left" disabled on-tap="_prevPage"></paper-icon-button>

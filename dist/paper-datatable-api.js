@@ -388,9 +388,9 @@ var DtPaperDatatableApi = function () {
     }
   }, {
     key: '_computeCurrentMaxSize',
-    value: function _computeCurrentMaxSize(page, size) {
+    value: function _computeCurrentMaxSize(page, size, totalElements) {
       var maxSize = size * (page + 1);
-      return maxSize > this.totalElements ? this.totalElements : maxSize;
+      return maxSize > totalElements ? totalElements : maxSize;
     }
   }, {
     key: '_dataChanged',
