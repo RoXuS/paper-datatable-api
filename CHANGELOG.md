@@ -1,5 +1,8 @@
 # Change Log
 
+## [v0.1.16](https://github.com/RoXuS/paper-datatable-api/tree/0.1.16) (2016-12-02)
+- Fix current max size ([commit](https://github.com/RoXuS/iron-multi-ajax/commit/0d90d4d))
+
 ## [v0.1.15](https://github.com/RoXuS/paper-datatable-api/tree/0.1.15) (2016-10-28)
 - Use the last version of app-localize-behavior ([commit](https://github.com/RoXuS/iron-multi-ajax/commit/3e8bede))
 
