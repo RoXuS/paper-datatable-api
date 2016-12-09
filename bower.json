@@ -1,6 +1,6 @@
 {
   "name": "paper-datatable-api",
-  "version": "0.1.17",
+  "version": "0.1.18",
   "description": "A material design implementation of a data table",
   "authors": [
     "Julien Rousseau <RoXuS>"
