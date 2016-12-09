@@ -29,8 +29,8 @@
     "paper-listbox": "PolymerElements/paper-listbox#^1.1.2",
     "iron-resizable-behavior": "PolymerElements/iron-resizable-behavior#^1.0.3",
     "paper-checkbox": "PolymerElements/paper-checkbox#^1.2.1",
-    "app-localize-behavior": "PolymerElements/app-localize-behavior#^0.9.1",
-    "vaadin-date-picker": "^1.1.2"
+    "app-localize-behavior": "PolymerElements/app-localize-behavior#^0.10.0",
+    "vaadin-date-picker": "1.1.2"
   },
   "devDependencies": {
     "paper-menu-button": "PolymerElements/paper-menu-button#^1.1.1",
@@ -46,11 +46,11 @@
     "polymerfire": "firebase/polymerfire#^0.9.3"
   },
   "homepage": "https://github.com/RoXuS/paper-datatable-api",
-  "_release": "3c3b88f343",
+  "_release": "ad0e5e501e",
   "_resolution": {
     "type": "branch",
     "branch": "master",
-    "commit": "3c3b88f343441b28fefa5241ecee7fefdbdece48"
+    "commit": "ad0e5e501ed4a5646e7d023b685f4665224a283e"
   },
   "_source": "https://github.com/RoXuS/paper-datatable-api.git",
   "_target": "master",

@@ -54,7 +54,6 @@ If you want to replace the default input field with a custom implementation, you
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../iron-dropdown/iron-dropdown.html">
 <link rel="import" href="../paper-input/paper-input-container.html">
-<link rel="import" href="../paper-input/paper-input-error.html">
 <link rel="import" href="../iron-input/iron-input.html">
 <link rel="import" href="../iron-icon/iron-icon.html">
 <link rel="import" href="../iron-icons/iron-icons.html">
@@ -89,7 +88,6 @@ If you want to replace the default input field with a custom implementation, you
       }
 
       paper-input-container div[suffix] {
-        box-sizing: content-box;
         position: absolute;
         right: -4px;
         bottom: -4px;
@@ -176,11 +174,11 @@ If you want to replace the default input field with a custom implementation, you
           tabindex="-1"
           type="text"
           on-focus="_focus"
-          on-keydown="_onKeyDown"
           name$="[[name]]"
           invalid="{{invalid}}"
           required$="[[required]]"
           validator="[[validator]]"
+          readonly$="[[readonly]]"
           disabled$="[[disabled]]" />
       <div suffix id="clear" on-tap="_clear">
         <iron-icon icon="clear"></iron-icon>
@@ -190,9 +188,6 @@ If you want to replace the default input field with a custom implementation, you
         <iron-icon icon="event"></iron-icon>
         <paper-ripple class="circle" center></paper-ripple>
       </div>
-      <template is="dom-if" if="[[errorMessage]]">
-        <paper-input-error aria-live="assertive">[[errorMessage]]</paper-input-error>
-      </template>
     </paper-input-container>
 
     <iron-dropdown
@@ -255,12 +250,7 @@ If you want to replace the default input field with a custom implementation, you
           type: Boolean,
           value: false,
           reflectToAttribute: true
-        },
-
-        /**
-         * The error message to display when the input is invalid.
-         */
-        errorMessage: String
+        }
       },
 
       // TODO: revisit this in order to use validatable-behavior for both the full and
@@ -286,18 +276,6 @@ If you want to replace the default input field with a custom implementation, you
 
       _tabindex: function(disabled) {
         return disabled ? -1 : 0;
-      },
-
-      _onKeyDown: function(e) {
-        // The input element cannot be readonly as it would conflict with
-        // the required attribute. Both are not allowed on an input element.
-        // Therefore we prevent default on most keydown events.
-        var allowedKeys = [
-          9 // tab
-        ];
-        if (allowedKeys.indexOf(e.keyCode) === -1) {
-          e.preventDefault();
-        }
       },
 
       _input: function() {

@@ -23,10 +23,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <!-- Intl polyfill -->
   <script src="../../intl/dist/Intl.min.js"></script>
   <script src="../../intl/locale-data/jsonp/en.js"></script>
+  <script src="../../intl/locale-data/jsonp/fr.js"></script>
 
   <link rel="import" href="x-translate.html">
   <link rel="import" href="x-translate2.html">
   <link rel="import" href="x-translate-only-imperative.html">
+  <link rel="import" href="x-translate-l10n.html">
 
 </head>
 <body>
@@ -34,6 +36,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <test-fixture id="basic">
     <template>
       <x-translate></x-translate>
+    </template>
+  </test-fixture>
+
+  <test-fixture id="missing">
+    <template>
+      <x-translate use-key-if-missing></x-translate>
     </template>
   </test-fixture>
 
@@ -52,6 +60,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <test-fixture id="only-imperative">
     <template>
       <x-translate-only-imperative></x-translate-only-imperative>
+    </template>
+  </test-fixture>
+
+   <test-fixture id="l10n">
+    <template>
+      <x-translate-l10n></x-translate-l10n>
     </template>
   </test-fixture>
 
@@ -78,10 +92,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         assert.equal(app.language, 'en');
         assert.equal(app.$.output.innerHTML, 'hello');
+        assert.equal(app.$.missing.innerHTML, '');
 
         app.language = 'fr';
         assert.equal(app.language, 'fr');
         assert.equal(app.$.output.innerHTML, 'bonjour');
+      });
+
+      test('can handle missing keys', function() {
+        var app = fixture('missing');
+
+        assert.equal(app.language, 'en');
+        assert.equal(app.$.missing.innerHTML, 'missing');
+
+        app.language = 'fr';
+        assert.equal(app.language, 'fr');
+        assert.equal(app.$.missing.innerHTML, 'missing');
       });
 
       test('can translate a string with a parameter', function() {
@@ -93,6 +119,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         app.language = 'fr';
         assert.equal(app.language, 'fr');
         assert.equal(app.$.output.innerHTML, 'je m\'apelle batman. j\'ai 3 chats.');
+      });
+
+      test('can localize a currency', function() {
+        var app = fixture('l10n');
+
+        app.language = 'fr';
+
+        // Note: In French, on Edge and everything else, format.js seems to
+        // behave differently - in not-edge, the result is "10 $US", in Edge
+        // it's just 10$. This isn't something we control, so check the string
+        // is mostly right.
+        assert.equal(app.$.output.innerHTML.indexOf('Tout est à 10,00&nbsp;$'), 0);
+        
+        app.language = 'en';
+        assert.equal(app.$.output.innerHTML, 'Everything is $10.00');
+
       });
 
       test('can translate strings imperatively', function() {
@@ -112,6 +154,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         assert.equal(app1.localize('greeting'), 'bonjour');
         assert.equal(app2.localize('intro', 'name', 'robin', 'numCats', 17), 'je m\'apelle robin. j\'ai 17 chats.');
       });
+
+      test('doesnt explode if language not loaded', function() {
+        var app = fixture('basic');
+
+        app.language = 'fake';
+
+        assert.equal(app.localize('greeting'), undefined);
+      });
     });
 
     suite('external resources', function() {
@@ -123,7 +173,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // Keep the tests independent by resetting the internal cache.
         resetRequestsCache(app);
 
-        app.addEventListener('app-resources-loaded', function() {
+        app.addEventListener('app-localize-resources-loaded', function() {
           assert.equal(app.language, 'en');
           assert.equal(app.$.output.innerHTML, 'hello');
 
@@ -143,7 +193,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // Keep the tests independent by resetting the internal cache.
         resetRequestsCache(app);
 
-        app.addEventListener('app-resources-loaded', function() {
+        app.addEventListener('app-localize-resources-loaded', function() {
           assert.equal(app.language, 'en');
           assert.equal(app.$.output.innerHTML, 'my name is batman. i have 3 cats.');
 
@@ -165,7 +215,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         resetRequestsCache(app1);
         resetRequestsCache(app2);
 
-        app1.addEventListener('app-resources-loaded', function() {
+        app1.addEventListener('app-localize-resources-loaded', function() {
           assert.equal(app1.language, 'en');
           assert.equal(app2.language, 'en');
           assert.equal(app1.localize('greeting'), 'hello');
@@ -205,7 +255,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         assert.equal(0, Object.keys(getRequestsCache(app3)).length);
 
         // Once the first file has been loaded, it should be the only thing in the cache.
-        app1.addEventListener('app-resources-loaded', function() {
+        app1.addEventListener('app-localize-resources-loaded', function() {
           assert.equal(1, Object.keys(getRequestsCache(app1)).length, 'there is 1 request cached in app1');
           assert.equal(1, Object.keys(getRequestsCache(app2)).length, 'there is 1 request cached in app2');
           assert.equal(1, Object.keys(getRequestsCache(app3)).length, 'there is 1 request cached in app3');
@@ -215,7 +265,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           assert.equal(app1.resources['fr']['greeting'], 'bonjour');
 
           // Loading the second file should not make an iron-ajax request, and re-use the one in the cache.
-          app2.addEventListener('app-resources-loaded', function() {
+          app2.addEventListener('app-localize-resources-loaded', function() {
             assert.equal(1, Object.keys(getRequestsCache(app1)).length, 'there is 1 request cached in app1');
             assert.equal(1, Object.keys(getRequestsCache(app2)).length, 'there is 1 request cached in app2');
             assert.equal(1, Object.keys(getRequestsCache(app3)).length, 'there is 1 request cached in app3');
@@ -225,7 +275,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             assert.equal(app2.resources['fr']['greeting'], 'bonjour');
 
             // Loading the third file should not make an iron-ajax request, and re-use the one in the cache.
-            app3.addEventListener('app-resources-loaded', function() {
+            app3.addEventListener('app-localize-resources-loaded', function() {
               assert.equal(1, Object.keys(getRequestsCache(app1)).length, 'there is 1 request cached in app1');
               assert.equal(1, Object.keys(getRequestsCache(app2)).length, 'there is 1 request cached in app2');
               assert.equal(1, Object.keys(getRequestsCache(app3)).length, 'there is 1 request cached in app3');
@@ -260,7 +310,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var path2 = app1.resolveUrl('locales2.json');
 
         // Once the first file has been loaded, it should be the only thing in the cache.
-        app1.addEventListener('app-resources-loaded', function() {
+        app1.addEventListener('app-localize-resources-loaded', function() {
           assert.equal(1, Object.keys(getRequestsCache(app1)).length, 'there is 1 request cached in app1');
           assert.equal(1, Object.keys(getRequestsCache(app2)).length, 'there is 1 request cached in app2');
 
@@ -269,7 +319,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           assert.equal(app1.resources['fr']['greeting'], 'bonjour');
 
           // Loading a different file should make a different ajax request.
-          app2.addEventListener('app-resources-loaded', function() {
+          app2.addEventListener('app-localize-resources-loaded', function() {
             assert.equal(2, Object.keys(getRequestsCache(app1)).length, 'there are 2 requests cached in app1');
             assert.equal(2, Object.keys(getRequestsCache(app2)).length, 'there are 2 requests cached in app2');
 

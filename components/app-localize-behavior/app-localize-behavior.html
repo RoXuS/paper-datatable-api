@@ -100,14 +100,14 @@ Polymer.AppLocalizeBehavior = {
    * If the element is using `pathToResources` to load an external resources
    * file, fired when the file has been loaded.
    *
-   * @event app-resources-loaded
+   * @event app-localize-resources-loaded
    */
 
   /**
    * If the element is using `pathToResources` to load an external resources
    * file, fired when the file cannot be loaded due to an error.
    *
-   * @event app-resources-error
+   * @event app-localize-resources-error
    */
 
   properties: {
@@ -154,6 +154,15 @@ Polymer.AppLocalizeBehavior = {
     formats: {
       type: Object,
       value: function() { return {} }
+    },
+
+    /**
+     * If true, will use the provided key when
+     * the translation does not exist for that key.
+     */
+    useKeyIfMissing: {
+      type: Boolean,
+      value: false
     },
 
     /**
@@ -205,35 +214,41 @@ Polymer.AppLocalizeBehavior = {
 
     return function() {
       var key = arguments[0];
-      if (!key || !resources || !language)
+      if (!key || !resources || !language || !resources[language])
         return;
 
       // Cache the key/value pairs for the same language, so that we don't
       // do extra work if we're just reusing strings across an application.
-      var messageKey = key + resources[language][key];
-      var msg = proto.__localizationCache.messages[messageKey];
+      var translatedValue = resources[language][key];
 
-      if (!msg) {
-        msg = new IntlMessageFormat(resources[language][key], language, formats);
-        proto.__localizationCache.messages[messageKey] = msg;
+      if (!translatedValue) {
+        return this.useKeyIfMissing ? key : '';
+      }
+
+      var messageKey = key + translatedValue;
+      var translatedMessage = proto.__localizationCache.messages[messageKey];
+
+      if (!translatedMessage) {
+        translatedMessage = new IntlMessageFormat(translatedValue, language, formats);
+        proto.__localizationCache.messages[messageKey] = translatedMessage;
       }
 
       var args = {};
-      for (var i = 1; i < arguments.length; i+=2) {
+      for (var i = 1; i < arguments.length; i += 2) {
         args[arguments[i]] = arguments[i+1];
       }
 
-      return msg.format(args);
+      return translatedMessage.format(args);
     };
   },
 
   __onRequestResponse: function(event) {
     this.resources = event.response;
-    this.fire('app-resources-loaded');
+    this.fire('app-localize-resources-loaded');
   },
 
   __onRequestError: function(event) {
-    this.fire('app-resources-error');
+    this.fire('app-localize-resources-error');
   }
 }
 

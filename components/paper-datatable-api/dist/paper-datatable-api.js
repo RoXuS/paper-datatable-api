@@ -104,7 +104,10 @@ var DtPaperDatatableApi = function () {
          */
         selectedRows: {
           type: Array,
-          value: []
+          value: function value() {
+            return [];
+          },
+          notify: true
         },
         /**
          * If it is setted, the selected rows are persistant (throught the pages).
@@ -189,54 +192,59 @@ var DtPaperDatatableApi = function () {
     /** Frozen Mode **/
 
     value: function _resizeHeader() {
-      if (this.frozenHeader) {
-        var bodyWidth = this._getTbodyWidths();
-        var headerWidth = this._getTheadWidths();
+      var _this = this;
 
-        if (headerWidth && bodyWidth) {
-          /**
-           * Set all width to auto.
-           */
-          this._resizeAllWidthToAuto(bodyWidth);
-          /**
-           * Resize header width following body width.
-           */
-          this._resizeWidth(bodyWidth, headerWidth, 'header');
-          bodyWidth = this._getTbodyWidths();
-          headerWidth = this._getTheadWidths();
-          /**
-           * Resize body width following header width.
-           */
-          this._resizeWidth(headerWidth, bodyWidth, 'body');
-          bodyWidth = this._getTbodyWidths();
-          headerWidth = this._getTheadWidths();
-          /**
-           * Reajust header width with the new width of body.
-           */
-          this._resizeWidth(bodyWidth, headerWidth, 'header', true);
+      this.async(function () {
+        if (_this.frozenHeader) {
+          var bodyWidth = _this._getTbodyWidths();
+          var headerWidth = _this._getTheadWidths();
+
+          if (headerWidth && bodyWidth) {
+            /**
+             * Set all width to auto.
+             */
+            _this._resizeAllWidthToAuto(bodyWidth);
+            /**
+             * Resize header width following body width.
+             */
+            _this._resizeWidth(bodyWidth, headerWidth, 'header');
+            bodyWidth = _this._getTbodyWidths();
+            headerWidth = _this._getTheadWidths();
+            /**
+             * Resize body width following header width.
+             */
+            _this._resizeWidth(headerWidth, bodyWidth, 'body');
+            bodyWidth = _this._getTbodyWidths();
+            headerWidth = _this._getTheadWidths();
+            /**
+             * Reajust header width with the new width of body.
+             */
+            _this._resizeWidth(bodyWidth, headerWidth, 'header', true);
+          }
+          _this.fire('end-of-resize', {});
         }
-      }
+      }, 10);
     }
   }, {
     key: '_resizeAllWidthToAuto',
     value: function _resizeAllWidthToAuto(bodyWidth) {
-      var _this = this;
+      var _this2 = this;
 
       bodyWidth.forEach(function (bodyTrWidth, index) {
-        _this._resizeTd('auto', index, 'header');
-        _this._resizeTd('auto', index, 'body');
+        _this2._resizeTd('auto', index, 'header');
+        _this2._resizeTd('auto', index, 'body');
       });
     }
   }, {
     key: '_resizeWidth',
     value: function _resizeWidth(iterateArray, arrayWidth, type) {
-      var _this2 = this;
+      var _this3 = this;
 
       var force = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
 
       iterateArray.forEach(function (width, index) {
         if (width > arrayWidth[index] || force) {
-          _this2._resizeTd(width, index, type);
+          _this3._resizeTd(width, index, type);
         }
       });
     }
@@ -286,17 +294,19 @@ var DtPaperDatatableApi = function () {
         allTheadTrTh = this.$$('#frozenHeaderTable thead tr').querySelectorAll('th');
       }
 
-      var paddingLeftPx = window.getComputedStyle(allTheadTrTh[columnIndex]).paddingLeft;
-      var paddingLeft = paddingLeftPx.split('px')[0];
-      var paddingRightPx = window.getComputedStyle(allTheadTrTh[columnIndex]).paddingRight;
-      var paddingRight = paddingRightPx.split('px')[0];
-      var horizontalPadding = parseInt(paddingRight, 10) + parseInt(paddingLeft, 10);
+      if (allTheadTrTh.length > 0) {
+        var paddingLeftPx = window.getComputedStyle(allTheadTrTh[columnIndex]).paddingLeft;
+        var paddingLeft = paddingLeftPx.split('px')[0];
+        var paddingRightPx = window.getComputedStyle(allTheadTrTh[columnIndex]).paddingRight;
+        var paddingRight = paddingRightPx.split('px')[0];
+        var horizontalPadding = parseInt(paddingRight, 10) + parseInt(paddingLeft, 10);
 
-      if (size !== 'auto' && size - horizontalPadding !== 0) {
-        var sizeWithoutPad = size - horizontalPadding;
-        Polymer.dom(allTheadTrTh[columnIndex]).firstElementChild.style.width = sizeWithoutPad + 'px';
-      } else if (size === 'auto') {
-        Polymer.dom(allTheadTrTh[columnIndex]).firstElementChild.style.width = 'auto';
+        if (size !== 'auto' && size - horizontalPadding !== 0) {
+          var sizeWithoutPad = size - horizontalPadding;
+          Polymer.dom(allTheadTrTh[columnIndex]).firstElementChild.style.width = sizeWithoutPad + 'px';
+        } else if (size === 'auto') {
+          Polymer.dom(allTheadTrTh[columnIndex]).firstElementChild.style.width = 'auto';
+        }
       }
     }
   }, {
@@ -378,18 +388,22 @@ var DtPaperDatatableApi = function () {
     }
   }, {
     key: '_computeCurrentMaxSize',
-    value: function _computeCurrentMaxSize(page, size) {
+    value: function _computeCurrentMaxSize(page, size, totalElements) {
       var maxSize = size * (page + 1);
-      return maxSize > this.totalElements ? this.totalElements : maxSize;
+      return maxSize > totalElements ? totalElements : maxSize;
     }
   }, {
     key: '_dataChanged',
     value: function _dataChanged(data) {
-      this._removeRows();
-      this._fillRows(data);
-      this._fillColumns();
-      this._resizeHeader();
-      this._footerPositionChange(this.footerPosition);
+      var _this4 = this;
+
+      this.async(function () {
+        _this4._removeRows();
+        _this4._fillRows(data);
+        _this4._fillColumns();
+        _this4._resizeHeader();
+        _this4._footerPositionChange(_this4.footerPosition);
+      });
     }
   }, {
     key: '_pageChanged',
@@ -399,28 +413,30 @@ var DtPaperDatatableApi = function () {
   }, {
     key: '_removeRows',
     value: function _removeRows() {
-      var _this3 = this;
+      var _this5 = this;
 
       var pgTrs = Polymer.dom(this.root).querySelectorAll('.paper-datatable-api-tr');
       pgTrs.forEach(function (pgTr) {
-        return Polymer.dom(_this3.$$('tbody')).removeChild(pgTr);
+        return Polymer.dom(_this5.$$('tbody')).removeChild(pgTr);
       });
     }
   }, {
     key: '_fillRows',
     value: function _fillRows(data) {
-      var _this4 = this;
+      var _this6 = this;
 
-      data.forEach(function (rowData) {
-        var trLocal = document.createElement('tr');
-        trLocal.rowData = rowData;
-        trLocal.className = 'paper-datatable-api-tr';
+      if (data) {
+        data.forEach(function (rowData) {
+          var trLocal = document.createElement('tr');
+          trLocal.rowData = rowData;
+          trLocal.className = 'paper-datatable-api-tr';
 
-        _this4.listen(trLocal, 'mouseover', 'onOverTr');
-        _this4.listen(trLocal, 'mouseout', 'onOutTr');
+          _this6.listen(trLocal, 'mouseover', 'onOverTr');
+          _this6.listen(trLocal, 'mouseout', 'onOutTr');
 
-        Polymer.dom(_this4.$$('tbody')).appendChild(trLocal);
-      });
+          Polymer.dom(_this6.$$('tbody')).appendChild(trLocal);
+        });
+      }
     }
   }, {
     key: 'onOverTd',
@@ -443,26 +459,40 @@ var DtPaperDatatableApi = function () {
       this.fire('tr-out', e.currentTarget);
     }
   }, {
+    key: '_findSelectableElement',
+    value: function _findSelectableElement(rowData) {
+      var splittedSelectableDataKey = this.selectableDataKey.split('.');
+      var selectedRow = rowData;
+      splittedSelectableDataKey.forEach(function (selectableDataKey) {
+        selectedRow = selectedRow[selectableDataKey];
+      });
+
+      return selectedRow;
+    }
+  }, {
     key: '_fillColumns',
     value: function _fillColumns() {
-      var _this5 = this;
+      var _this7 = this;
 
       var pgTrs = Polymer.dom(this.root).querySelectorAll('.paper-datatable-api-tr');
 
       pgTrs.forEach(function (pgTr, i) {
         var rowData = pgTr.rowData;
 
-        _this5._columns.forEach(function (paperDatatableApiColumn, p) {
-          if (_this5.selectable && p === _this5.checkboxColumnPosition) {
+        _this7._columns.forEach(function (paperDatatableApiColumn, p) {
+          if (_this7.selectable && p === _this7.checkboxColumnPosition) {
             var tdSelectable = document.createElement('td');
             tdSelectable.className = 'selectable';
             var paperCheckbox = document.createElement('paper-checkbox');
-            _this5.listen(paperCheckbox, 'change', '_selectChange');
+            _this7.listen(paperCheckbox, 'change', '_selectChange');
             paperCheckbox.rowData = rowData;
             paperCheckbox.rowIndex = i;
 
-            if (_this5.selectableDataKey !== undefined && rowData[_this5.selectableDataKey] !== undefined && _this5.selectedRows.indexOf(rowData[_this5.selectableDataKey]) !== -1) {
-              paperCheckbox.checked = true;
+            if (_this7.selectableDataKey !== undefined) {
+              var selectedRow = _this7._findSelectableElement(rowData);
+              if (selectedRow !== undefined && _this7.selectedRows.indexOf(selectedRow) !== -1) {
+                paperCheckbox.checked = true;
+              }
             }
 
             Polymer.dom(tdSelectable).appendChild(paperCheckbox);
@@ -470,11 +500,11 @@ var DtPaperDatatableApi = function () {
             Polymer.dom.flush();
           }
 
-          var valueFromRowData = _this5._extractData(rowData, paperDatatableApiColumn.property);
+          var valueFromRowData = _this7._extractData(rowData, paperDatatableApiColumn.property);
 
           var otherPropertiesValue = {};
           paperDatatableApiColumn.otherProperties.forEach(function (property) {
-            otherPropertiesValue[property] = _this5._extractData(rowData, property);
+            otherPropertiesValue[property] = _this7._extractData(rowData, property);
           });
 
           var tdLocal = document.createElement('td');
@@ -482,8 +512,8 @@ var DtPaperDatatableApi = function () {
             tdLocal.classList.add('customTd');
           }
 
-          _this5.listen(tdLocal, 'mouseover', 'onOverTd');
-          _this5.listen(tdLocal, 'mouseout', 'onOutTd');
+          _this7.listen(tdLocal, 'mouseover', 'onOverTd');
+          _this7.listen(tdLocal, 'mouseout', 'onOutTd');
 
           var template = paperDatatableApiColumn.fillTemplate(valueFromRowData, otherPropertiesValue);
 
@@ -499,19 +529,54 @@ var DtPaperDatatableApi = function () {
   }, {
     key: '_selectAllCheckbox',
     value: function _selectAllCheckbox(event) {
-      var _this6 = this;
+      var _this8 = this;
 
       var localTarget = Polymer.dom(event).localTarget;
       var allPaperCheckbox = Polymer.dom(this.root).querySelectorAll('tbody tr td paper-checkbox');
       allPaperCheckbox.forEach(function (paperCheckboxParams) {
         var paperCheckbox = paperCheckboxParams;
         if (localTarget.checked) {
-          paperCheckbox.checked = true;
-        } else {
+          if (!paperCheckbox.checked) {
+            paperCheckbox.checked = true;
+            _this8._selectChange(paperCheckbox);
+          }
+        } else if (paperCheckbox.checked) {
           paperCheckbox.checked = false;
+          _this8._selectChange(paperCheckbox);
         }
+      });
+    }
 
-        _this6._selectChange(paperCheckbox);
+    /**
+     * Check the checkbox
+     *
+     * @property selectRow
+     * @param {String} value The value of the row following the selectableDatakey.
+     */
+
+  }, {
+    key: 'selectRow',
+    value: function selectRow(value) {
+      var _this9 = this;
+
+      var table = this.$$('table:not(#frozenHeaderTable)');
+      var allTr = table.querySelectorAll('tbody tr');
+      allTr.forEach(function (tr) {
+        var selectedRow = _this9._findSelectableElement(tr.rowData);
+
+        if (selectedRow === value) {
+          var checkbox = tr.querySelector('paper-checkbox');
+          if (checkbox) {
+            checkbox.checked = true;
+
+            var rowId = checkbox.rowIndex;
+            if (_this9.selectableDataKey !== undefined && selectedRow !== undefined) {
+              rowId = selectedRow;
+            }
+            _this9.push('selectedRows', rowId);
+            tr.classList.add('selected');
+          }
+        }
       });
     }
   }, {
@@ -529,8 +594,12 @@ var DtPaperDatatableApi = function () {
       var rowData = localTarget.rowData;
 
       var rowId = localTarget.rowIndex;
-      if (this.selectableDataKey !== undefined && rowData[this.selectableDataKey] !== undefined) {
-        rowId = rowData[this.selectableDataKey];
+
+      if (this.selectableDataKey !== undefined) {
+        var selectedRow = this._findSelectableElement(rowData);
+        if (selectedRow) {
+          rowId = selectedRow;
+        }
       }
 
       var eventData = {};
@@ -549,6 +618,7 @@ var DtPaperDatatableApi = function () {
         };
         tr.classList.remove('selected');
       }
+
       /**
        * Fired when a row is selected.
        * @event selection-changed
@@ -600,25 +670,25 @@ var DtPaperDatatableApi = function () {
   }, {
     key: 'toggleColumn',
     value: function toggleColumn(columnPosition) {
-      var _this7 = this;
+      var _this10 = this;
 
       var column = this._columns[columnPosition];
       if (column && column.hideable) {
         (function () {
           var isHidden = column.hidden;
-          var indexColumn = _this7.selectable ? columnPosition + 2 : columnPosition + 1;
+          var indexColumn = _this10.selectable ? columnPosition + 2 : columnPosition + 1;
           var cssQuery = 'tr th:nth-of-type(' + indexColumn + '), tr td:nth-of-type(' + indexColumn + ')';
-          Polymer.dom(_this7.root).querySelectorAll(cssQuery).forEach(function (tdThParams) {
+          Polymer.dom(_this10.root).querySelectorAll(cssQuery).forEach(function (tdThParams) {
             var tdTh = tdThParams;
             tdTh.style.display = isHidden ? 'table-cell' : 'none';
           });
 
           column.hidden = !isHidden;
-          var toggleColumnIndex = _this7.toggleColumns.findIndex(function (toggleColumn) {
+          var toggleColumnIndex = _this10.toggleColumns.findIndex(function (toggleColumn) {
             return toggleColumn.position === columnPosition;
           });
 
-          _this7.set('toggleColumns.' + toggleColumnIndex + '.hidden', !isHidden);
+          _this10.set('toggleColumns.' + toggleColumnIndex + '.hidden', !isHidden);
         })();
       }
       this._resizeHeader();
@@ -745,7 +815,7 @@ var DtPaperDatatableApi = function () {
   }, {
     key: '_handleActiveFilterChange',
     value: function _handleActiveFilterChange(event) {
-      var _this8 = this;
+      var _this11 = this;
 
       var parentDiv = event.currentTarget.parentNode;
       this.async(function () {
@@ -756,7 +826,7 @@ var DtPaperDatatableApi = function () {
           var datePicker = parentDiv.querySelector('vaadin-date-picker-light');
           if (datePicker) {
             paperInput = datePicker.querySelector('paper-input');
-            datePicker.i18n = _this8.localeDatePicker;
+            datePicker.i18n = _this11.localeDatePicker;
           }
         }
       });
@@ -764,16 +834,16 @@ var DtPaperDatatableApi = function () {
   }, {
     key: '_handlePaperInputChange',
     value: function _handlePaperInputChange(event) {
-      var _this9 = this;
+      var _this12 = this;
 
       var column = event.model.column;
       var input = event.currentTarget;
 
       this.async(function () {
         if (input.value !== '') {
-          _this9._launchFilterEvent(input, column);
+          _this12._launchFilterEvent(input, column);
         } else if (!input.focused) {
-          _this9._toggleFilter(column);
+          _this12._toggleFilter(column);
         }
       });
     }
@@ -786,14 +856,14 @@ var DtPaperDatatableApi = function () {
   }, {
     key: '_handleVaadinDatePickerLight',
     value: function _handleVaadinDatePickerLight(event) {
-      var _this10 = this;
+      var _this13 = this;
 
       var column = event.model.column;
       var input = event.currentTarget;
 
       this.async(function () {
         if (input.value !== '') {
-          _this10._launchFilterEvent(input, column);
+          _this13._launchFilterEvent(input, column);
         }
       });
     }
@@ -822,7 +892,7 @@ var DtPaperDatatableApi = function () {
   }, {
     key: 'activeFilter',
     value: function activeFilter(column, value) {
-      var _this11 = this;
+      var _this14 = this;
 
       if (column) {
         var columnIndex = this._columns.findIndex(function (_column) {
@@ -838,7 +908,7 @@ var DtPaperDatatableApi = function () {
         });
         this._resizeHeader();
         this.async(function () {
-          var paperInput = Polymer.dom(_this11.root).querySelector('thead th[property="' + column.property + '"] paper-input');
+          var paperInput = Polymer.dom(_this14.root).querySelector('thead th[property="' + column.property + '"] paper-input');
           if (paperInput !== null) {
             paperInput.value = value;
           }
@@ -857,7 +927,7 @@ var DtPaperDatatableApi = function () {
   }, {
     key: 'toggleFilter',
     value: function toggleFilter(column, value) {
-      var _this12 = this;
+      var _this15 = this;
 
       if (column) {
         this._toggleFilter(column);
@@ -870,7 +940,7 @@ var DtPaperDatatableApi = function () {
         });
         this._resizeHeader();
         this.async(function () {
-          var paperInput = Polymer.dom(_this12.root).querySelector('thead th[property="' + column.property + '"] paper-input');
+          var paperInput = Polymer.dom(_this15.root).querySelector('thead th[property="' + column.property + '"] paper-input');
           if (paperInput !== null) {
             paperInput.value = value;
           }
@@ -903,6 +973,7 @@ var DtPaperDatatableApi = function () {
       if (column.activeFilter) {
         var input = paperIconButton.parentNode.querySelector('paper-input');
         input.value = '';
+        input.previousValue = input.value;
         this._launchFilterEvent(input, column);
       }
       this._toggleFilter(column);
@@ -910,7 +981,7 @@ var DtPaperDatatableApi = function () {
   }, {
     key: '_handleKeyDownInput',
     value: function _handleKeyDownInput(event) {
-      var _this13 = this;
+      var _this16 = this;
 
       var column = event.model.column;
       var input = event.currentTarget;
@@ -922,7 +993,7 @@ var DtPaperDatatableApi = function () {
           clearTimeout(this.timeoutFilter);
           this.timeoutFilter = setTimeout(function () {
             if (input.previousValue !== input.value) {
-              _this13._launchFilterEvent(input, column);
+              _this16._launchFilterEvent(input, column);
             }
             input.previousValue = input.value;
           }, 1000);

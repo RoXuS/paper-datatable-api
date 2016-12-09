@@ -1,6 +1,26 @@
 # Change Log
 
-## [v0.1.12](https://github.com/RoXuS/paper-datatable-api/tree/0.1.11) (2016-10-18)
+## [v0.1.18](https://github.com/RoXuS/paper-datatable-api/tree/0.1.18) (2016-12-09)
+- Fix width of header ([commit](https://github.com/RoXuS/paper-datatable-api/commit/265f1ab))
+- Fix vaadia-date-picker-version ([commit](https://github.com/RoXuS/paper-datatable-api/commit/1a8efac))
+
+## [v0.1.17](https://github.com/RoXuS/paper-datatable-api/tree/0.1.17) (2016-12-09)
+- Fix frozen header mode ([commit](https://github.com/RoXuS/paper-datatable-api/commit/fbca531))
+
+## [v0.1.16](https://github.com/RoXuS/paper-datatable-api/tree/0.1.16) (2016-12-02)
+- Fix current max size ([commit](https://github.com/RoXuS/paper-datatable-api/commit/0d90d4d))
+
+## [v0.1.15](https://github.com/RoXuS/paper-datatable-api/tree/0.1.15) (2016-10-28)
+- Use the last version of app-localize-behavior ([commit](https://github.com/RoXuS/paper-datatable-api/commit/3e8bede))
+
+## [v0.1.14](https://github.com/RoXuS/paper-datatable-api/tree/0.1.14) (2016-10-28)
+- Fix eslint error ([commit](https://github.com/RoXuS/paper-datatable-api/commit/c4e6202))
+- Fix some graphical issues ([commit](https://github.com/RoXuS/paper-datatable-api/commit/b89e676))
+
+## [v0.1.13](https://github.com/RoXuS/paper-datatable-api/tree/0.1.13) (2016-10-27)
+- Add selectRow method, some fixed ([commit](https://github.com/RoXuS/paper-datatable-api/commit/c55a0ae))
+
+## [v0.1.12](https://github.com/RoXuS/paper-datatable-api/tree/0.1.12) (2016-10-18)
 - Fix eslint errors ([commit](https://github.com/RoXuS/paper-datatable-api/commit/caa721d))
 - Add two public function to active/toggle a filter ([commit](https://github.com/RoXuS/paper-datatable-api/commit/5d4e5be))
 

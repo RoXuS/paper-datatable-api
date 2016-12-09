@@ -41,7 +41,7 @@
     "tag": "v1.1.2",
     "commit": "b0fde50f57db3e8e4926e9d046be9d3c159a2bff"
   },
-  "_source": "git://github.com/PolymerElements/paper-listbox.git",
+  "_source": "https://github.com/PolymerElements/paper-listbox.git",
   "_target": "^1.1.2",
   "_originalSource": "PolymerElements/paper-listbox"
 }

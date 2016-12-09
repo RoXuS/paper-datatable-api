@@ -1,6 +1,6 @@
 {
   "name": "vaadin-date-picker",
-  "version": "1.1.4",
+  "version": "1.1.2",
   "description": "Vaadin Date Picker",
   "authors": [
     "Vaadin Ltd"
@@ -46,13 +46,13 @@
     "iron-meta": "polymerelements/iron-meta#^1.1.1"
   },
   "homepage": "https://github.com/vaadin/vaadin-date-picker",
-  "_release": "1.1.4",
+  "_release": "1.1.2",
   "_resolution": {
     "type": "version",
-    "tag": "v1.1.4",
-    "commit": "3cf9eb9f0426a3fb783fd29373980a3661194b3c"
+    "tag": "v1.1.2",
+    "commit": "d799994a6b5973d5c2441c64e2d324d626a30a5f"
   },
   "_source": "https://github.com/vaadin/vaadin-date-picker.git",
-  "_target": "^1.1.2",
+  "_target": "1.1.2",
   "_originalSource": "vaadin-date-picker"
 }

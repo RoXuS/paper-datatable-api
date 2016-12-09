@@ -91,7 +91,8 @@ class DtPaperDatatableApi {
        */
       selectedRows: {
         type: Array,
-        value: [],
+        value: () => [],
+        notify: true,
       },
       /**
        * If it is setted, the selected rows are persistant (throught the pages).
@@ -180,33 +181,36 @@ class DtPaperDatatableApi {
   /** Frozen Mode **/
 
   _resizeHeader() {
-    if (this.frozenHeader) {
-      let bodyWidth = this._getTbodyWidths();
-      let headerWidth = this._getTheadWidths();
+    this.async(() => {
+      if (this.frozenHeader) {
+        let bodyWidth = this._getTbodyWidths();
+        let headerWidth = this._getTheadWidths();
 
-      if (headerWidth && bodyWidth) {
-        /**
-         * Set all width to auto.
-         */
-        this._resizeAllWidthToAuto(bodyWidth);
-        /**
-         * Resize header width following body width.
-         */
-        this._resizeWidth(bodyWidth, headerWidth, 'header');
-        bodyWidth = this._getTbodyWidths();
-        headerWidth = this._getTheadWidths();
-        /**
-         * Resize body width following header width.
-         */
-        this._resizeWidth(headerWidth, bodyWidth, 'body');
-        bodyWidth = this._getTbodyWidths();
-        headerWidth = this._getTheadWidths();
-        /**
-         * Reajust header width with the new width of body.
-         */
-        this._resizeWidth(bodyWidth, headerWidth, 'header', true);
+        if (headerWidth && bodyWidth) {
+          /**
+           * Set all width to auto.
+           */
+          this._resizeAllWidthToAuto(bodyWidth);
+          /**
+           * Resize header width following body width.
+           */
+          this._resizeWidth(bodyWidth, headerWidth, 'header');
+          bodyWidth = this._getTbodyWidths();
+          headerWidth = this._getTheadWidths();
+          /**
+           * Resize body width following header width.
+           */
+          this._resizeWidth(headerWidth, bodyWidth, 'body');
+          bodyWidth = this._getTbodyWidths();
+          headerWidth = this._getTheadWidths();
+          /**
+           * Reajust header width with the new width of body.
+           */
+          this._resizeWidth(bodyWidth, headerWidth, 'header', true);
+        }
+        this.fire('end-of-resize', { });
       }
-    }
+    }, 10);
   }
 
   _resizeAllWidthToAuto(bodyWidth) {
@@ -252,17 +256,19 @@ class DtPaperDatatableApi {
       allTheadTrTh = this.$$('#frozenHeaderTable thead tr').querySelectorAll('th');
     }
 
-    const paddingLeftPx = window.getComputedStyle(allTheadTrTh[columnIndex]).paddingLeft;
-    const paddingLeft = paddingLeftPx.split('px')[0];
-    const paddingRightPx = window.getComputedStyle(allTheadTrTh[columnIndex]).paddingRight;
-    const paddingRight = paddingRightPx.split('px')[0];
-    const horizontalPadding = parseInt(paddingRight, 10) + parseInt(paddingLeft, 10);
+    if (allTheadTrTh.length > 0) {
+      const paddingLeftPx = window.getComputedStyle(allTheadTrTh[columnIndex]).paddingLeft;
+      const paddingLeft = paddingLeftPx.split('px')[0];
+      const paddingRightPx = window.getComputedStyle(allTheadTrTh[columnIndex]).paddingRight;
+      const paddingRight = paddingRightPx.split('px')[0];
+      const horizontalPadding = parseInt(paddingRight, 10) + parseInt(paddingLeft, 10);
 
-    if (size !== 'auto' && (size - horizontalPadding) !== 0) {
-      const sizeWithoutPad = size - horizontalPadding;
-      Polymer.dom(allTheadTrTh[columnIndex]).firstElementChild.style.width = `${sizeWithoutPad}px`;
-    } else if (size === 'auto') {
-      Polymer.dom(allTheadTrTh[columnIndex]).firstElementChild.style.width = 'auto';
+      if (size !== 'auto' && (size - horizontalPadding) !== 0) {
+        const sizeWithoutPad = size - horizontalPadding;
+        Polymer.dom(allTheadTrTh[columnIndex]).firstElementChild.style.width = `${sizeWithoutPad}px`;
+      } else if (size === 'auto') {
+        Polymer.dom(allTheadTrTh[columnIndex]).firstElementChild.style.width = 'auto';
+      }
     }
   }
 
@@ -333,17 +339,19 @@ class DtPaperDatatableApi {
     return (page * size) + 1;
   }
 
-  _computeCurrentMaxSize(page, size) {
+  _computeCurrentMaxSize(page, size, totalElements) {
     const maxSize = size * (page + 1);
-    return (maxSize > this.totalElements ? this.totalElements : maxSize);
+    return (maxSize > totalElements ? totalElements : maxSize);
   }
 
   _dataChanged(data) {
-    this._removeRows();
-    this._fillRows(data);
-    this._fillColumns();
-    this._resizeHeader();
-    this._footerPositionChange(this.footerPosition);
+    this.async(() => {
+      this._removeRows();
+      this._fillRows(data);
+      this._fillColumns();
+      this._resizeHeader();
+      this._footerPositionChange(this.footerPosition);
+    });
   }
 
   _pageChanged(page, oldPage) {
@@ -356,16 +364,18 @@ class DtPaperDatatableApi {
   }
 
   _fillRows(data) {
-    data.forEach((rowData) => {
-      const trLocal = document.createElement('tr');
-      trLocal.rowData = rowData;
-      trLocal.className = 'paper-datatable-api-tr';
+    if (data) {
+      data.forEach((rowData) => {
+        const trLocal = document.createElement('tr');
+        trLocal.rowData = rowData;
+        trLocal.className = 'paper-datatable-api-tr';
 
-      this.listen(trLocal, 'mouseover', 'onOverTr');
-      this.listen(trLocal, 'mouseout', 'onOutTr');
+        this.listen(trLocal, 'mouseover', 'onOverTr');
+        this.listen(trLocal, 'mouseout', 'onOutTr');
 
-      Polymer.dom(this.$$('tbody')).appendChild(trLocal);
-    });
+        Polymer.dom(this.$$('tbody')).appendChild(trLocal);
+      });
+    }
   }
 
   onOverTd(e) {
@@ -384,6 +394,16 @@ class DtPaperDatatableApi {
     this.fire('tr-out', e.currentTarget);
   }
 
+  _findSelectableElement(rowData) {
+    const splittedSelectableDataKey = this.selectableDataKey.split('.');
+    let selectedRow = rowData;
+    splittedSelectableDataKey.forEach((selectableDataKey) => {
+      selectedRow = selectedRow[selectableDataKey];
+    });
+
+    return selectedRow;
+  }
+
   _fillColumns() {
     const pgTrs = Polymer.dom(this.root).querySelectorAll('.paper-datatable-api-tr');
 
@@ -399,10 +419,12 @@ class DtPaperDatatableApi {
           paperCheckbox.rowData = rowData;
           paperCheckbox.rowIndex = i;
 
-          if (this.selectableDataKey !== undefined &&
-            rowData[this.selectableDataKey] !== undefined &&
-            this.selectedRows.indexOf(rowData[this.selectableDataKey]) !== -1) {
-            paperCheckbox.checked = true;
+          if (this.selectableDataKey !== undefined) {
+            const selectedRow = this._findSelectableElement(rowData);
+            if (selectedRow !== undefined
+              && this.selectedRows.indexOf(selectedRow) !== -1) {
+              paperCheckbox.checked = true;
+            }
           }
 
           Polymer.dom(tdSelectable).appendChild(paperCheckbox);
@@ -447,12 +469,43 @@ class DtPaperDatatableApi {
     allPaperCheckbox.forEach((paperCheckboxParams) => {
       const paperCheckbox = paperCheckboxParams;
       if (localTarget.checked) {
-        paperCheckbox.checked = true;
-      } else {
+        if (!paperCheckbox.checked) {
+          paperCheckbox.checked = true;
+          this._selectChange(paperCheckbox);
+        }
+      } else if (paperCheckbox.checked) {
         paperCheckbox.checked = false;
+        this._selectChange(paperCheckbox);
       }
+    });
+  }
 
-      this._selectChange(paperCheckbox);
+  /**
+   * Check the checkbox
+   *
+   * @property selectRow
+   * @param {String} value The value of the row following the selectableDatakey.
+   */
+  selectRow(value) {
+    const table = this.$$('table:not(#frozenHeaderTable)');
+    const allTr = table.querySelectorAll('tbody tr');
+    allTr.forEach((tr) => {
+      const selectedRow = this._findSelectableElement(tr.rowData);
+
+      if (selectedRow === value) {
+        const checkbox = tr.querySelector('paper-checkbox');
+        if (checkbox) {
+          checkbox.checked = true;
+
+          let rowId = checkbox.rowIndex;
+          if (this.selectableDataKey !== undefined
+            && selectedRow !== undefined) {
+            rowId = selectedRow;
+          }
+          this.push('selectedRows', rowId);
+          tr.classList.add('selected');
+        }
+      }
     });
   }
 
@@ -469,8 +522,12 @@ class DtPaperDatatableApi {
     const rowData = localTarget.rowData;
 
     let rowId = localTarget.rowIndex;
-    if (this.selectableDataKey !== undefined && rowData[this.selectableDataKey] !== undefined) {
-      rowId = rowData[this.selectableDataKey];
+
+    if (this.selectableDataKey !== undefined) {
+      const selectedRow = this._findSelectableElement(rowData);
+      if (selectedRow) {
+        rowId = selectedRow;
+      }
     }
 
     let eventData = {};
@@ -489,6 +546,7 @@ class DtPaperDatatableApi {
       };
       tr.classList.remove('selected');
     }
+
     /**
      * Fired when a row is selected.
      * @event selection-changed
@@ -798,6 +856,7 @@ class DtPaperDatatableApi {
     if (column.activeFilter) {
       const input = paperIconButton.parentNode.querySelector('paper-input');
       input.value = '';
+      input.previousValue = input.value;
       this._launchFilterEvent(input, column);
     }
     this._toggleFilter(column);

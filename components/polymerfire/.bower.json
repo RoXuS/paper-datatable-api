@@ -33,7 +33,7 @@
     "tag": "v0.9.7",
     "commit": "ffe600839bcca47558cef3ac3f1b0bdc8dda33a8"
   },
-  "_source": "git://github.com/firebase/polymerfire.git",
+  "_source": "https://github.com/firebase/polymerfire.git",
   "_target": "^0.9.3",
   "_originalSource": "firebase/polymerfire"
 }

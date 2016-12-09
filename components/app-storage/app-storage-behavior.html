@@ -189,7 +189,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        *   create, relative to the root of storage associated with this instance.
        * @return {Promise} A promise that resolves with the canonical value stored
        *   at the provided path when the transaction has completed. _If there is no
-       *   such value at she provided path through storage, then the promise will
+       *   such value at the provided path through storage, then the promise will
        *   resolve to `undefined`._ The promise will be rejected if the transaction
        *   fails for any reason.
        */
@@ -467,7 +467,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       __pathRefersToArray: function(path) {
-        return (SPLICES_RX.test(path) || LENGTH_RX.test(path))
+        return (SPLICES_RX.test(path) || LENGTH_RX.test(path)) &&
             Array.isArray(this.get(this.__parentPath(path)));
       },
 

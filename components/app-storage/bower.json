@@ -3,7 +3,7 @@
   "authors": [
     "The Polymer Authors"
   ],
-  "version": "0.9.7",
+  "version": "0.9.8",
   "description": "Web Components for managing user data in web apps",
   "main": [
     "app-storage-behavior.html",

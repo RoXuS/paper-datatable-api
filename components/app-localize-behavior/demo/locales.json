@@ -16,7 +16,6 @@
     "intro": "Je m'appelle {name}",
     "cats": "J'ai {numCats, number} chats. Près de {pctBlack, number, percent} d'entre eux sont noirs.",
     "sale": "La vente commence le {start, date, medium} à {time, time, short}. Tout est à {price, number, USD}.",
-    "fruit": "pomme",
     "fruit": "{num, plural, =0 {pas de pommes} =1 {une pomme} other {# pommes}}",
     "bananas": "{name} {num, plural, =0 {ne} =1 {} other {}} mange {num, plural, =0 {pas de bananes} =1 {une banane} other {# bananes}} {gender, select, male {chez lui.} female {chez elle.} other {chez eux.}}"
   }

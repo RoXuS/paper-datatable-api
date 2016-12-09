@@ -50,25 +50,6 @@
         expect(spy.calledOnce).to.be.true;
       });
 
-      it('should notify opened changed on open', function(done) {
-        datepicker.addEventListener('opened-changed', function() {
-          expect(datepicker.opened).to.be.true;
-          done();
-        });
-        datepicker.open();
-      });
-
-      it('should notify opened changed on close', function(done) {
-        datepicker.addEventListener('iron-overlay-opened', function() {
-          datepicker.addEventListener('opened-changed', function() {
-            expect(datepicker.opened).to.be.false;
-            done();
-          });
-          datepicker.close();
-        });
-        datepicker.open();
-      });
-
       it('should open with open call', function(done) {
         datepicker.addEventListener('iron-overlay-opened', function() {
           done();
@@ -84,23 +65,6 @@
           done();
         });
         datepicker.open();
-      });
-
-      it('should prevent text input', function() {
-        var spy = sinon.spy();
-        var keyDownEvent = new CustomEvent('keydown', {
-          bubbles: true,
-          cancelable: true
-        });
-        keyDownEvent.preventDefault = spy;
-
-        keyDownEvent.keyCode = 9; // tab key -> should not be prevented
-        datepicker.$.input.dispatchEvent(keyDownEvent);
-        expect(spy.called).to.be.false;
-
-        keyDownEvent.keyCode = 82;  // r key -> should be prevented
-        datepicker.$.input.dispatchEvent(keyDownEvent);
-        expect(spy.called).to.be.true;
       });
 
       it('should open on input tap', function(done) {

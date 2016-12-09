@@ -53,6 +53,12 @@
 	--paper-input-container-label: {
 	  position: initial;
 	};
+	--paper-input-container: {
+	  padding: 0;
+	};
+	--paper-input-container-input: {
+	  font-size: 12px;
+	};
       }
 
       thead th[sortable] paper-icon-button.filter {
@@ -75,8 +81,8 @@
 	--paper-icon-button-hover: {
 	  @apply(--paper-datatable-api-header-sorted);
 	};
-	width: 36px;
-	height: 36px;
+	min-width: 36px;
+	min-height: 36px;
 	transition: transform .2s linear;
       }
 
@@ -124,6 +130,11 @@
 	padding: 6px 26px;
       }
 
+      :host ::content #wrapper.frozen tbody td,
+      #wrapper.frozen tbody td {
+	min-width: 230px;
+      }
+
       :host ::content tbody tr:not(:first-child) td,
       tbody tr:not(:first-child) td {
 	border-top: 1px solid;
@@ -146,6 +157,7 @@
       tbody td.selectable {
 	padding: 6px 0 6px 26px;
 	@apply(--paper-datatable-api-checkbox);
+	min-width: initial;
       }
 
       tfoot tr td {
