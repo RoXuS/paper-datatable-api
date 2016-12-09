@@ -81,8 +81,8 @@
 	--paper-icon-button-hover: {
 	  @apply(--paper-datatable-api-header-sorted);
 	};
-	width: 36px;
-	height: 41px;
+	min-width: 36px;
+	min-height: 36px;
 	transition: transform .2s linear;
       }
 
@@ -128,6 +128,7 @@
 	font-weight: normal;
 	color: rgba(0, 0, 0, var(--dark-primary-opacity));
 	padding: 6px 26px;
+	min-width: 230px;
       }
 
       :host ::content tbody tr:not(:first-child) td,
@@ -152,6 +153,7 @@
       tbody td.selectable {
 	padding: 6px 0 6px 26px;
 	@apply(--paper-datatable-api-checkbox);
+	min-width: initial;
       }
 
       tfoot tr td {
