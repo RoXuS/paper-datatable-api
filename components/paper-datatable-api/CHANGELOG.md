@@ -1,5 +1,8 @@
 # Change Log
 
+## [v0.1.19](https://github.com/RoXuS/paper-datatable-api/tree/0.1.19) (2016-12-10)
+- Forget to push the dist ([commit](https://github.com/RoXuS/paper-datatable-api/commit/ab1047a))
+
 ## [v0.1.18](https://github.com/RoXuS/paper-datatable-api/tree/0.1.18) (2016-12-09)
 - Fix width of header ([commit](https://github.com/RoXuS/paper-datatable-api/commit/265f1ab))
 - Fix vaadia-date-picker-version ([commit](https://github.com/RoXuS/paper-datatable-api/commit/1a8efac))
