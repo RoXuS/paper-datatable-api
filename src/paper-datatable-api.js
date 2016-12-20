@@ -882,15 +882,17 @@ class DtPaperDatatableApi {
   }
 
   _footerPositionChange(position) {
-    const footerDiv = Polymer.dom(this.root).querySelector('tfoot > tr > td > div > div');
+    this.async(() => {
+      const footerDiv = Polymer.dom(this.root).querySelector('tfoot > tr > td > div > div');
 
-    if (footerDiv) {
-      if (position === 'right') {
-        footerDiv.classList.add('end-justified');
-      } else {
-        footerDiv.classList.remove('end-justified');
+      if (footerDiv) {
+        if (position === 'right') {
+          footerDiv.classList.add('end-justified');
+        } else {
+          footerDiv.classList.remove('end-justified');
+        }
       }
-    }
+    });
   }
 
   _addCustomTdClass(isTdCustomStyle) {

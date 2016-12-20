@@ -1003,15 +1003,19 @@ var DtPaperDatatableApi = function () {
   }, {
     key: '_footerPositionChange',
     value: function _footerPositionChange(position) {
-      var footerDiv = Polymer.dom(this.root).querySelector('tfoot > tr > td > div > div');
+      var _this17 = this;
 
-      if (footerDiv) {
-        if (position === 'right') {
-          footerDiv.classList.add('end-justified');
-        } else {
-          footerDiv.classList.remove('end-justified');
+      this.async(function () {
+        var footerDiv = Polymer.dom(_this17.root).querySelector('tfoot > tr > td > div > div');
+
+        if (footerDiv) {
+          if (position === 'right') {
+            footerDiv.classList.add('end-justified');
+          } else {
+            footerDiv.classList.remove('end-justified');
+          }
         }
-      }
+      });
     }
   }, {
     key: '_addCustomTdClass',
