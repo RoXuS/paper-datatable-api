@@ -1,5 +1,9 @@
 # Change Log
 
+## [v0.1.20](https://github.com/RoXuS/paper-datatable-api/tree/0.1.20) (2016-12-20)
+- Reduce width of headers in frozen mode ([commit](https://github.com/RoXuS/iron-multi-ajax/commit/3e74664))
+- Fix bug on footer ([commit](https://github.com/RoXuS/iron-multi-ajax/commit/fef8d64))
+
 ## [v0.1.19](https://github.com/RoXuS/paper-datatable-api/tree/0.1.19) (2016-12-10)
 - Forget to push the dist ([commit](https://github.com/RoXuS/paper-datatable-api/commit/ab1047a))
 
