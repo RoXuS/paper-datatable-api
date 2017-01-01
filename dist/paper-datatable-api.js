@@ -819,7 +819,7 @@ var DtPaperDatatableApi = function () {
 
       var parentDiv = event.currentTarget.parentNode;
       this.async(function () {
-        var paperInput = parentDiv.querySelector(':scope > paper-input');
+        var paperInput = parentDiv.querySelector('paper-input');
         if (paperInput) {
           paperInput.focus();
         } else {

@@ -726,7 +726,7 @@ class DtPaperDatatableApi {
   _handleActiveFilterChange(event) {
     const parentDiv = event.currentTarget.parentNode;
     this.async(() => {
-      let paperInput = parentDiv.querySelector(':scope > paper-input');
+      let paperInput = parentDiv.querySelector('paper-input');
       if (paperInput) {
         paperInput.focus();
       } else {
