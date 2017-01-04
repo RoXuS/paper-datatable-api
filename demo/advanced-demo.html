@@ -46,7 +46,7 @@
           total-pages="{{totalPages}}">
         </api-sample>
 
-        <paper-card heading="Sortable, paginable, filterable, with toggle column">
+        <paper-card heading="Sortable, paginable, filterable, draggable, with toggle column">
 
           <div class="horizontal end-justified center layout">
             <paper-input no-label-float label="Search">
@@ -86,6 +86,7 @@
               on-selection-changed="_handleSelectionChanged"
               total-elements="[[totalElements]]"
               total-pages="[[totalPages]]"
+              draggable="true"
               selectable-data-key="fruit">
               <paper-datatable-api-column header="Fruit" property="fruit" sortable hideable>
                 <template>
