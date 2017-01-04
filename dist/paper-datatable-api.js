@@ -411,6 +411,7 @@ var DtPaperDatatableApi = function () {
         _this4._resizeHeader();
         _this4._footerPositionChange(_this4.footerPosition);
         _this4._handleDragAndDrop();
+        _this4._generatePropertiesOrder();
       });
     }
   }, {
@@ -1042,6 +1043,7 @@ var DtPaperDatatableApi = function () {
       allTh.forEach(function (th) {
         th.addEventListener('dragover', _this18._dragOverHandle.bind(_this18), false);
         th.addEventListener('dragenter', _this18._dragEnterHandle.bind(_this18), false);
+        th.addEventListener('drop', _this18._dropHandle.bind(_this18), false);
       });
       var allThDiv = Polymer.dom(this.root).querySelectorAll('thead th div');
       allThDiv.forEach(function (div) {
@@ -1062,7 +1064,7 @@ var DtPaperDatatableApi = function () {
       if (event.target.classList.contains('pgTh')) {
         var from = this.currentDrag;
         var to = event.currentTarget;
-        this.moveTh(from, to);
+        this._moveTh(from, to);
       }
     }
   }, {
@@ -1077,27 +1079,27 @@ var DtPaperDatatableApi = function () {
       event.dataTransfer.effectAllowed = 'move';
     }
   }, {
-    key: 'insertAfter',
-    value: function insertAfter(referenceNode, newNode) {
+    key: '_insertAfter',
+    value: function _insertAfter(referenceNode, newNode) {
       referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
     }
   }, {
-    key: 'insertBefore',
-    value: function insertBefore(referenceNode, newNode) {
+    key: '_insertBefore',
+    value: function _insertBefore(referenceNode, newNode) {
       referenceNode.parentNode.insertBefore(newNode, referenceNode);
     }
   }, {
-    key: 'insertElement',
-    value: function insertElement(container, toIndex, fromIndex) {
+    key: '_insertElement',
+    value: function _insertElement(container, toIndex, fromIndex) {
       if (toIndex > fromIndex) {
-        this.insertAfter(container[toIndex], container[fromIndex]);
+        this._insertAfter(container[toIndex], container[fromIndex]);
       } else {
-        this.insertBefore(container[toIndex], container[fromIndex]);
+        this._insertBefore(container[toIndex], container[fromIndex]);
       }
     }
   }, {
-    key: 'moveTh',
-    value: function moveTh(from, to) {
+    key: '_moveTh',
+    value: function _moveTh(from, to) {
       var _this19 = this;
 
       var fromProperty = from.parentNode.getAttribute('property');
@@ -1111,16 +1113,37 @@ var DtPaperDatatableApi = function () {
           var fromIndex = allTh.findIndex(function (th) {
             return th.getAttribute('property') === fromProperty;
           });
-          _this19.insertElement(allTh, toIndex, fromIndex);
+          _this19._insertElement(allTh, toIndex, fromIndex);
 
           var allTr = Polymer.dom(_this19.root).querySelectorAll('tbody tr');
           allTr.forEach(function (tr) {
             var allTd = Polymer.dom(tr).querySelectorAll('td');
-            _this19.insertElement(allTd, toIndex, fromIndex);
+            _this19._insertElement(allTd, toIndex, fromIndex);
           });
+
           _this19._resizeHeader();
         })();
       }
+    }
+  }, {
+    key: '_dropHandle',
+    value: function _dropHandle() {
+      this._generatePropertiesOrder();
+    }
+  }, {
+    key: '_generatePropertiesOrder',
+    value: function _generatePropertiesOrder() {
+      var allTh = Polymer.dom(this.root).querySelectorAll('thead th');
+      var propertiesOrder = allTh.filter(function (th) {
+        return th.getAttribute('property') !== null;
+      }).map(function (th) {
+        return th.getAttribute('property');
+      });
+      if (this.selectable) {
+        propertiesOrder.shift();
+      }
+
+      this.fire('order-column-change', { propertiesOrder: propertiesOrder });
     }
   }, {
     key: 'behaviors',

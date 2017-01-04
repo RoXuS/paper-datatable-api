@@ -359,6 +359,7 @@ class DtPaperDatatableApi {
       this._resizeHeader();
       this._footerPositionChange(this.footerPosition);
       this._handleDragAndDrop();
+      this._generatePropertiesOrder();
     });
   }
 
@@ -915,6 +916,7 @@ class DtPaperDatatableApi {
     allTh.forEach((th) => {
       th.addEventListener('dragover', this._dragOverHandle.bind(this), false);
       th.addEventListener('dragenter', this._dragEnterHandle.bind(this), false);
+      th.addEventListener('drop', this._dropHandle.bind(this), false);
     });
     const allThDiv = Polymer.dom(this.root).querySelectorAll('thead th div');
     allThDiv.forEach((div) => {
@@ -933,7 +935,7 @@ class DtPaperDatatableApi {
     if (event.target.classList.contains('pgTh')) {
       const from = this.currentDrag;
       const to = event.currentTarget;
-      this.moveTh(from, to);
+      this._moveTh(from, to);
     }
   }
 
@@ -946,38 +948,54 @@ class DtPaperDatatableApi {
     event.dataTransfer.effectAllowed = 'move';
   }
 
-  insertAfter(referenceNode, newNode) {
+  _insertAfter(referenceNode, newNode) {
     referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
   }
 
-  insertBefore(referenceNode, newNode) {
+  _insertBefore(referenceNode, newNode) {
     referenceNode.parentNode.insertBefore(newNode, referenceNode);
   }
 
-  insertElement(container, toIndex, fromIndex) {
+  _insertElement(container, toIndex, fromIndex) {
     if (toIndex > fromIndex) {
-      this.insertAfter(container[toIndex], container[fromIndex]);
+      this._insertAfter(container[toIndex], container[fromIndex]);
     } else {
-      this.insertBefore(container[toIndex], container[fromIndex]);
+      this._insertBefore(container[toIndex], container[fromIndex]);
     }
   }
 
-  moveTh(from, to) {
+  _moveTh(from, to) {
     const fromProperty = from.parentNode.getAttribute('property');
     const toProperty = to.getAttribute('property');
     if (fromProperty !== toProperty) {
-      const allTh = Polymer.dom(this.root).querySelectorAll('thead th');
+      let allTh = Polymer.dom(this.root).querySelectorAll('thead th');
       const toIndex = allTh.findIndex(th => th.getAttribute('property') === toProperty);
       const fromIndex = allTh.findIndex(th => th.getAttribute('property') === fromProperty);
-      this.insertElement(allTh, toIndex, fromIndex);
+      this._insertElement(allTh, toIndex, fromIndex);
 
       const allTr = Polymer.dom(this.root).querySelectorAll('tbody tr');
       allTr.forEach((tr) => {
         const allTd = Polymer.dom(tr).querySelectorAll('td');
-        this.insertElement(allTd, toIndex, fromIndex);
+        this._insertElement(allTd, toIndex, fromIndex);
       });
+
       this._resizeHeader();
     }
+  }
+
+  _dropHandle() {
+    this._generatePropertiesOrder();
+  }
+
+  _generatePropertiesOrder() {
+    const allTh = Polymer.dom(this.root).querySelectorAll('thead th');
+    const propertiesOrder = allTh.filter(th => th.getAttribute('property') !== null)
+      .map(th => th.getAttribute('property'));
+    if (this.selectable) {
+      propertiesOrder.shift();
+    }
+
+    this.fire('order-column-change', { propertiesOrder });
   }
 }
 
