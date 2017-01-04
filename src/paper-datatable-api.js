@@ -158,11 +158,18 @@ class DtPaperDatatableApi {
         value: 'right',
       },
       /**
-       * Checkbox column position
+       * Checkbox column position.
        */
       checkboxColumnPosition: {
         type: Number,
         value: 0,
+      },
+      /**
+       * If true, the columns are draggable (type string is mandatory).
+       */
+      draggable: {
+        type: String,
+        value: 'false',
       },
     };
 
@@ -351,6 +358,7 @@ class DtPaperDatatableApi {
       this._fillColumns();
       this._resizeHeader();
       this._footerPositionChange(this.footerPosition);
+      this._handleDragAndDrop();
     });
   }
 
@@ -900,6 +908,76 @@ class DtPaperDatatableApi {
       return 'customTd';
     }
     return '';
+  }
+
+  _handleDragAndDrop() {
+    const allTh = Polymer.dom(this.root).querySelectorAll('thead th');
+    allTh.forEach((th) => {
+      th.addEventListener('dragover', this._dragOverHandle.bind(this), false);
+      th.addEventListener('dragenter', this._dragEnterHandle.bind(this), false);
+    });
+    const allThDiv = Polymer.dom(this.root).querySelectorAll('thead th div');
+    allThDiv.forEach((div) => {
+      div.addEventListener('dragstart', this._dragStartHandle.bind(this), false);
+      div.addEventListener('dragend', this._dragEndHandle.bind(this), false);
+    });
+  }
+
+  _dragEndHandle() {
+    this.currentDrag = undefined;
+  }
+
+  _dragEnterHandle(event) {
+    event.preventDefault();
+
+    if (event.target.classList.contains('pgTh')) {
+      const from = this.currentDrag;
+      const to = event.currentTarget;
+      this.moveTh(from, to);
+    }
+  }
+
+  _dragOverHandle(event) {
+    event.preventDefault();
+  }
+
+  _dragStartHandle(event) {
+    this.currentDrag = event.currentTarget;
+    event.dataTransfer.effectAllowed = 'move';
+  }
+
+  insertAfter(referenceNode, newNode) {
+    referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+  }
+
+  insertBefore(referenceNode, newNode) {
+    referenceNode.parentNode.insertBefore(newNode, referenceNode);
+  }
+
+  insertElement(container, toIndex, fromIndex) {
+    if (toIndex > fromIndex) {
+      this.insertAfter(container[toIndex], container[fromIndex]);
+    } else {
+      this.insertBefore(container[toIndex], container[fromIndex]);
+    }
+  }
+
+  moveTh(from, to) {
+    const fromProperty = from.parentNode.getAttribute('property');
+    const toProperty = to.getAttribute('property');
+    if (fromProperty !== toProperty) {
+      const allTh = Polymer.dom(this.root).querySelectorAll('thead th');
+      const toIndex = allTh.findIndex(th => th.getAttribute('property') === toProperty);
+      const fromIndex = allTh.findIndex(th => th.getAttribute('property') === fromProperty);
+      this.insertElement(allTh, toIndex, fromIndex);
+
+      const allTr = Polymer.dom(this.root).querySelectorAll('tbody tr');
+      allTr.forEach((tr) => {
+        const allTd = Polymer.dom(tr).querySelectorAll('td');
+        this.insertElement(allTd, toIndex, fromIndex);
+      });
+      this._resizeHeader();
+    }
   }
 }
 

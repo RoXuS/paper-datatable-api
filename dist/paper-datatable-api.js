@@ -173,11 +173,18 @@ var DtPaperDatatableApi = function () {
           value: 'right'
         },
         /**
-         * Checkbox column position
+         * Checkbox column position.
          */
         checkboxColumnPosition: {
           type: Number,
           value: 0
+        },
+        /**
+         * If true, the columns are draggable (type string is mandatory).
+         */
+        draggable: {
+          type: String,
+          value: 'false'
         }
       };
 
@@ -403,6 +410,7 @@ var DtPaperDatatableApi = function () {
         _this4._fillColumns();
         _this4._resizeHeader();
         _this4._footerPositionChange(_this4.footerPosition);
+        _this4._handleDragAndDrop();
       });
     }
   }, {
@@ -1024,6 +1032,95 @@ var DtPaperDatatableApi = function () {
         return 'customTd';
       }
       return '';
+    }
+  }, {
+    key: '_handleDragAndDrop',
+    value: function _handleDragAndDrop() {
+      var _this18 = this;
+
+      var allTh = Polymer.dom(this.root).querySelectorAll('thead th');
+      allTh.forEach(function (th) {
+        th.addEventListener('dragover', _this18._dragOverHandle.bind(_this18), false);
+        th.addEventListener('dragenter', _this18._dragEnterHandle.bind(_this18), false);
+      });
+      var allThDiv = Polymer.dom(this.root).querySelectorAll('thead th div');
+      allThDiv.forEach(function (div) {
+        div.addEventListener('dragstart', _this18._dragStartHandle.bind(_this18), false);
+        div.addEventListener('dragend', _this18._dragEndHandle.bind(_this18), false);
+      });
+    }
+  }, {
+    key: '_dragEndHandle',
+    value: function _dragEndHandle() {
+      this.currentDrag = undefined;
+    }
+  }, {
+    key: '_dragEnterHandle',
+    value: function _dragEnterHandle(event) {
+      event.preventDefault();
+
+      if (event.target.classList.contains('pgTh')) {
+        var from = this.currentDrag;
+        var to = event.currentTarget;
+        this.moveTh(from, to);
+      }
+    }
+  }, {
+    key: '_dragOverHandle',
+    value: function _dragOverHandle(event) {
+      event.preventDefault();
+    }
+  }, {
+    key: '_dragStartHandle',
+    value: function _dragStartHandle(event) {
+      this.currentDrag = event.currentTarget;
+      event.dataTransfer.effectAllowed = 'move';
+    }
+  }, {
+    key: 'insertAfter',
+    value: function insertAfter(referenceNode, newNode) {
+      referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+    }
+  }, {
+    key: 'insertBefore',
+    value: function insertBefore(referenceNode, newNode) {
+      referenceNode.parentNode.insertBefore(newNode, referenceNode);
+    }
+  }, {
+    key: 'insertElement',
+    value: function insertElement(container, toIndex, fromIndex) {
+      if (toIndex > fromIndex) {
+        this.insertAfter(container[toIndex], container[fromIndex]);
+      } else {
+        this.insertBefore(container[toIndex], container[fromIndex]);
+      }
+    }
+  }, {
+    key: 'moveTh',
+    value: function moveTh(from, to) {
+      var _this19 = this;
+
+      var fromProperty = from.parentNode.getAttribute('property');
+      var toProperty = to.getAttribute('property');
+      if (fromProperty !== toProperty) {
+        (function () {
+          var allTh = Polymer.dom(_this19.root).querySelectorAll('thead th');
+          var toIndex = allTh.findIndex(function (th) {
+            return th.getAttribute('property') === toProperty;
+          });
+          var fromIndex = allTh.findIndex(function (th) {
+            return th.getAttribute('property') === fromProperty;
+          });
+          _this19.insertElement(allTh, toIndex, fromIndex);
+
+          var allTr = Polymer.dom(_this19.root).querySelectorAll('tbody tr');
+          allTr.forEach(function (tr) {
+            var allTd = Polymer.dom(tr).querySelectorAll('td');
+            _this19.insertElement(allTd, toIndex, fromIndex);
+          });
+          _this19._resizeHeader();
+        })();
+      }
     }
   }, {
     key: 'behaviors',
