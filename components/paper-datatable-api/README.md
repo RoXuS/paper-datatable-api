@@ -39,6 +39,7 @@ See the [component page](https://roxus.github.io/paper-datatable-api/components/
 - Filter a column
 - Ability to filter columns
 - Frozen header
+- Drag and drop column
 
 ## Roadmap
 

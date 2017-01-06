@@ -1,6 +1,6 @@
 /**
  * @fileoverview Firebase Database API.
- * Version: 3.6.3
+ * Version: 3.6.4
  *
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
@@ -100,6 +100,11 @@ firebase.database.Database = function() {};
 firebase.database.enableLogging = function(enabled, persistent) {};
 
 /**
+ * @namespace
+ */
+firebase.database.ServerValue = {}
+
+/**
  * A placeholder value for auto-populating the current timestamp (time
  * since the Unix epoch, in milliseconds) as determined by the Firebase
  * servers.
@@ -110,11 +115,9 @@ firebase.database.enableLogging = function(enabled, persistent) {};
  *   startedAt: firebase.database.ServerValue.TIMESTAMP
  * });
  *
- * @const {{
- *   TIMESTAMP: !Object
- * }}
+ * @const {!Object}
  */
-firebase.database.ServerValue;
+firebase.database.ServerValue.TIMESTAMP;
 
 /**
  * The {@link firebase.app.App app} associated with the `Database` service

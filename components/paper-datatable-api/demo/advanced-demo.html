@@ -46,7 +46,7 @@
           total-pages="{{totalPages}}">
         </api-sample>
 
-        <paper-card heading="Sortable, paginable, filterable, with toggle column">
+        <paper-card heading="Sortable, paginable, filterable, draggable (fruit and color), with toggle column">
 
           <div class="horizontal end-justified center layout">
             <paper-input no-label-float label="Search">
@@ -87,17 +87,26 @@
               total-elements="[[totalElements]]"
               total-pages="[[totalPages]]"
               selectable-data-key="fruit">
-              <paper-datatable-api-column header="Fruit" property="fruit" sortable hideable>
+              <paper-datatable-api-column
+                header="Fruit"
+                property="fruit"
+                sortable
+                draggable-column
+                hideable>
                 <template>
                   <span>[[value]]</span>
                 </template>
               </paper-datatable-api-column>
-              <paper-datatable-api-column header="Color" property="color" filter>
+              <paper-datatable-api-column
+                header="Color"
+                property="color"
+                draggable-column
+                filter>
                 <template>
                   <span>[[value]]</span>
                 </template>
               </paper-datatable-api-column>
-              <paper-datatable-api-column header="Weight" property="weight" hideable hidden>
+              <paper-datatable-api-column header="Weight" property="weight" hideable>
                 <template>
                   <span>[[value.kg]]</span>
                 </template>
@@ -134,6 +143,9 @@
           type: Array,
           value: [],
         },
+      },
+      ready: function() {
+        // this.$$('paper-datatable-api').changeColumnOrder(['color', 'fruit', 'weight']);
       },
       _hideColumn: function(event) {
         var position = event.currentTarget.position;

@@ -1,5 +1,5 @@
-/*! @license Firebase v3.6.3
-    Build: 3.6.3-rc.6
+/*! @license Firebase v3.6.4
+    Build: 3.6.4-rc.2
     Terms: https://firebase.google.com/terms/ */
 declare namespace firebase {
   interface FirebaseError {
@@ -286,7 +286,9 @@ declare namespace firebase.database {
   function enableLogging(enabled?: boolean, persistent?: boolean): any;
 }
 
-declare namespace firebase.database.ServerValue {}
+declare namespace firebase.database.ServerValue {
+  var TIMESTAMP: Object;
+}
 
 declare namespace firebase.messaging {
   interface Messaging {

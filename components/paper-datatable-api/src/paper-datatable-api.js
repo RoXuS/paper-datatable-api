@@ -158,11 +158,15 @@ class DtPaperDatatableApi {
         value: 'right',
       },
       /**
-       * Checkbox column position
+       * Checkbox column position.
        */
       checkboxColumnPosition: {
         type: Number,
         value: 0,
+      },
+      _dragEnd: {
+        type: Boolean,
+        value: true,
       },
     };
 
@@ -344,14 +348,23 @@ class DtPaperDatatableApi {
     return (maxSize > totalElements ? totalElements : maxSize);
   }
 
-  _dataChanged(data) {
+  _init(data, propertiesOrder) {
+    this._changeColumn(propertiesOrder);
     this.async(() => {
       this._removeRows();
       this._fillRows(data);
       this._fillColumns();
       this._resizeHeader();
       this._footerPositionChange(this.footerPosition);
+      this._handleDragAndDrop();
+      if (!this.propertiesOrder) {
+        this.async(() => this._generatePropertiesOrder());
+      }
     });
+  }
+
+  _dataChanged(data) {
+    this._init(data, this.propertiesOrder);
   }
 
   _pageChanged(page, oldPage) {
@@ -726,7 +739,7 @@ class DtPaperDatatableApi {
   _handleActiveFilterChange(event) {
     const parentDiv = event.currentTarget.parentNode;
     this.async(() => {
-      let paperInput = parentDiv.querySelector(':scope > paper-input');
+      let paperInput = parentDiv.querySelector('paper-input');
       if (paperInput) {
         paperInput.focus();
       } else {
@@ -882,15 +895,17 @@ class DtPaperDatatableApi {
   }
 
   _footerPositionChange(position) {
-    const footerDiv = Polymer.dom(this.root).querySelector('tfoot > tr > td > div > div');
+    this.async(() => {
+      const footerDiv = Polymer.dom(this.root).querySelector('tfoot > tr > td > div > div');
 
-    if (footerDiv) {
-      if (position === 'right') {
-        footerDiv.classList.add('end-justified');
-      } else {
-        footerDiv.classList.remove('end-justified');
+      if (footerDiv) {
+        if (position === 'right') {
+          footerDiv.classList.add('end-justified');
+        } else {
+          footerDiv.classList.remove('end-justified');
+        }
       }
-    }
+    });
   }
 
   _addCustomTdClass(isTdCustomStyle) {
@@ -898,6 +913,150 @@ class DtPaperDatatableApi {
       return 'customTd';
     }
     return '';
+  }
+
+  // _cleanDragAndDrop() {
+  //   const allTh = Polymer.dom(this.root).querySelectorAll('thead th');
+  //   allTh.forEach((th) => {
+  //     th.removeEventListener('dragover', this._dragOverHandle.bind(this), false);
+  //     th.removeEventListener('dragenter', this._dragEnterHandle.bind(this), false);
+  //     th.removeEventListener('drop', this._dropHandle.bind(this), false);
+  //   });
+  //   const allThDiv = Polymer.dom(this.root).querySelectorAll('thead th div');
+  //   allThDiv.forEach((div) => {
+  //     div.removeEventListener('dragstart', this._dragStartHandle.bind(this), false);
+  //     div.removeEventListener('dragend', this._dragEndHandle.bind(this), false);
+  //   });
+  // }
+
+  _handleDragAndDrop() {
+    const allTh = Polymer.dom(this.root).querySelectorAll('thead th');
+    allTh.forEach((th) => {
+      th.addEventListener('dragover', this._dragOverHandle.bind(this), false);
+      th.addEventListener('dragenter', this._dragEnterHandle.bind(this), false);
+      th.addEventListener('drop', this._dropHandle.bind(this), false);
+    });
+    const allThDiv = Polymer.dom(this.root).querySelectorAll('thead th div');
+    allThDiv.forEach((div) => {
+      div.addEventListener('dragstart', this._dragStartHandle.bind(this), false);
+      div.addEventListener('dragend', this._dragEndHandle.bind(this), false);
+    });
+  }
+
+  _dragEndHandle() {
+    this.currentDrag = undefined;
+  }
+
+  _dragEnterHandle(event) {
+    event.preventDefault();
+    if (event.target.classList.contains('pgTh')) {
+      const from = this.currentDrag;
+      const to = event.currentTarget;
+      if (this._dragEnd) {
+        this._moveTh(from, to);
+      }
+    }
+  }
+
+  _dragOverHandle(event) {
+    event.preventDefault();
+  }
+
+  _dragStartHandle(event) {
+    // Hack for firefox
+    event.dataTransfer.setData('text', 'anything');
+
+    this.currentDrag = event.currentTarget;
+    event.dataTransfer.effectAllowed = 'move';
+  }
+
+  _insertAfter(referenceNode, newNode) {
+    referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+  }
+
+  _insertBefore(referenceNode, newNode) {
+    referenceNode.parentNode.insertBefore(newNode, referenceNode);
+  }
+
+  _insertElement(container, toIndex, fromIndex) {
+    if (toIndex > fromIndex) {
+      this._insertAfter(container[toIndex], container[fromIndex]);
+    } else {
+      this._insertBefore(container[toIndex], container[fromIndex]);
+    }
+  }
+
+  _moveTh(from, to) {
+    const fromProperty = from.parentNode.getAttribute('property');
+    const toProperty = to.getAttribute('property');
+    if (fromProperty !== toProperty) {
+      this.async(() => {
+        const allTh = Polymer.dom(this.root).querySelectorAll('thead th');
+        const toIndex = allTh.findIndex(th => th.getAttribute('property') === toProperty);
+        const fromIndex = allTh.findIndex(th => th.getAttribute('property') === fromProperty);
+        this._insertElement(allTh, toIndex, fromIndex);
+
+        const allTr = Polymer.dom(this.root).querySelectorAll('tbody tr');
+        allTr.forEach((tr) => {
+          const allTd = Polymer.dom(tr).querySelectorAll('td');
+          this._insertElement(allTd, toIndex, fromIndex);
+        });
+
+        this._resizeHeader();
+        this._dragEnd = false;
+        this.async(() => {
+          this._dragEnd = true;
+        }, 100);
+      });
+    }
+  }
+
+  _dropHandle() {
+    this._generatePropertiesOrder();
+  }
+
+  _draggableClass(draggable) {
+    if (draggable) {
+      return 'draggable layout horizontal center';
+    }
+    return 'layout horizontal center';
+  }
+
+  _isDraggable(draggableColumn) {
+    if (draggableColumn) {
+      return 'true';
+    }
+    return 'false';
+  }
+
+  _generatePropertiesOrder() {
+    const allTh = Polymer.dom(this.root).querySelectorAll('thead th');
+    const propertiesOrder = allTh.filter(th => th.getAttribute('property') !== null)
+      .map(th => th.getAttribute('property'));
+
+    this.propertiesOrder = propertiesOrder;
+    this.fire('order-column-change', { propertiesOrder });
+  }
+
+  changeColumnOrder(propertiesOrder) {
+    this.propertiesOrder = propertiesOrder;
+    this._init(this.data, propertiesOrder);
+  }
+
+  _changeColumn(propertiesOrder) {
+    if (propertiesOrder) {
+      const newColumnsOrder = [];
+      propertiesOrder.forEach(property =>
+        newColumnsOrder.push(this._columns.find(column => column.property === property))
+      );
+      this.splice('_columns', 0, this._columns.length);
+      this.async(() => {
+        this._columns = newColumnsOrder;
+        this.async(() => {
+          this._handleDragAndDrop();
+        });
+      });
+    }
   }
 }
 

@@ -1,6 +1,6 @@
 /**
  * @fileoverview Firebase namespace and Firebase App API.
- * Version: 3.6.3
+ * Version: 3.6.4
  *
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
@@ -155,7 +155,7 @@ firebase.app.App.prototype.options;
  * app.delete()
  *   .then(function() {
  *     console.log("App deleted successfully");
- *   });
+ *   })
  *   .catch(function(error) {
  *     console.log("Error deleting app:", error);
  *   });

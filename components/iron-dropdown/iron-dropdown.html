@@ -195,7 +195,7 @@ method is called on the element.
 
         attached: function () {
           if (!this.sizingTarget || this.sizingTarget === this) {
-            this.sizingTarget = this.containedElement;
+            this.sizingTarget = this.containedElement || this;
           }
         },
 

@@ -44,13 +44,14 @@
 - Filter a column
 - Ability to filter columns
 - Frozen header
+- Drag and drop column
 
 ### Styling
 
 The following custom properties and mixins are available for styling:
 
 Custom property                                   | Description                                    | Default
---------------------------------------------------|------------------------------------------------|---------------
+--------------------------------------------------|------------------------------------------------|-------------
 `--paper-datatable-api-checked-checkbox-color`    | Define color of checked checkbox               | `--primary-color`
 `--paper-datatable-api-unchecked-checkbox-color`  | Define color of unchecked checkbox             | `--primary-color`
 `--paper-datatable-api-tr-selected-background`    | Define color of the selected tr                | `--paper-grey-100`
@@ -105,13 +106,12 @@ Custom property                                   | Description                 
                   property$="[[column.property]]"
                   style$="display: [[_getThDisplayStyle(column.hidden)]];">
 
-                  <div class="layout horizontal center">
+                  <div class$="[[_draggableClass(column.draggableColumn)]]" draggable$="[[_isDraggable(column.draggableColumn)]]">
 
                     <template is="dom-if" if="[[equals(positionSortIcon, 'right')]]">
                       <template is="dom-if" if="[[column.activeFilter]]" on-dom-change="_handleActiveFilterChange">
                         <template is="dom-if" if="[[!column.date]]" restamp>
                           <paper-input class="flex" no-label-float placeholder="[[column.header]]" data-column="[[column]]" on-keyup="_handleKeyDownInput">
-                            <paper-icon-button on-tap="_handleTapClear" suffix icon="clear"></paper-icon-button>
                           </paper-input>
                         </template>
                         <template is="dom-if" if="[[column.date]]" restamp>
@@ -149,7 +149,6 @@ Custom property                                   | Description                 
                       <template is="dom-if" if="[[column.activeFilter]]" on-dom-change="_handleActiveFilterChange">
                         <template is="dom-if" if="[[!column.date]]" restamp>
                           <paper-input class="flex" no-label-float placeholder="[[column.header]]" data-column="[[column]]" on-keyup="_handleKeyDownInput">
-                            <paper-icon-button on-tap="_handleTapClear" suffix icon="clear"></paper-icon-button>
                           </paper-input>
                         </template>
                         <template is="dom-if" if="[[column.date]]" restamp>
@@ -200,13 +199,12 @@ Custom property                                   | Description                 
                   property$="[[column.property]]"
                   style$="display: [[_getThDisplayStyle(column.hidden)]];">
 
-                  <div class="layout horizontal center">
+                  <div class$="[[_draggableClass(column.draggableColumn)]]" draggable$="[[_isDraggable(column.draggableColumn)]]">
 
                     <template is="dom-if" if="[[equals(positionSortIcon, 'right')]]">
                       <template is="dom-if" if="[[column.activeFilter]]" on-dom-change="_handleActiveFilterChange">
                         <template is="dom-if" if="[[!column.date]]" restamp>
                           <paper-input class="flex" no-label-float placeholder="[[column.header]]" data-column="[[column]]" on-keyup="_handleKeyDownInput">
-                            <paper-icon-button on-tap="_handleTapClear" suffix icon="clear"></paper-icon-button>
                           </paper-input>
                         </template>
                         <template is="dom-if" if="[[column.date]]" restamp>
@@ -244,7 +242,6 @@ Custom property                                   | Description                 
                       <template is="dom-if" if="[[column.activeFilter]]" on-dom-change="_handleActiveFilterChange">
                         <template is="dom-if" if="[[!column.date]]" restamp>
                           <paper-input class="flex" no-label-float placeholder="[[column.header]]" data-column="[[column]]" on-keyup="_handleKeyDownInput">
-                            <paper-icon-button on-tap="_handleTapClear" suffix icon="clear"></paper-icon-button>
                           </paper-input>
                         </template>
                         <template is="dom-if" if="[[column.date]]" restamp>

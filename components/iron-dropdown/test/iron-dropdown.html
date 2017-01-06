@@ -145,6 +145,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </template>
   </test-fixture>
 
+  <test-fixture id="EmptyDropdown">
+    <template>
+      <iron-dropdown></iron-dropdown>
+    </template>
+  </test-fixture>
+
   <script>
     function elementIsVisible(element) {
       var contentRect = element.getBoundingClientRect();
@@ -231,6 +237,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               expect(document.activeElement).to.be.equal(focusableChild);
               done();
             });
+          });
+        });
+
+        suite('when dropdown is empty', function() {
+          test('keeps the sizingTarget default value', function() {
+            dropdown = fixture('EmptyDropdown');
+            expect(dropdown.sizingTarget).to.be.equal(dropdown);
           });
         });
 
