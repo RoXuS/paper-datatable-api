@@ -39,6 +39,13 @@ var DtPaperDatatableApiColumn = function () {
           value: false
         },
         /**
+         * If true, the column can be draggable.
+         */
+        draggableColumn: {
+          type: Boolean,
+          value: false
+        },
+        /**
          * If true, the column is hidden.
          */
         hidden: {

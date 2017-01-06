@@ -179,12 +179,9 @@ var DtPaperDatatableApi = function () {
           type: Number,
           value: 0
         },
-        /**
-         * If true, the columns are draggable (type string is mandatory).
-         */
-        draggable: {
-          type: String,
-          value: 'false'
+        _dragEnd: {
+          type: Boolean,
+          value: true
         }
       };
 
@@ -400,10 +397,11 @@ var DtPaperDatatableApi = function () {
       return maxSize > totalElements ? totalElements : maxSize;
     }
   }, {
-    key: '_dataChanged',
-    value: function _dataChanged(data) {
+    key: '_init',
+    value: function _init(data, propertiesOrder) {
       var _this4 = this;
 
+      this._changeColumn(propertiesOrder);
       this.async(function () {
         _this4._removeRows();
         _this4._fillRows(data);
@@ -411,8 +409,17 @@ var DtPaperDatatableApi = function () {
         _this4._resizeHeader();
         _this4._footerPositionChange(_this4.footerPosition);
         _this4._handleDragAndDrop();
-        _this4._generatePropertiesOrder();
+        if (!_this4.propertiesOrder) {
+          _this4.async(function () {
+            return _this4._generatePropertiesOrder();
+          });
+        }
       });
+    }
+  }, {
+    key: '_dataChanged',
+    value: function _dataChanged(data) {
+      this._init(data, this.propertiesOrder);
     }
   }, {
     key: '_pageChanged',
@@ -1034,6 +1041,21 @@ var DtPaperDatatableApi = function () {
       }
       return '';
     }
+
+    // _cleanDragAndDrop() {
+    //   const allTh = Polymer.dom(this.root).querySelectorAll('thead th');
+    //   allTh.forEach((th) => {
+    //     th.removeEventListener('dragover', this._dragOverHandle.bind(this), false);
+    //     th.removeEventListener('dragenter', this._dragEnterHandle.bind(this), false);
+    //     th.removeEventListener('drop', this._dropHandle.bind(this), false);
+    //   });
+    //   const allThDiv = Polymer.dom(this.root).querySelectorAll('thead th div');
+    //   allThDiv.forEach((div) => {
+    //     div.removeEventListener('dragstart', this._dragStartHandle.bind(this), false);
+    //     div.removeEventListener('dragend', this._dragEndHandle.bind(this), false);
+    //   });
+    // }
+
   }, {
     key: '_handleDragAndDrop',
     value: function _handleDragAndDrop() {
@@ -1060,11 +1082,12 @@ var DtPaperDatatableApi = function () {
     key: '_dragEnterHandle',
     value: function _dragEnterHandle(event) {
       event.preventDefault();
-
       if (event.target.classList.contains('pgTh')) {
         var from = this.currentDrag;
         var to = event.currentTarget;
-        this._moveTh(from, to);
+        if (this._dragEnd) {
+          this._moveTh(from, to);
+        }
       }
     }
   }, {
@@ -1075,6 +1098,9 @@ var DtPaperDatatableApi = function () {
   }, {
     key: '_dragStartHandle',
     value: function _dragStartHandle(event) {
+      // Hack for firefox
+      event.dataTransfer.setData('text', 'anything');
+
       this.currentDrag = event.currentTarget;
       event.dataTransfer.effectAllowed = 'move';
     }
@@ -1105,7 +1131,7 @@ var DtPaperDatatableApi = function () {
       var fromProperty = from.parentNode.getAttribute('property');
       var toProperty = to.getAttribute('property');
       if (fromProperty !== toProperty) {
-        (function () {
+        this.async(function () {
           var allTh = Polymer.dom(_this19.root).querySelectorAll('thead th');
           var toIndex = allTh.findIndex(function (th) {
             return th.getAttribute('property') === toProperty;
@@ -1122,13 +1148,33 @@ var DtPaperDatatableApi = function () {
           });
 
           _this19._resizeHeader();
-        })();
+          _this19._dragEnd = false;
+          _this19.async(function () {
+            _this19._dragEnd = true;
+          }, 100);
+        });
       }
     }
   }, {
     key: '_dropHandle',
     value: function _dropHandle() {
       this._generatePropertiesOrder();
+    }
+  }, {
+    key: '_draggableClass',
+    value: function _draggableClass(draggable) {
+      if (draggable) {
+        return 'draggable layout horizontal center';
+      }
+      return 'layout horizontal center';
+    }
+  }, {
+    key: '_isDraggable',
+    value: function _isDraggable(draggableColumn) {
+      if (draggableColumn) {
+        return 'true';
+      }
+      return 'false';
     }
   }, {
     key: '_generatePropertiesOrder',
@@ -1139,11 +1185,38 @@ var DtPaperDatatableApi = function () {
       }).map(function (th) {
         return th.getAttribute('property');
       });
-      if (this.selectable) {
-        propertiesOrder.shift();
-      }
 
+      this.propertiesOrder = propertiesOrder;
       this.fire('order-column-change', { propertiesOrder: propertiesOrder });
+    }
+  }, {
+    key: 'changeColumnOrder',
+    value: function changeColumnOrder(propertiesOrder) {
+      this.propertiesOrder = propertiesOrder;
+      this._init(this.data, propertiesOrder);
+    }
+  }, {
+    key: '_changeColumn',
+    value: function _changeColumn(propertiesOrder) {
+      var _this20 = this;
+
+      if (propertiesOrder) {
+        (function () {
+          var newColumnsOrder = [];
+          propertiesOrder.forEach(function (property) {
+            return newColumnsOrder.push(_this20._columns.find(function (column) {
+              return column.property === property;
+            }));
+          });
+          _this20.splice('_columns', 0, _this20._columns.length);
+          _this20.async(function () {
+            _this20._columns = newColumnsOrder;
+            _this20.async(function () {
+              _this20._handleDragAndDrop();
+            });
+          });
+        })();
+      }
     }
   }, {
     key: 'behaviors',

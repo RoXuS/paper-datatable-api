@@ -106,7 +106,7 @@ Custom property                                   | Description                 
                   property$="[[column.property]]"
                   style$="display: [[_getThDisplayStyle(column.hidden)]];">
 
-                  <div class="draggable layout horizontal center" draggable$="[[draggable]]">
+                  <div class$="[[_draggableClass(column.draggableColumn)]]" draggable$="[[_isDraggable(column.draggableColumn)]]">
 
                     <template is="dom-if" if="[[equals(positionSortIcon, 'right')]]">
                       <template is="dom-if" if="[[column.activeFilter]]" on-dom-change="_handleActiveFilterChange">
@@ -199,7 +199,7 @@ Custom property                                   | Description                 
                   property$="[[column.property]]"
                   style$="display: [[_getThDisplayStyle(column.hidden)]];">
 
-                  <div class="draggable layout horizontal center" draggable$="[[draggable]]">
+                  <div class$="[[_draggableClass(column.draggableColumn)]]" draggable$="[[_isDraggable(column.draggableColumn)]]">
 
                     <template is="dom-if" if="[[equals(positionSortIcon, 'right')]]">
                       <template is="dom-if" if="[[column.activeFilter]]" on-dom-change="_handleActiveFilterChange">

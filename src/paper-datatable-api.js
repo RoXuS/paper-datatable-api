@@ -164,12 +164,9 @@ class DtPaperDatatableApi {
         type: Number,
         value: 0,
       },
-      /**
-       * If true, the columns are draggable (type string is mandatory).
-       */
-      draggable: {
-        type: String,
-        value: 'false',
+      _dragEnd: {
+        type: Boolean,
+        value: true,
       },
     };
 
@@ -351,7 +348,8 @@ class DtPaperDatatableApi {
     return (maxSize > totalElements ? totalElements : maxSize);
   }
 
-  _dataChanged(data) {
+  _init(data, propertiesOrder) {
+    this._changeColumn(propertiesOrder);
     this.async(() => {
       this._removeRows();
       this._fillRows(data);
@@ -359,8 +357,14 @@ class DtPaperDatatableApi {
       this._resizeHeader();
       this._footerPositionChange(this.footerPosition);
       this._handleDragAndDrop();
-      this._generatePropertiesOrder();
+      if (!this.propertiesOrder) {
+        this.async(() => this._generatePropertiesOrder());
+      }
     });
+  }
+
+  _dataChanged(data) {
+    this._init(data, this.propertiesOrder);
   }
 
   _pageChanged(page, oldPage) {
@@ -911,6 +915,20 @@ class DtPaperDatatableApi {
     return '';
   }
 
+  // _cleanDragAndDrop() {
+  //   const allTh = Polymer.dom(this.root).querySelectorAll('thead th');
+  //   allTh.forEach((th) => {
+  //     th.removeEventListener('dragover', this._dragOverHandle.bind(this), false);
+  //     th.removeEventListener('dragenter', this._dragEnterHandle.bind(this), false);
+  //     th.removeEventListener('drop', this._dropHandle.bind(this), false);
+  //   });
+  //   const allThDiv = Polymer.dom(this.root).querySelectorAll('thead th div');
+  //   allThDiv.forEach((div) => {
+  //     div.removeEventListener('dragstart', this._dragStartHandle.bind(this), false);
+  //     div.removeEventListener('dragend', this._dragEndHandle.bind(this), false);
+  //   });
+  // }
+
   _handleDragAndDrop() {
     const allTh = Polymer.dom(this.root).querySelectorAll('thead th');
     allTh.forEach((th) => {
@@ -931,11 +949,12 @@ class DtPaperDatatableApi {
 
   _dragEnterHandle(event) {
     event.preventDefault();
-
     if (event.target.classList.contains('pgTh')) {
       const from = this.currentDrag;
       const to = event.currentTarget;
-      this._moveTh(from, to);
+      if (this._dragEnd) {
+        this._moveTh(from, to);
+      }
     }
   }
 
@@ -944,6 +963,9 @@ class DtPaperDatatableApi {
   }
 
   _dragStartHandle(event) {
+    // Hack for firefox
+    event.dataTransfer.setData('text', 'anything');
+
     this.currentDrag = event.currentTarget;
     event.dataTransfer.effectAllowed = 'move';
   }
@@ -968,18 +990,24 @@ class DtPaperDatatableApi {
     const fromProperty = from.parentNode.getAttribute('property');
     const toProperty = to.getAttribute('property');
     if (fromProperty !== toProperty) {
-      let allTh = Polymer.dom(this.root).querySelectorAll('thead th');
-      const toIndex = allTh.findIndex(th => th.getAttribute('property') === toProperty);
-      const fromIndex = allTh.findIndex(th => th.getAttribute('property') === fromProperty);
-      this._insertElement(allTh, toIndex, fromIndex);
+      this.async(() => {
+        const allTh = Polymer.dom(this.root).querySelectorAll('thead th');
+        const toIndex = allTh.findIndex(th => th.getAttribute('property') === toProperty);
+        const fromIndex = allTh.findIndex(th => th.getAttribute('property') === fromProperty);
+        this._insertElement(allTh, toIndex, fromIndex);
 
-      const allTr = Polymer.dom(this.root).querySelectorAll('tbody tr');
-      allTr.forEach((tr) => {
-        const allTd = Polymer.dom(tr).querySelectorAll('td');
-        this._insertElement(allTd, toIndex, fromIndex);
+        const allTr = Polymer.dom(this.root).querySelectorAll('tbody tr');
+        allTr.forEach((tr) => {
+          const allTd = Polymer.dom(tr).querySelectorAll('td');
+          this._insertElement(allTd, toIndex, fromIndex);
+        });
+
+        this._resizeHeader();
+        this._dragEnd = false;
+        this.async(() => {
+          this._dragEnd = true;
+        }, 100);
       });
-
-      this._resizeHeader();
     }
   }
 
@@ -987,15 +1015,48 @@ class DtPaperDatatableApi {
     this._generatePropertiesOrder();
   }
 
+  _draggableClass(draggable) {
+    if (draggable) {
+      return 'draggable layout horizontal center';
+    }
+    return 'layout horizontal center';
+  }
+
+  _isDraggable(draggableColumn) {
+    if (draggableColumn) {
+      return 'true';
+    }
+    return 'false';
+  }
+
   _generatePropertiesOrder() {
     const allTh = Polymer.dom(this.root).querySelectorAll('thead th');
     const propertiesOrder = allTh.filter(th => th.getAttribute('property') !== null)
       .map(th => th.getAttribute('property'));
-    if (this.selectable) {
-      propertiesOrder.shift();
-    }
 
+    this.propertiesOrder = propertiesOrder;
     this.fire('order-column-change', { propertiesOrder });
+  }
+
+  changeColumnOrder(propertiesOrder) {
+    this.propertiesOrder = propertiesOrder;
+    this._init(this.data, propertiesOrder);
+  }
+
+  _changeColumn(propertiesOrder) {
+    if (propertiesOrder) {
+      const newColumnsOrder = [];
+      propertiesOrder.forEach(property =>
+        newColumnsOrder.push(this._columns.find(column => column.property === property))
+      );
+      this.splice('_columns', 0, this._columns.length);
+      this.async(() => {
+        this._columns = newColumnsOrder;
+        this.async(() => {
+          this._handleDragAndDrop();
+        });
+      });
+    }
   }
 }
 
