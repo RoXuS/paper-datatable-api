@@ -1189,11 +1189,20 @@ var DtPaperDatatableApi = function () {
       this.propertiesOrder = propertiesOrder;
       this.fire('order-column-change', { propertiesOrder: propertiesOrder });
     }
+
+    /**
+     * Change column order.
+     *
+     * @property changeColumnOrder
+     * @param {Object} propertiesOrder The sorted columns properties.
+     */
+
   }, {
     key: 'changeColumnOrder',
     value: function changeColumnOrder(propertiesOrder) {
       this.propertiesOrder = propertiesOrder;
       this._init(this.data, propertiesOrder);
+      this.fire('order-column-change', { propertiesOrder: propertiesOrder });
     }
   }, {
     key: '_changeColumn',

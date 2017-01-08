@@ -1038,9 +1038,16 @@ class DtPaperDatatableApi {
     this.fire('order-column-change', { propertiesOrder });
   }
 
+  /**
+   * Change column order.
+   *
+   * @property changeColumnOrder
+   * @param {Object} propertiesOrder The sorted columns properties.
+   */
   changeColumnOrder(propertiesOrder) {
     this.propertiesOrder = propertiesOrder;
     this._init(this.data, propertiesOrder);
+    this.fire('order-column-change', { propertiesOrder });
   }
 
   _changeColumn(propertiesOrder) {
