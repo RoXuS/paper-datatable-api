@@ -1082,7 +1082,7 @@ var DtPaperDatatableApi = function () {
     key: '_dragEnterHandle',
     value: function _dragEnterHandle(event) {
       event.preventDefault();
-      if (event.target.classList.contains('pgTh')) {
+      if (event.target.classList && event.target.classList.contains('pgTh')) {
         var from = this.currentDrag;
         var to = event.currentTarget;
         if (this._dragEnd) {
@@ -1099,7 +1099,7 @@ var DtPaperDatatableApi = function () {
     key: '_dragStartHandle',
     value: function _dragStartHandle(event) {
       // Hack for firefox
-      event.dataTransfer.setData('text', 'anything');
+      event.dataTransfer.setData('text/plain', '');
 
       this.currentDrag = event.currentTarget;
       event.dataTransfer.effectAllowed = 'move';
