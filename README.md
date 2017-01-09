@@ -14,7 +14,7 @@ See the [component page](https://roxus.github.io/paper-datatable-api/components/
 <iron-ajax auto url="data.json" last-response="{{data}}"></iron-ajax>
 
 <paper-datatable-api data="[[data]]">
-  <paper-datatable-api-column header="Fruit" property="fruit">
+  <paper-datatable-api-column draggable-column header="Fruit" property="fruit">
     <template>
       <span>{{value}}</span>
     </template>

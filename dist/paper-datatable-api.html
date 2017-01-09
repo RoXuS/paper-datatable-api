@@ -20,7 +20,7 @@
     <iron-ajax auto url="data.json" last-response="{{data}}"></iron-ajax>
 
     <paper-datatable-api data="[[data]]">
-      <paper-datatable-api-column header="Fruit" property="fruit">
+      <paper-datatable-api-column header="Fruit" draggable-column property="fruit">
         <template>
           <span>{{value}}</span>
         </template>
