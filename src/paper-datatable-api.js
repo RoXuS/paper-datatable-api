@@ -608,6 +608,7 @@ class DtPaperDatatableApi {
     const index = this._columns.findIndex(
       columnElement => columnElement.property === columnProperty
     );
+    console.log('index', index);
     if (column && column.hideable) {
       const isHidden = column.hidden;
       const indexColumn = this.selectable ? index + 2 : index + 1;
@@ -619,7 +620,7 @@ class DtPaperDatatableApi {
 
       column.hidden = !isHidden;
       const toggleColumnIndex = this.toggleColumns.findIndex(
-        toggleColumn => toggleColumn.position === index
+        toggleColumn => toggleColumn.property === columnProperty
       );
 
       this.set(`toggleColumns.${toggleColumnIndex}.hidden`, !isHidden);

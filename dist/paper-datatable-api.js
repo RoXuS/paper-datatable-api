@@ -693,6 +693,7 @@ var DtPaperDatatableApi = function () {
       var index = this._columns.findIndex(function (columnElement) {
         return columnElement.property === columnProperty;
       });
+      console.log('index', index);
       if (column && column.hideable) {
         (function () {
           var isHidden = column.hidden;
@@ -705,7 +706,7 @@ var DtPaperDatatableApi = function () {
 
           column.hidden = !isHidden;
           var toggleColumnIndex = _this10.toggleColumns.findIndex(function (toggleColumn) {
-            return toggleColumn.position === index;
+            return toggleColumn.property === columnProperty;
           });
 
           _this10.set('toggleColumns.' + toggleColumnIndex + '.hidden', !isHidden);
