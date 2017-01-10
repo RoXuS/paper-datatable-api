@@ -1,5 +1,5 @@
-/*! @license Firebase v3.6.4
-    Build: 3.6.4-rc.2
+/*! @license Firebase v3.6.5
+    Build: 3.6.5-rc.1
     Terms: https://firebase.google.com/terms/ */
 declare namespace firebase {
   interface FirebaseError {
@@ -80,6 +80,7 @@ declare namespace firebase.app {
     auth(): firebase.auth.Auth;
     database(): firebase.database.Database;
     delete(): firebase.Promise<any>;
+    messaging(): firebase.messaging.Messaging;
     name: string;
     options: Object;
     storage(): firebase.storage.Storage;

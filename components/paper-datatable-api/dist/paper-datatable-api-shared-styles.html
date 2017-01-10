@@ -45,60 +45,6 @@
 	min-width: 70px;
       }
 
-      thead th paper-input {
-	min-width: 110px;
-	--paper-input-container-underline-focus: {
-	  display: block;
-	};
-	--paper-input-container-label: {
-	  position: initial;
-	};
-	--paper-input-container: {
-	  padding: 0;
-	};
-	--paper-input-container-input: {
-	  font-size: 12px;
-	};
-      }
-
-      thead th[sortable] paper-icon-button.filter {
-	color: rgba(0,0,0, .26);
-      }
-
-      thead th[sortable] paper-icon-button.filter.active {
-	@apply(--paper-datatable-api-header-sorted);
-      }
-
-      thead th:not([sortable]) paper-icon-button.sort {
-	display: none;
-      }
-
-      thead th[sortable] paper-icon-button.sort {
-	color: rgba(0,0,0, .26);
-      }
-
-      thead th paper-icon-button {
-	--paper-icon-button-hover: {
-	  @apply(--paper-datatable-api-header-sorted);
-	};
-	min-width: 36px;
-	min-height: 36px;
-	transition: transform .2s linear;
-      }
-
-      thead th[sortable][sorted] paper-icon-button.sort {
-	@apply(--paper-datatable-api-header-sorted);
-      }
-
-      thead th[sortable]:not([sorted]):not([sort-direction='desc']) paper-icon-button.sort {
-	transform: rotate(0deg);
-      }
-
-      thead th[sortable][sorted]:not([sort-direction='desc']) paper-icon-button.sort,
-      thead th[sortable]:not([sorted]) paper-icon-button.sort {
-	transform: rotate(180deg);
-      }
-
       :host ::content tbody tr,
       tbody tr {
 	height: 48px;

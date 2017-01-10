@@ -149,7 +149,6 @@ class DtPaperDatatableApi {
           };
         },
       },
-      timeoutFilter: Number,
       /**
        * Change the position of the footer.
        */
@@ -602,13 +601,16 @@ class DtPaperDatatableApi {
    * Hide or show a column following the number in argument.
    *
    * @property toggleColumn
-   * @param {Number} columnPosition The number of column which will be toggled.
+   * @param {Number} columnProperty The property of the column which will be toggled.
    */
-  toggleColumn(columnPosition) {
-    const column = this._columns[columnPosition];
+  toggleColumn(columnProperty) {
+    const column = this._columns.find(columnElement => columnElement.property === columnProperty);
+    const index = this._columns.findIndex(
+      columnElement => columnElement.property === columnProperty
+    );
     if (column && column.hideable) {
       const isHidden = column.hidden;
-      const indexColumn = this.selectable ? columnPosition + 2 : columnPosition + 1;
+      const indexColumn = this.selectable ? index + 2 : index + 1;
       const cssQuery = `tr th:nth-of-type(${indexColumn}), tr td:nth-of-type(${indexColumn})`;
       Polymer.dom(this.root).querySelectorAll(cssQuery).forEach((tdThParams) => {
         const tdTh = tdThParams;
@@ -617,7 +619,7 @@ class DtPaperDatatableApi {
 
       column.hidden = !isHidden;
       const toggleColumnIndex = this.toggleColumns.findIndex(
-        toggleColumn => toggleColumn.position === columnPosition
+        toggleColumn => toggleColumn.position === index
       );
 
       this.set(`toggleColumns.${toggleColumnIndex}.hidden`, !isHidden);
@@ -644,9 +646,9 @@ class DtPaperDatatableApi {
   }
 
   _handleSort(event) {
-    const column = event.model.column;
-    const paperIconButton = event.currentTarget;
-    const th = paperIconButton.parentNode.parentNode;
+    const column = event.detail.column;
+    const paperDatatableApiThContent = event.currentTarget;
+    const th = paperDatatableApiThContent.parentNode.parentNode;
     const sortDirection = column.sortDirection === 'asc' ? 'desc' : 'asc';
 
     if (column.sortDirection === undefined || column.sortDirection === 'asc') {
@@ -673,7 +675,7 @@ class DtPaperDatatableApi {
   /**
    * Undo sort on a column if it is sorted.
    *
-   * @property toggleColumn
+   * @property deleteSortColumn
    * @param {Object} column Column element.
    * @param {th} column Th element.
    */
@@ -686,8 +688,9 @@ class DtPaperDatatableApi {
       }
 
       if (th) {
-        th.setAttribute('sort-direction', 'asc');
-        th.removeAttribute('sorted');
+        const thContent = Polymer.dom(th).querySelector('paper-datatable-api-th-content');
+        thContent.setAttribute('sort-direction', 'asc');
+        thContent.removeAttribute('sorted');
         column.set('sortDirection', undefined);
         column.set('sorted', false);
       }
@@ -702,7 +705,7 @@ class DtPaperDatatableApi {
   /**
    * Sort a column if it is sortable.
    *
-   * @property toggleColumn
+   * @property sortColumn
    * @param {Object} column Column element.
    * @param {sortDirection} The sort direction.
    * @param {th} column Th element.
@@ -710,16 +713,16 @@ class DtPaperDatatableApi {
   sortColumn(column, sortDirection, targetTh) {
     if (column.sortable) {
       let th = targetTh;
-      const queryPaperIconButton = 'thead th[sortable][sorted] paper-icon-button.sort';
-      Polymer.dom(this.root).querySelectorAll(queryPaperIconButton)
-        .forEach((otherPaperIconButton) => {
-          const thSorted = otherPaperIconButton.parentNode.parentNode;
+      const queryThContent = 'thead th paper-datatable-api-th-content[sortable][sorted]';
+      Polymer.dom(this.root).querySelectorAll(queryThContent)
+        .forEach((otherThContent) => {
+          const thSorted = otherThContent.parentNode.parentNode;
 
           if (thSorted.dataColumn !== column) {
-            thSorted.removeAttribute('sort-direction');
-            thSorted.removeAttribute('sorted');
+            otherThContent.setAttribute('sort-direction', 'asc');
+            otherThContent.removeAttribute('sorted');
             thSorted.dataColumn.set('sortDirection', undefined);
-            thSorted.dataColumn.set('sorted', true);
+            thSorted.dataColumn.set('sorted', false);
           }
         });
 
@@ -728,41 +731,13 @@ class DtPaperDatatableApi {
       }
 
       if (th) {
-        th.setAttribute('sort-direction', sortDirection);
-        th.setAttribute('sorted', true);
+        const thContent = Polymer.dom(th).querySelector('paper-datatable-api-th-content');
+        thContent.setAttribute('sort-direction', sortDirection);
+        thContent.setAttribute('sorted', true);
         column.set('sortDirection', sortDirection);
         column.set('sorted', true);
       }
     }
-  }
-
-  _handleActiveFilterChange(event) {
-    const parentDiv = event.currentTarget.parentNode;
-    this.async(() => {
-      let paperInput = parentDiv.querySelector('paper-input');
-      if (paperInput) {
-        paperInput.focus();
-      } else {
-        const datePicker = parentDiv.querySelector('vaadin-date-picker-light');
-        if (datePicker) {
-          paperInput = datePicker.querySelector('paper-input');
-          datePicker.i18n = this.localeDatePicker;
-        }
-      }
-    });
-  }
-
-  _handlePaperInputChange(event) {
-    const column = event.model.column;
-    const input = event.currentTarget;
-
-    this.async(() => {
-      if (input.value !== '') {
-        this._launchFilterEvent(input, column);
-      } else if (!input.focused) {
-        this._toggleFilter(column);
-      }
-    });
   }
 
   _handleTapClear(event) {
@@ -771,13 +746,11 @@ class DtPaperDatatableApi {
   }
 
   _handleVaadinDatePickerLight(event) {
-    const column = event.model.column;
-    const input = event.currentTarget;
+    const column = event.detail.column;
+    const value = event.detail.value;
 
     this.async(() => {
-      if (input.value !== '') {
-        this._launchFilterEvent(input, column);
-      }
+      this._launchFilterEvent(value, column);
     });
   }
 
@@ -811,9 +784,8 @@ class DtPaperDatatableApi {
       });
       this._resizeHeader();
       this.async(() => {
-        const paperInput = Polymer.dom(this.root).querySelector(`thead th[property="${column.property}"] paper-input`);
-        if (paperInput !== null) {
-          paperInput.value = value;
+        if (value) {
+          this.set(`_columns.${columnIndex}.activeFilterValue`, value);
         }
       }, 100);
     }
@@ -822,7 +794,7 @@ class DtPaperDatatableApi {
   /**
    * Toggle filter on a column.
    *
-   * @property activeFilter
+   * @property toggleFilter
    * @param {Object} column The column where the filer will be applied.
    * @param {String} value The value of the filter.
    */
@@ -838,15 +810,17 @@ class DtPaperDatatableApi {
       });
       this._resizeHeader();
       this.async(() => {
-        const paperInput = Polymer.dom(this.root).querySelector(`thead th[property="${column.property}"] paper-input`);
-        if (paperInput !== null) {
-          paperInput.value = value;
+        if (value) {
+          const columnIndex = this._columns.findIndex(
+            _column => _column.property === column.property
+          );
+          this.set(`_columns.${columnIndex}.activeFilterValue`, value);
         }
       }, 100);
     }
   }
 
-  _launchFilterEvent(input, column) {
+  _launchFilterEvent(value, column) {
     /**
      * Fired when a filters inputs changed.
      * @event filter
@@ -856,41 +830,27 @@ class DtPaperDatatableApi {
     this.fire('filter', {
       filter: {
         property: column.property,
-        value: input.value,
+        value,
       },
       column,
     });
   }
 
   _handleFilter(event) {
-    const paperIconButton = event.currentTarget;
-    const column = event.model.column;
+    const column = event.detail.column;
 
     if (column.activeFilter) {
-      const input = paperIconButton.parentNode.querySelector('paper-input');
-      input.value = '';
-      input.previousValue = input.value;
-      this._launchFilterEvent(input, column);
+      this._launchFilterEvent('', column);
     }
     this._toggleFilter(column);
   }
 
-  _handleKeyDownInput(event) {
-    const column = event.model.column;
-    const input = event.currentTarget;
-    if (input.previousValue !== input.value) {
-      if (event.keyCode === 13) {
-        this._launchFilterEvent(input, column);
-        input.previousValue = input.value;
-      } else {
-        clearTimeout(this.timeoutFilter);
-        this.timeoutFilter = setTimeout(() => {
-          if (input.previousValue !== input.value) {
-            this._launchFilterEvent(input, column);
-          }
-          input.previousValue = input.value;
-        }, 1000);
-      }
+  _handleInputChange(event) {
+    const column = event.detail.column;
+    const value = event.detail.value;
+
+    if (column && value) {
+      this._launchFilterEvent(value, column);
     }
   }
 
@@ -949,7 +909,7 @@ class DtPaperDatatableApi {
 
   _dragEnterHandle(event) {
     event.preventDefault();
-    if (event.target.classList.contains('pgTh')) {
+    if (event.target.classList && event.target.classList.contains('pgTh')) {
       const from = this.currentDrag;
       const to = event.currentTarget;
       if (this._dragEnd) {
@@ -964,7 +924,7 @@ class DtPaperDatatableApi {
 
   _dragStartHandle(event) {
     // Hack for firefox
-    event.dataTransfer.setData('text', 'anything');
+    event.dataTransfer.setData('text/plain', '');
 
     this.currentDrag = event.currentTarget;
     event.dataTransfer.effectAllowed = 'move';
@@ -1017,9 +977,9 @@ class DtPaperDatatableApi {
 
   _draggableClass(draggable) {
     if (draggable) {
-      return 'draggable layout horizontal center';
+      return 'draggable';
     }
-    return 'layout horizontal center';
+    return '';
   }
 
   _isDraggable(draggableColumn) {
@@ -1035,12 +995,20 @@ class DtPaperDatatableApi {
       .map(th => th.getAttribute('property'));
 
     this.propertiesOrder = propertiesOrder;
+    this.async(() => this._changeColumn(propertiesOrder), 100);
     this.fire('order-column-change', { propertiesOrder });
   }
 
+  /**
+   * Change column order.
+   *
+   * @property changeColumnOrder
+   * @param {Object} propertiesOrder The sorted columns properties.
+   */
   changeColumnOrder(propertiesOrder) {
     this.propertiesOrder = propertiesOrder;
     this._init(this.data, propertiesOrder);
+    this.fire('order-column-change', { propertiesOrder });
   }
 
   _changeColumn(propertiesOrder) {
@@ -1052,6 +1020,7 @@ class DtPaperDatatableApi {
       this.splice('_columns', 0, this._columns.length);
       this.async(() => {
         this._columns = newColumnsOrder;
+        this._resizeHeader();
         this.async(() => {
           this._handleDragAndDrop();
         });

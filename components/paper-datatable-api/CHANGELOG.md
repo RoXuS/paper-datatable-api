@@ -1,8 +1,21 @@
 # Change Log
 
+## [v0.1.22](https://github.com/RoXuS/paper-datatable-api/tree/0.1.22) (2017-01-09)
+- Add draggable-column example ([commit](https://github.com/RoXuS/paper-datatable-api/commit/44ac1e5))
+- Fix drag and drop on firefox ([commit](https://github.com/RoXuS/paper-datatable-api/commit/d6b0257))
+
+## [v0.1.21](https://github.com/RoXuS/paper-datatable-api/tree/0.1.21) (2017-01-09)
+- Add event on changeColumnOrder ([commit](https://github.com/RoXuS/paper-datatable-api/commit/0bf7287))
+- Fix draggable feature ([commit](https://github.com/RoXuS/paper-datatable-api/commit/8739935))
+- Fire event when column order change ([commit](https://github.com/RoXuS/paper-datatable-api/commit/ee0ba7e))
+- Add drag and drop columns to the demo ([commit](https://github.com/RoXuS/paper-datatable-api/commit/66bf6fb))
+- Add feature to drag and drop column ([commit](https://github.com/RoXuS/paper-datatable-api/commit/8d0c9b8))
+- Add no-param-rules to ignore rules ([commit](https://github.com/RoXuS/paper-datatable-api/commit/fe91721))
+- Fix bug on Edge browser ([commit](https://github.com/RoXuS/paper-datatable-api/commit/02dba1c))
+
 ## [v0.1.20](https://github.com/RoXuS/paper-datatable-api/tree/0.1.20) (2016-12-20)
-- Reduce width of headers in frozen mode ([commit](https://github.com/RoXuS/iron-multi-ajax/commit/3e74664))
-- Fix bug on footer ([commit](https://github.com/RoXuS/iron-multi-ajax/commit/fef8d64))
+- Reduce width of headers in frozen mode ([commit](https://github.com/RoXuS/paper-datatable-api/commit/3e74664))
+- Fix bug on footer ([commit](https://github.com/RoXuS/paper-datatable-api/commit/fef8d64))
 
 ## [v0.1.19](https://github.com/RoXuS/paper-datatable-api/tree/0.1.19) (2016-12-10)
 - Forget to push the dist ([commit](https://github.com/RoXuS/paper-datatable-api/commit/ab1047a))

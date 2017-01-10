@@ -2,6 +2,7 @@ paper-datatable-api web component
 ============
 
 [![Build Status](https://travis-ci.org/RoXuS/paper-datatable-api.svg?branch=master)](https://travis-ci.org/RoXuS/paper-datatable-api)
+[![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/RoXuS/paper-datatable-api)
 
 `paper-datatable-api` is a material design implementation of a data table.
 
@@ -14,7 +15,7 @@ See the [component page](https://roxus.github.io/paper-datatable-api/components/
 <iron-ajax auto url="data.json" last-response="{{data}}"></iron-ajax>
 
 <paper-datatable-api data="[[data]]">
-  <paper-datatable-api-column header="Fruit" property="fruit">
+  <paper-datatable-api-column draggable-column header="Fruit" property="fruit">
     <template>
       <span>{{value}}</span>
     </template>

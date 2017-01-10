@@ -47,7 +47,7 @@
               <paper-icon-button icon="menu" class="dropdown-trigger"></paper-icon-button>
               <paper-menu class="dropdown-content">
                 <template is="dom-repeat" items="[[toggleColumns]]" as="column" index-as="index">
-                  <paper-icon-item position="[[column.position]]" on-tap="_hideColumn">
+                  <paper-icon-item column-property="[[column.property]]" on-tap="_hideColumn">
                     <template is="dom-if" if="[[column.hidden]]">
                       <iron-icon icon="visibility-off" item-icon></iron-icon>
                     </template>
@@ -127,8 +127,8 @@
         },
       },
       _hideColumn: function(event) {
-        var position = event.currentTarget.position;
-        this.$$('paper-datatable-api').toggleColumn(position);
+        var property = event.currentTarget.columnProperty;
+        this.$$('paper-datatable-api').toggleColumn(property);
       },
       _handleSort: function(event) {
         this.sortProperty = event.detail.sort.property + ',' + event.detail.sort.direction;

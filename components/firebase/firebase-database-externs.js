@@ -1,6 +1,6 @@
 /**
  * @fileoverview Firebase Database API.
- * Version: 3.6.4
+ * Version: 3.6.5
  *
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
@@ -1661,7 +1661,7 @@ firebase.database.OnDisconnect.prototype.setWithPriority =
  *    onlineState: true,
  *    status: "I'm online."
  * });
- * ref.onDisconnect.update({
+ * ref.onDisconnect().update({
  *   onlineState: false,
  *   status: "I'm offline."
  * });

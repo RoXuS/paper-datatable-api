@@ -1,6 +1,6 @@
 /**
  * @fileoverview Firebase Messaging API.
- * Version: 3.6.4
+ * Version: 3.6.5
  *
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
@@ -19,28 +19,62 @@
  * @externs
  */
 
+
 /**
- * Create an object to access the Messaging service for the default App
- * (or a given app).
+ * Gets the {@link firebase.messaging.Messaging `Messaging`} service for the
+ * default app or a given app.
  *
- * `firebase.messaging()` can be called as a function to access the default
- * {@link firebase.messaging.Messaging}, or as `firebase.messaging(app)` to
- * access the messaging associated with a specific {@link firebase.app.App}.
+ * `firebase.messaging()` can be called with no arguments to access the default
+ * app's {@link firebase.messaging.Messaging `Messaging`} service or as
+ * `firebase.messaging(app)` to access the
+ * {@link firebase.messaging.Messaging `Messaging`} service associated with a
+ * specific app.
  *
- * Calling `firebase.messaging()` in a service worker results in firebase
+ * Calling `firebase.messaging()` in a service worker results in Firebase
  * generating notifications if the push message payload has a `notification`
  * parameter.
  *
+ * @example
+ * // Get the Messaging service for the default app
+ * var defaultMessaging = firebase.messaging();
+ *
+ * @example
+ * // Get the Messaging service for a given app
+ * var otherMessaging = firebase.messaging(otherApp);
+ *
  * @namespace
- * @param {!firebase.app.App=} app
+ * @param {!firebase.app.App=} app The app to create a Messaging service for.
+ *     If not passed, uses the default app.
+ *
  * @return {!firebase.messaging.Messaging}
  */
 firebase.messaging = function(app) {};
 
 /**
+ * Gets the {@link firebase.messaging.Messaging `Messaging`} service for the
+ * current app.
+ *
+ * @example
+ * var messaging = app.messaging();
+ * // The above is shorthand for:
+ * // var messaging = firebase.messaging(app);
+ *
+ * @return {!firebase.messaging.Messaging}
+ */
+firebase.app.App.prototype.messaging = function() {};
+
+/**
  * The Firebase Messaging service interface.
  *
- * Do not call this constructor directly -- use firebase.messaging() instead.
+ * Do not call this constructor directly. Instead, use
+ * {@link firebase.messaging `firebase.messaging()`}.
+ *
+ * See
+ * {@link
+ *   https://firebase.google.com/docs/cloud-messaging/js/client
+ *   Set Up a JavaScript Firebase Cloud Messaging Client App}
+ * for a full guide on how to use the Firebase Messaging service.
+ *
  * @interface
  */
 firebase.messaging.Messaging = function() {};
