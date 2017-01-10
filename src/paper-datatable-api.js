@@ -602,13 +602,16 @@ class DtPaperDatatableApi {
    * Hide or show a column following the number in argument.
    *
    * @property toggleColumn
-   * @param {Number} columnPosition The number of column which will be toggled.
+   * @param {Number} columnProperty The property of the column which will be toggled.
    */
-  toggleColumn(columnPosition) {
-    const column = this._columns[columnPosition];
+  toggleColumn(columnProperty) {
+    const column = this._columns.find(columnElement => columnElement.property === columnProperty);
+    const index = this._columns.findIndex(
+      columnElement => columnElement.property === columnProperty
+    );
     if (column && column.hideable) {
       const isHidden = column.hidden;
-      const indexColumn = this.selectable ? columnPosition + 2 : columnPosition + 1;
+      const indexColumn = this.selectable ? index + 2 : index + 1;
       const cssQuery = `tr th:nth-of-type(${indexColumn}), tr td:nth-of-type(${indexColumn})`;
       Polymer.dom(this.root).querySelectorAll(cssQuery).forEach((tdThParams) => {
         const tdTh = tdThParams;
@@ -617,7 +620,7 @@ class DtPaperDatatableApi {
 
       column.hidden = !isHidden;
       const toggleColumnIndex = this.toggleColumns.findIndex(
-        toggleColumn => toggleColumn.position === columnPosition
+        toggleColumn => toggleColumn.position === index
       );
 
       this.set(`toggleColumns.${toggleColumnIndex}.hidden`, !isHidden);
@@ -1035,6 +1038,7 @@ class DtPaperDatatableApi {
       .map(th => th.getAttribute('property'));
 
     this.propertiesOrder = propertiesOrder;
+    this.async(() => this._changeColumn(propertiesOrder), 100);
     this.fire('order-column-change', { propertiesOrder });
   }
 
@@ -1059,6 +1063,7 @@ class DtPaperDatatableApi {
       this.splice('_columns', 0, this._columns.length);
       this.async(() => {
         this._columns = newColumnsOrder;
+        this._resizeHeader();
         this.async(() => {
           this._handleDragAndDrop();
         });

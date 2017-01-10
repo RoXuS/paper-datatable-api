@@ -680,19 +680,24 @@ var DtPaperDatatableApi = function () {
      * Hide or show a column following the number in argument.
      *
      * @property toggleColumn
-     * @param {Number} columnPosition The number of column which will be toggled.
+     * @param {Number} columnProperty The property of the column which will be toggled.
      */
 
   }, {
     key: 'toggleColumn',
-    value: function toggleColumn(columnPosition) {
+    value: function toggleColumn(columnProperty) {
       var _this10 = this;
 
-      var column = this._columns[columnPosition];
+      var column = this._columns.find(function (columnElement) {
+        return columnElement.property === columnProperty;
+      });
+      var index = this._columns.findIndex(function (columnElement) {
+        return columnElement.property === columnProperty;
+      });
       if (column && column.hideable) {
         (function () {
           var isHidden = column.hidden;
-          var indexColumn = _this10.selectable ? columnPosition + 2 : columnPosition + 1;
+          var indexColumn = _this10.selectable ? index + 2 : index + 1;
           var cssQuery = 'tr th:nth-of-type(' + indexColumn + '), tr td:nth-of-type(' + indexColumn + ')';
           Polymer.dom(_this10.root).querySelectorAll(cssQuery).forEach(function (tdThParams) {
             var tdTh = tdThParams;
@@ -701,7 +706,7 @@ var DtPaperDatatableApi = function () {
 
           column.hidden = !isHidden;
           var toggleColumnIndex = _this10.toggleColumns.findIndex(function (toggleColumn) {
-            return toggleColumn.position === columnPosition;
+            return toggleColumn.position === index;
           });
 
           _this10.set('toggleColumns.' + toggleColumnIndex + '.hidden', !isHidden);
@@ -1179,6 +1184,8 @@ var DtPaperDatatableApi = function () {
   }, {
     key: '_generatePropertiesOrder',
     value: function _generatePropertiesOrder() {
+      var _this20 = this;
+
       var allTh = Polymer.dom(this.root).querySelectorAll('thead th');
       var propertiesOrder = allTh.filter(function (th) {
         return th.getAttribute('property') !== null;
@@ -1187,6 +1194,9 @@ var DtPaperDatatableApi = function () {
       });
 
       this.propertiesOrder = propertiesOrder;
+      this.async(function () {
+        return _this20._changeColumn(propertiesOrder);
+      }, 100);
       this.fire('order-column-change', { propertiesOrder: propertiesOrder });
     }
 
@@ -1207,21 +1217,22 @@ var DtPaperDatatableApi = function () {
   }, {
     key: '_changeColumn',
     value: function _changeColumn(propertiesOrder) {
-      var _this20 = this;
+      var _this21 = this;
 
       if (propertiesOrder) {
         (function () {
           var newColumnsOrder = [];
           propertiesOrder.forEach(function (property) {
-            return newColumnsOrder.push(_this20._columns.find(function (column) {
+            return newColumnsOrder.push(_this21._columns.find(function (column) {
               return column.property === property;
             }));
           });
-          _this20.splice('_columns', 0, _this20._columns.length);
-          _this20.async(function () {
-            _this20._columns = newColumnsOrder;
-            _this20.async(function () {
-              _this20._handleDragAndDrop();
+          _this21.splice('_columns', 0, _this21._columns.length);
+          _this21.async(function () {
+            _this21._columns = newColumnsOrder;
+            _this21._resizeHeader();
+            _this21.async(function () {
+              _this21._handleDragAndDrop();
             });
           });
         })();
