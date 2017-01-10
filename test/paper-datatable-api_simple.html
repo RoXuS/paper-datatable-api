@@ -104,15 +104,15 @@
 
             var tr1tds = trs[0].querySelectorAll('td');
             assert.equal(tr1tds[0].style.display, '');
-            paperDatatableApi.toggleColumn(0);
+            paperDatatableApi.toggleColumn('fruit');
             assert.equal(tr1tds[0].style.display, 'none');
-            paperDatatableApi.toggleColumn(0);
+            paperDatatableApi.toggleColumn('fruit');
             assert.equal(tr1tds[0].style.display, 'table-cell');
             assert.equal(tr1tds[1].style.display, '');
-            paperDatatableApi.toggleColumn(1);
+            paperDatatableApi.toggleColumn('color');
             assert.equal(tr1tds[1].style.display, '');
             assert.equal(tr1tds[2].style.display, '');
-            paperDatatableApi.toggleColumn(2);
+            paperDatatableApi.toggleColumn('weight');
             assert.equal(tr1tds[0].style.display, 'table-cell');
             assert.equal(tr1tds[1].style.display, '');
             done();
