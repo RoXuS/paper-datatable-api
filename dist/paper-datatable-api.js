@@ -761,7 +761,7 @@ var DtPaperDatatableApi = function () {
     /**
      * Undo sort on a column if it is sorted.
      *
-     * @property toggleColumn
+     * @property deleteSortColumn
      * @param {Object} column Column element.
      * @param {th} column Th element.
      */
@@ -793,7 +793,7 @@ var DtPaperDatatableApi = function () {
     /**
      * Sort a column if it is sortable.
      *
-     * @property toggleColumn
+     * @property sortColumn
      * @param {Object} column Column element.
      * @param {sortDirection} The sort direction.
      * @param {th} column Th element.
