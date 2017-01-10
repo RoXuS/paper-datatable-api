@@ -2,6 +2,7 @@ paper-datatable-api web component
 ============
 
 [![Build Status](https://travis-ci.org/RoXuS/paper-datatable-api.svg?branch=master)](https://travis-ci.org/RoXuS/paper-datatable-api)
+[![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/RoXuS/paper-datatable-api)
 
 `paper-datatable-api` is a material design implementation of a data table.
 
