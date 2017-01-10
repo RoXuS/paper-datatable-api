@@ -1,6 +1,9 @@
 # Change Log
 
-## [v0.2.0](https://github.com/RoXuS/paper-datatable-api/tree/0.1.22) (2017-01-10)
+## [v0.2.1](https://github.com/RoXuS/paper-datatable-api/tree/0.2.1) (2017-01-10)
+- Fix toggleColumns index ([commit](https://github.com/RoXuS/paper-datatable-api/commit/3f75f61))
+
+## [v0.2.0](https://github.com/RoXuS/paper-datatable-api/tree/0.2.0) (2017-01-10)
 - Clean code ([commit](https://github.com/RoXuS/paper-datatable-api/commit/41f2552))
 - Add test on change column position ([commit](https://github.com/RoXuS/paper-datatable-api/commit/52c8af0))
 - Fix test following new change on toggle column method ([commit](https://github.com/RoXuS/paper-datatable-api/commit/d7d834d))
