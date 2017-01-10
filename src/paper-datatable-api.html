@@ -1,14 +1,20 @@
 <link rel="import" href="../../polymer/polymer.html">
+
 <link rel="import" href="paper-datatable-api-shared-styles.html">
+<link rel="import" href="paper-datatable-api-th-content.html">
+
 <link rel="import" href="../../iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="../../iron-icons/iron-icons.html">
+<link rel="import" href="../../iron-input/iron-input.html">
+
 <link rel="import" href="../../paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../../paper-listbox/paper-listbox.html">
 <link rel="import" href="../../paper-item/paper-item.html">
 <link rel="import" href="../../paper-checkbox/paper-checkbox.html">
-<link rel="import" href="../../iron-input/iron-input.html">
+
 <link rel="import" href="../../app-localize-behavior/app-localize-behavior.html">
+
 <link rel="import" href="../../vaadin-date-picker/vaadin-date-picker-light.html">
 
 <!--
@@ -70,15 +76,8 @@ Custom property                                   | Description                 
 -->
 <dom-module id="paper-datatable-api">
   <template>
-    <style>
-      .paper-datatable-api-col-1 {
-        display: none;
-      }
-    </style>
     <style include="paper-datatable-api-shared-styles"></style>
     <style include="iron-flex iron-flex-alignment"></style>
-
-    <app-location route="{{route}}"></app-location>
 
     <template is="dom-if" if="[[frozenHeader]]" restamp>
       <div id="headerWrapper">
@@ -100,69 +99,23 @@ Custom property                                   | Description                 
                 <th
                   class$="[[_generateClass(frozenHeader, column.filter)]] pgTh [[_addCustomTdClass(column.tdCustomStyle)]]"
                   data-column="[[column]]"
-                  sort-direction$="[[column.sortDirection]]"
-                  sorted$="[[column.sorted]]"
-                  sortable$="[[column.sortable]]"
                   property$="[[column.property]]"
                   style$="display: [[_getThDisplayStyle(column.hidden)]];">
 
                   <div class$="[[_draggableClass(column.draggableColumn)]]" draggable$="[[_isDraggable(column.draggableColumn)]]">
 
-                    <template is="dom-if" if="[[equals(positionSortIcon, 'right')]]">
-                      <template is="dom-if" if="[[column.activeFilter]]" on-dom-change="_handleActiveFilterChange">
-                        <template is="dom-if" if="[[!column.date]]" restamp>
-                          <paper-input class="flex" no-label-float placeholder="[[column.header]]" data-column="[[column]]" on-keyup="_handleKeyDownInput">
-                          </paper-input>
-                        </template>
-                        <template is="dom-if" if="[[column.date]]" restamp>
-                          <vaadin-date-picker-light attr-for-value="value">
-                            <paper-input class="flex" no-label-float placeholder="[[column.header]]" data-column="[[column]]" on-blur="_handleVaadinDatePickerLight"></paper-input>
-                          </vaadin-date-picker-light>
-                        </template>
-                      </template>
-                      <template is="dom-if" if="[[!column.activeFilter]]">
-                        <div class="flex" on-tap="_handleFilter">
-                          [[column.header]]
-                        </div>
-                      </template>
-                      <template is="dom-if" if="[[column.filter]]">
-                        <template is="dom-if" if="[[column.activeFilter]]">
-                          <paper-icon-button icon="search" class="filter active" data-column="[[column]]" on-tap="_handleFilter"></paper-icon-button>
-                        </template>
-                        <template is="dom-if" if="[[!column.activeFilter]]">
-                          <paper-icon-button icon="search" class="filter" data-column="[[column]]" on-tap="_handleFilter"></paper-icon-button>
-                        </template>
-                      </template>
-                      <paper-icon-button icon="arrow-downward" class="sort" on-tap="_handleSort" data-column="[[column]]"></paper-icon-button>
-                    </template>
-
-                    <template is="dom-if" if="[[equals(positionSortIcon, 'left')]]">
-                      <paper-icon-button icon="arrow-downward" class="sort" on-tap="_handleSort" data-column="[[column]]"></paper-icon-button>
-                      <template is="dom-if" if="[[column.filter]]">
-                        <template is="dom-if" if="[[column.activeFilter]]">
-                          <paper-icon-button icon="search" class="filter active" data-column="[[column]]" on-tap="_handleFilter"></paper-icon-button>
-                        </template>
-                        <template is="dom-if" if="[[!column.activeFilter]]">
-                          <paper-icon-button icon="search" class="filter" data-column="[[column]]" on-tap="_handleFilter"></paper-icon-button>
-                        </template>
-                      </template>
-                      <template is="dom-if" if="[[column.activeFilter]]" on-dom-change="_handleActiveFilterChange">
-                        <template is="dom-if" if="[[!column.date]]" restamp>
-                          <paper-input class="flex" no-label-float placeholder="[[column.header]]" data-column="[[column]]" on-keyup="_handleKeyDownInput">
-                          </paper-input>
-                        </template>
-                        <template is="dom-if" if="[[column.date]]" restamp>
-                          <vaadin-date-picker-light attr-for-value="value">
-                            <paper-input class="flex" no-label-float placeholder="[[column.header]]" data-column="[[column]]" on-blur="_handleVaadinDatePickerLight"></paper-input>
-                          </vaadin-date-picker-light>
-                        </template>
-                      </template>
-                      <template is="dom-if" if="[[!column.activeFilter]]">
-                        <div class="flex">
-                          [[column.header]]
-                        </div>
-                      </template>
-                    </template>
+                    <paper-datatable-api-th-content
+                      column="[[column]]"
+                      locale-date-picker="[[localeDatePicker]]"
+                      position-sort-icon="[[positionSortIcon]]"
+                      sort-direction$="[[column.sortDirection]]"
+                      on-input-change-th-content="_handleInputChange"
+                      on-filter-th-content="_handleFilter"
+                      on-date-input-change-th-content="_handleVaadinDatePickerLight"
+                      sorted$="[[column.sorted]]"
+                      sortable$="[[column.sortable]]"
+                      on-sort-th-content="_handleSort">
+                    </paper-datatable-api-th-content>
 
                   </div>
                 </th>
@@ -193,69 +146,23 @@ Custom property                                   | Description                 
                 <th
                   class$="[[_generateClass(frozenHeader, column.filter)]] pgTh [[_addCustomTdClass(column.tdCustomStyle)]]"
                   data-column="[[column]]"
-                  sort-direction$="[[column.sortDirection]]"
-                  sorted$="[[column.sorted]]"
-                  sortable$="[[column.sortable]]"
                   property$="[[column.property]]"
                   style$="display: [[_getThDisplayStyle(column.hidden)]];">
 
                   <div class$="[[_draggableClass(column.draggableColumn)]]" draggable$="[[_isDraggable(column.draggableColumn)]]">
 
-                    <template is="dom-if" if="[[equals(positionSortIcon, 'right')]]">
-                      <template is="dom-if" if="[[column.activeFilter]]" on-dom-change="_handleActiveFilterChange">
-                        <template is="dom-if" if="[[!column.date]]" restamp>
-                          <paper-input class="flex" no-label-float placeholder="[[column.header]]" data-column="[[column]]" on-keyup="_handleKeyDownInput">
-                          </paper-input>
-                        </template>
-                        <template is="dom-if" if="[[column.date]]" restamp>
-                          <vaadin-date-picker-light attr-for-value="value">
-                            <paper-input class="flex" no-label-float placeholder="[[column.header]]" data-column="[[column]]" on-blur="_handleVaadinDatePickerLight"></paper-input>
-                          </vaadin-date-picker-light>
-                        </template>
-                      </template>
-                      <template is="dom-if" if="[[!column.activeFilter]]">
-                        <div class="flex" on-tap="_handleFilter">
-                          [[column.header]]
-                        </div>
-                      </template>
-                      <paper-icon-button icon="arrow-downward" class="sort" on-tap="_handleSort" data-column="[[column]]"></paper-icon-button>
-                      <template is="dom-if" if="[[column.filter]]">
-                        <template is="dom-if" if="[[column.activeFilter]]">
-                          <paper-icon-button icon="search" class="filter active" data-column="[[column]]" on-tap="_handleFilter"></paper-icon-button>
-                        </template>
-                        <template is="dom-if" if="[[!column.activeFilter]]">
-                          <paper-icon-button icon="search" class="filter" data-column="[[column]]" on-tap="_handleFilter"></paper-icon-button>
-                        </template>
-                      </template>
-                    </template>
-
-                    <template is="dom-if" if="[[equals(positionSortIcon, 'left')]]">
-                      <paper-icon-button icon="arrow-downward" class="sort" on-tap="_handleSort" data-column="[[column]]"></paper-icon-button>
-                      <template is="dom-if" if="[[column.filter]]">
-                        <template is="dom-if" if="[[column.activeFilter]]">
-                          <paper-icon-button icon="search" class="filter active" data-column="[[column]]" on-tap="_handleFilter"></paper-icon-button>
-                        </template>
-                        <template is="dom-if" if="[[!column.activeFilter]]">
-                          <paper-icon-button icon="search" class="filter" data-column="[[column]]" on-tap="_handleFilter"></paper-icon-button>
-                        </template>
-                      </template>
-                      <template is="dom-if" if="[[column.activeFilter]]" on-dom-change="_handleActiveFilterChange">
-                        <template is="dom-if" if="[[!column.date]]" restamp>
-                          <paper-input class="flex" no-label-float placeholder="[[column.header]]" data-column="[[column]]" on-keyup="_handleKeyDownInput">
-                          </paper-input>
-                        </template>
-                        <template is="dom-if" if="[[column.date]]" restamp>
-                          <vaadin-date-picker-light attr-for-value="value">
-                            <paper-input class="flex" no-label-float placeholder="[[column.header]]" data-column="[[column]]" on-blur="_handleVaadinDatePickerLight"></paper-input>
-                          </vaadin-date-picker-light>
-                        </template>
-                      </template>
-                      <template is="dom-if" if="[[!column.activeFilter]]">
-                        <div class="flex">
-                          [[column.header]]
-                        </div>
-                      </template>
-                    </template>
+                    <paper-datatable-api-th-content
+                      column="[[column]]"
+                      locale-date-picker="[[localeDatePicker]]"
+                      position-sort-icon="[[positionSortIcon]]"
+                      sort-direction$="[[column.sortDirection]]"
+                      on-input-change-th-content="_handleInputChange"
+                      on-date-input-change-th-content="_handleVaadinDatePickerLight"
+                      sorted$="[[column.sorted]]"
+                      sortable$="[[column.sortable]]"
+                      on-filter-th-content="_handleFilter"
+                      on-sort-th-content="_handleSort">
+                    </paper-datatable-api-th-content>
 
                   </div>
                 </th>

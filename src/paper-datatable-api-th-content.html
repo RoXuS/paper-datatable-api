@@ -1,0 +1,139 @@
+<link rel="import" href="../../polymer/polymer.html">
+<link rel="import" href="../../iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../paper-input/paper-input.html">
+<link rel="import" href="../../app-localize-behavior/app-localize-behavior.html">
+<link rel="import" href="../../vaadin-date-picker/vaadin-date-picker-light.html">
+
+<dom-module id="paper-datatable-api-th-content">
+  <template>
+    <style include="iron-flex iron-flex-alignment"></style>
+
+    <style>
+      :host {
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+      }
+
+      paper-input {
+        min-width: 110px;
+        --paper-input-container-underline-focus: {
+          display: block;
+        };
+        --paper-input-container-label: {
+          position: initial;
+        };
+        --paper-input-container: {
+          padding: 0;
+        };
+        --paper-input-container-input: {
+          font-size: 12px;
+        };
+      }
+
+      paper-icon-button {
+        --paper-icon-button-hover: {
+          @apply(--paper-datatable-api-header-sorted);
+        };
+        min-width: 36px;
+        min-height: 36px;
+        transition: transform .2s linear;
+      }
+
+      paper-icon-button[sortable].filter {
+        color: rgba(0,0,0, .26);
+      }
+
+      paper-icon-button[sortable].filter.active {
+        @apply(--paper-datatable-api-header-sorted);
+      }
+
+      paper-icon-button.sort {
+        color: rgba(0,0,0, .26);
+      }
+
+      paper-icon-button[sorted].sort {
+        @apply(--paper-datatable-api-header-sorted);
+      }
+
+      paper-icon-button.sort:not([sorted]):not([sort-direction='desc']) {
+        transform: rotate(0deg);
+      }
+
+      paper-icon-button.sort[sorted]:not([sort-direction='desc']),
+      paper-icon-button.sort:not([sorted]) {
+        transform: rotate(180deg);
+      }
+
+    </style>
+
+    <template is="dom-if" if="[[equals(positionSortIcon, 'left')]]">
+
+      <!-- Sort -->
+      <template is="dom-if" if="[[column.sortable]]">
+        <paper-icon-button
+          icon="arrow-downward"
+          sorted$="[[sorted]]"
+          class="sort"
+          on-tap="_handleSort"
+          sort-direction$="[[sortDirection]]"></paper-icon-button>
+      </template>
+
+      <!-- Filter icon -->
+      <template is="dom-if" if="[[column.filter]]">
+        <template is="dom-if" if="[[column.activeFilter]]">
+          <paper-icon-button icon="search" sortable$="[[sortable]]" class="filter active" on-tap="_handleFilter"></paper-icon-button>
+        </template>
+        <template is="dom-if" if="[[!column.activeFilter]]">
+          <paper-icon-button icon="search" sortable$="[[sortable]]" class="filter" on-tap="_handleFilter"></paper-icon-button>
+        </template>
+      </template>
+
+    </template>
+
+    <!-- Header with filter active -->
+    <template is="dom-if" if="[[column.activeFilter]]" on-dom-change="_handleActiveFilterChange">
+      <template is="dom-if" if="[[!column.date]]" restamp>
+        <paper-input class="flex" value="{{column.activeFilterValue}}" no-label-float placeholder="[[column.header]]" on-keyup="_handleKeyDownInput"></paper-input>
+      </template>
+      <template is="dom-if" if="[[column.date]]" restamp>
+        <vaadin-date-picker-light attr-for-value="value" on-value-changed="_handleVaadinDatePickerLight" value="{{column.activeFilterValue}}">
+          <paper-input class="flex" no-label-float placeholder="[[column.header]]"></paper-input>
+        </vaadin-date-picker-light>
+      </template>
+    </template>
+
+    <!-- Header with filter inactive -->
+    <template is="dom-if" if="[[!column.activeFilter]]">
+      <div class="flex" on-tap="_handleFilter">
+        [[column.header]]
+      </div>
+    </template>
+
+    <template is="dom-if" if="[[equals(positionSortIcon, 'right')]]">
+
+      <!-- Filter icon -->
+      <template is="dom-if" if="[[column.filter]]">
+        <template is="dom-if" if="[[column.activeFilter]]">
+          <paper-icon-button icon="search" sortable$="[[sortable]]" class="filter active" on-tap="_handleFilter"></paper-icon-button>
+        </template>
+        <template is="dom-if" if="[[!column.activeFilter]]">
+          <paper-icon-button icon="search" sortable$="[[sortable]]" class="filter" on-tap="_handleFilter"></paper-icon-button>
+        </template>
+      </template>
+
+      <!-- Sort -->
+      <template is="dom-if" if="[[column.sortable]]">
+        <paper-icon-button
+          icon="arrow-downward"
+          sorted$="[[sorted]]"
+          class="sort"
+          on-tap="_handleSort"
+          sort-direction$="[[sortDirection]]"></paper-icon-button>
+      </template>
+
+    </template>
+
+  </template>
+  <script src="paper-datatable-api-th-content.js"></script>
+</dom-module>
