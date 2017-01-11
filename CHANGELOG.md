@@ -1,5 +1,9 @@
 # Change Log
 
+## [v0.2.2](https://github.com/RoXuS/paper-datatable-api/tree/0.2.1) (2017-01-11)
+- Fix code style ([commit](https://github.com/RoXuS/paper-datatable-api/commit/5725140))
+- Fix wrong events on sort ([commit](https://github.com/RoXuS/paper-datatable-api/commit/019ebed))
+
 ## [v0.2.1](https://github.com/RoXuS/paper-datatable-api/tree/0.2.1) (2017-01-10)
 - Fix toggleColumns index ([commit](https://github.com/RoXuS/paper-datatable-api/commit/3f75f61))
 
