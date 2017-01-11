@@ -670,7 +670,6 @@ class DtPaperDatatableApi {
     } else {
       this.deleteSortColumn(column, th);
     }
-
   }
 
   /**
