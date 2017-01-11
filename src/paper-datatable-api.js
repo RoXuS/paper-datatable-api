@@ -608,7 +608,6 @@ class DtPaperDatatableApi {
     const index = this._columns.findIndex(
       columnElement => columnElement.property === columnProperty
     );
-    console.log('index', index);
     if (column && column.hideable) {
       const isHidden = column.hidden;
       const indexColumn = this.selectable ? index + 2 : index + 1;
@@ -654,23 +653,24 @@ class DtPaperDatatableApi {
 
     if (column.sortDirection === undefined || column.sortDirection === 'asc') {
       this.sortColumn(column, sortDirection, th);
+
+      /**
+       * Fired when a column is sorted.
+       * @event sort
+       * Event param: {{node: Object}} detail Contains sort object.
+       * { sort: { property: STRING, direction: asc|desc }, column: OBJECT }
+       */
+      this.fire('sort', {
+        sort: {
+          property: column.property,
+          direction: column.sortDirection,
+        },
+        column,
+      });
     } else {
       this.deleteSortColumn(column, th);
     }
 
-    /**
-     * Fired when a column is sorted.
-     * @event sort
-     * Event param: {{node: Object}} detail Contains sort object.
-     * { sort: { property: STRING, direction: asc|desc }, column: OBJECT }
-     */
-    this.fire('sort', {
-      sort: {
-        property: column.property,
-        direction: column.sortDirection,
-      },
-      column,
-    });
   }
 
   /**

@@ -693,7 +693,6 @@ var DtPaperDatatableApi = function () {
       var index = this._columns.findIndex(function (columnElement) {
         return columnElement.property === columnProperty;
       });
-      console.log('index', index);
       if (column && column.hideable) {
         (function () {
           var isHidden = column.hidden;
@@ -744,23 +743,23 @@ var DtPaperDatatableApi = function () {
 
       if (column.sortDirection === undefined || column.sortDirection === 'asc') {
         this.sortColumn(column, sortDirection, th);
+
+        /**
+         * Fired when a column is sorted.
+         * @event sort
+         * Event param: {{node: Object}} detail Contains sort object.
+         * { sort: { property: STRING, direction: asc|desc }, column: OBJECT }
+         */
+        this.fire('sort', {
+          sort: {
+            property: column.property,
+            direction: column.sortDirection
+          },
+          column: column
+        });
       } else {
         this.deleteSortColumn(column, th);
       }
-
-      /**
-       * Fired when a column is sorted.
-       * @event sort
-       * Event param: {{node: Object}} detail Contains sort object.
-       * { sort: { property: STRING, direction: asc|desc }, column: OBJECT }
-       */
-      this.fire('sort', {
-        sort: {
-          property: column.property,
-          direction: column.sortDirection
-        },
-        column: column
-      });
     }
 
     /**
