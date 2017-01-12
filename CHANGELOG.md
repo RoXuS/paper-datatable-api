@@ -1,6 +1,10 @@
 # Change Log
 
-## [v0.2.2](https://github.com/RoXuS/paper-datatable-api/tree/0.2.1) (2017-01-11)
+## [v0.2.3](https://github.com/RoXuS/paper-datatable-api/tree/0.2.3) (2017-01-12)
+- Add test on filter feature ([commit](https://github.com/RoXuS/paper-datatable-api/commit/7b45c66))
+- Fix filter handler on header ([commit](https://github.com/RoXuS/paper-datatable-api/commit/8242fc0))
+
+## [v0.2.2](https://github.com/RoXuS/paper-datatable-api/tree/0.2.2) (2017-01-11)
 - Fix code style ([commit](https://github.com/RoXuS/paper-datatable-api/commit/5725140))
 - Fix wrong events on sort ([commit](https://github.com/RoXuS/paper-datatable-api/commit/019ebed))
 
