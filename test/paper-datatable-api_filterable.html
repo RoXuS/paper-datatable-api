@@ -60,6 +60,40 @@
           });
         });
 
+        test('Filters are displayed when I click on header', function(done) {
+          var paperDatatableApi = fixture('filterable');
+          paperDatatableApi.data = data;
+
+          flush(function() {
+            let filterDiv = paperDatatableApi.querySelector('thead th div paper-datatable-api-th-content div');
+            filterDiv.click();
+
+            flush(function() {
+              var input = paperDatatableApi.querySelector('thead tr th paper-input');
+              assert.isTrue(input.focused);
+            });
+            done();
+          });
+        });
+
+        test('Filters are not displayed if filter is deactivated', function(done) {
+          var paperDatatableApi = fixture('filterable');
+          paperDatatableApi.data = data;
+
+          flush(function() {
+            let secondDiv = paperDatatableApi.querySelectorAll('thead tr th')[1];
+            console.log(secondDiv);
+            secondDiv.querySelector('div paper-datatable-api-th-content div').click();
+
+            flush(function() {
+              let secondDivForInput = paperDatatableApi.querySelectorAll('thead tr th')[1];
+              var input = secondDivForInput.querySelector('paper-input');
+              assert.isNull(input);
+            });
+            done();
+          });
+        });
+
       });
     </script>
   </body>
