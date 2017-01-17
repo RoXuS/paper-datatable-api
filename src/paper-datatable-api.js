@@ -363,7 +363,9 @@ class DtPaperDatatableApi {
   }
 
   _dataChanged(data) {
-    this._init(data, this.propertiesOrder);
+    if (data.length > 0) {
+      this._init(data, this.propertiesOrder);
+    }
   }
 
   _pageChanged(page, oldPage) {

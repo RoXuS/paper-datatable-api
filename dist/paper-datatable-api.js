@@ -418,7 +418,9 @@ var DtPaperDatatableApi = function () {
   }, {
     key: '_dataChanged',
     value: function _dataChanged(data) {
-      this._init(data, this.propertiesOrder);
+      if (data.length > 0) {
+        this._init(data, this.propertiesOrder);
+      }
     }
   }, {
     key: '_pageChanged',
