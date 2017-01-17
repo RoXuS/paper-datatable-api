@@ -356,16 +356,14 @@ class DtPaperDatatableApi {
       this._resizeHeader();
       this._footerPositionChange(this.footerPosition);
       this._handleDragAndDrop();
-      if (!this.propertiesOrder) {
+      if (data.length > 0 && !this.propertiesOrder) {
         this.async(() => this._generatePropertiesOrder());
       }
     });
   }
 
   _dataChanged(data) {
-    if (data.length > 0) {
-      this._init(data, this.propertiesOrder);
-    }
+    this._init(data, this.propertiesOrder);
   }
 
   _pageChanged(page, oldPage) {

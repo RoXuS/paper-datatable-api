@@ -408,19 +408,21 @@ var DtPaperDatatableApi = function () {
         _this4._resizeHeader();
         _this4._footerPositionChange(_this4.footerPosition);
         _this4._handleDragAndDrop();
-        if (!_this4.propertiesOrder) {
-          _this4.async(function () {
-            return _this4._generatePropertiesOrder();
-          });
+        if (data.length > 0) {
+          if (!_this4.propertiesOrder) {
+            _this4.async(function () {
+              return _this4._generatePropertiesOrder();
+            });
+          }
         }
       });
     }
   }, {
     key: '_dataChanged',
     value: function _dataChanged(data) {
-      if (data.length > 0) {
-        this._init(data, this.propertiesOrder);
-      }
+      // if (data.length > 0) {
+      this._init(data, this.propertiesOrder);
+      // }
     }
   }, {
     key: '_pageChanged',
