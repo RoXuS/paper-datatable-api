@@ -1,5 +1,8 @@
 # Change Log
 
+## [v0.2.4](https://github.com/RoXuS/paper-datatable-api/tree/0.2.4) (2017-01-17)
+- Fix bug when a column is dragged ([commit](https://github.com/RoXuS/paper-datatable-api/commit/e3280c5))
+
 ## [v0.2.3](https://github.com/RoXuS/paper-datatable-api/tree/0.2.3) (2017-01-12)
 - Add test on filter feature ([commit](https://github.com/RoXuS/paper-datatable-api/commit/7b45c66))
 - Fix filter handler on header ([commit](https://github.com/RoXuS/paper-datatable-api/commit/8242fc0))
