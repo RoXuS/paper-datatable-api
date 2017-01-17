@@ -418,7 +418,9 @@ var DtPaperDatatableApi = function () {
   }, {
     key: '_dataChanged',
     value: function _dataChanged(data) {
-      this._init(data, this.propertiesOrder);
+      if (data.length > 0) {
+        this._init(data, this.propertiesOrder);
+      }
     }
   }, {
     key: '_pageChanged',
@@ -705,7 +707,7 @@ var DtPaperDatatableApi = function () {
 
           column.hidden = !isHidden;
           var toggleColumnIndex = _this10.toggleColumns.findIndex(function (toggleColumn) {
-            return toggleColumn.position === index;
+            return toggleColumn.property === columnProperty;
           });
 
           _this10.set('toggleColumns.' + toggleColumnIndex + '.hidden', !isHidden);
@@ -743,23 +745,23 @@ var DtPaperDatatableApi = function () {
 
       if (column.sortDirection === undefined || column.sortDirection === 'asc') {
         this.sortColumn(column, sortDirection, th);
+
+        /**
+         * Fired when a column is sorted.
+         * @event sort
+         * Event param: {{node: Object}} detail Contains sort object.
+         * { sort: { property: STRING, direction: asc|desc }, column: OBJECT }
+         */
+        this.fire('sort', {
+          sort: {
+            property: column.property,
+            direction: column.sortDirection
+          },
+          column: column
+        });
       } else {
         this.deleteSortColumn(column, th);
       }
-
-      /**
-       * Fired when a column is sorted.
-       * @event sort
-       * Event param: {{node: Object}} detail Contains sort object.
-       * { sort: { property: STRING, direction: asc|desc }, column: OBJECT }
-       */
-      this.fire('sort', {
-        sort: {
-          property: column.property,
-          direction: column.sortDirection
-        },
-        column: column
-      });
     }
 
     /**

@@ -1,5 +1,24 @@
 # Change Log
 
+## [v0.2.3](https://github.com/RoXuS/paper-datatable-api/tree/0.2.3) (2017-01-12)
+- Add test on filter feature ([commit](https://github.com/RoXuS/paper-datatable-api/commit/7b45c66))
+- Fix filter handler on header ([commit](https://github.com/RoXuS/paper-datatable-api/commit/8242fc0))
+
+## [v0.2.2](https://github.com/RoXuS/paper-datatable-api/tree/0.2.2) (2017-01-11)
+- Fix code style ([commit](https://github.com/RoXuS/paper-datatable-api/commit/5725140))
+- Fix wrong events on sort ([commit](https://github.com/RoXuS/paper-datatable-api/commit/019ebed))
+
+## [v0.2.1](https://github.com/RoXuS/paper-datatable-api/tree/0.2.1) (2017-01-10)
+- Fix toggleColumns index ([commit](https://github.com/RoXuS/paper-datatable-api/commit/3f75f61))
+
+## [v0.2.0](https://github.com/RoXuS/paper-datatable-api/tree/0.2.0) (2017-01-10)
+- Clean code ([commit](https://github.com/RoXuS/paper-datatable-api/commit/41f2552))
+- Add test on change column position ([commit](https://github.com/RoXuS/paper-datatable-api/commit/52c8af0))
+- Fix test following new change on toggle column method ([commit](https://github.com/RoXuS/paper-datatable-api/commit/d7d834d))
+- Use property instead of position to hide column ([commit](https://github.com/RoXuS/paper-datatable-api/commit/e0bf13c))
+- Fix name of some methods ([commit](https://github.com/RoXuS/paper-datatable-api/commit/47eb903))
+- Add a badge for webcomponents.org ([commit](https://github.com/RoXuS/paper-datatable-api/commit/891e1a5))
+
 ## [v0.1.22](https://github.com/RoXuS/paper-datatable-api/tree/0.1.22) (2017-01-09)
 - Add draggable-column example ([commit](https://github.com/RoXuS/paper-datatable-api/commit/44ac1e5))
 - Fix drag and drop on firefox ([commit](https://github.com/RoXuS/paper-datatable-api/commit/d6b0257))

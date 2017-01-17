@@ -66,7 +66,9 @@ var DtPaperDatatableApiThContent = function () {
   }, {
     key: '_handleFilter',
     value: function _handleFilter() {
-      this.fire('filter-th-content', { column: this.column });
+      if (this.column.filter) {
+        this.fire('filter-th-content', { column: this.column });
+      }
     }
   }, {
     key: 'setPaperInputValue',

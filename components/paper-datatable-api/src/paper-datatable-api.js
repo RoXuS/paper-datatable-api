@@ -363,7 +363,9 @@ class DtPaperDatatableApi {
   }
 
   _dataChanged(data) {
-    this._init(data, this.propertiesOrder);
+    if (data.length > 0) {
+      this._init(data, this.propertiesOrder);
+    }
   }
 
   _pageChanged(page, oldPage) {
@@ -619,7 +621,7 @@ class DtPaperDatatableApi {
 
       column.hidden = !isHidden;
       const toggleColumnIndex = this.toggleColumns.findIndex(
-        toggleColumn => toggleColumn.position === index
+        toggleColumn => toggleColumn.property === columnProperty
       );
 
       this.set(`toggleColumns.${toggleColumnIndex}.hidden`, !isHidden);
@@ -653,23 +655,23 @@ class DtPaperDatatableApi {
 
     if (column.sortDirection === undefined || column.sortDirection === 'asc') {
       this.sortColumn(column, sortDirection, th);
+
+      /**
+       * Fired when a column is sorted.
+       * @event sort
+       * Event param: {{node: Object}} detail Contains sort object.
+       * { sort: { property: STRING, direction: asc|desc }, column: OBJECT }
+       */
+      this.fire('sort', {
+        sort: {
+          property: column.property,
+          direction: column.sortDirection,
+        },
+        column,
+      });
     } else {
       this.deleteSortColumn(column, th);
     }
-
-    /**
-     * Fired when a column is sorted.
-     * @event sort
-     * Event param: {{node: Object}} detail Contains sort object.
-     * { sort: { property: STRING, direction: asc|desc }, column: OBJECT }
-     */
-    this.fire('sort', {
-      sort: {
-        property: column.property,
-        direction: column.sortDirection,
-      },
-      column,
-    });
   }
 
   /**
