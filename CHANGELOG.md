@@ -1,5 +1,8 @@
 # Change Log
 
+## [v0.2.6](https://github.com/RoXuS/paper-datatable-api/tree/0.2.6) (2017-01-18)
+- Better use of _changeColumn function ([commit](https://github.com/RoXuS/paper-datatable-api/commit/7ddce22))
+
 ## [v0.2.5](https://github.com/RoXuS/paper-datatable-api/tree/0.2.5) (2017-01-17)
 - Fix bug when remove the last row of the table ([commit](https://github.com/RoXuS/paper-datatable-api/commit/7be622e))
 
