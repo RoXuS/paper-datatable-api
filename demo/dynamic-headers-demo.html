@@ -1,0 +1,78 @@
+<link rel="import" href="../../polymer/polymer.html">
+
+<link rel="import" href="../../iron-ajax/iron-ajax.html">
+<link rel="import" href="../../iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../../paper-card/paper-card.html">
+
+<link rel="import" href="../dist/paper-datatable-api.html">
+<link rel="import" href="../dist/paper-datatable-api-column.html">
+
+<dom-module id="dynamic-headers-demo">
+
+  <template>
+
+    <style include="iron-flex iron-flex-alignment"></style>
+    <style>
+      div.layout > div {
+        width: 600px;
+      }
+
+      paper-card {
+        width: 100%;
+      }
+    </style>
+
+    <div class="layout horizontal center-justified">
+      <div>
+        <iron-ajax auto url="data/data.json" last-response="{{data}}"></iron-ajax>
+
+        <paper-card heading="Test demo">
+          <div class="card-content">
+
+            <paper-datatable-api data="[[data]]">
+
+              <template is="dom-repeat" items="[[headers]]" as="header">
+
+                <div>[[header.name]]</div>
+                <paper-datatable-api-column header="[[header.name]]" property="[[header.property]]">
+                  <template>
+                    <span>[[value]]</span>
+                  </template>
+                </paper-datatable-api-column>
+
+              </template>
+            </paper-datatable-api>
+
+          </div>
+        </paper-card>
+      </div>
+    </div>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'dynamic-headers-demo',
+      properties: {
+        data: Array,
+        headers: {
+          type: Array,
+          value: [
+            { name: 'Fruit', property: 'fruit' },
+            { name: 'Weight', property: 'weight.kg' }
+          ],
+        },
+      },
+      attached: function() {
+        this.async(() => {
+          this.headers = [];
+          this.async(() => {
+            this.headers = [
+              { name: 'Fruit', property: 'fruit' },
+              { name: 'Color', property: 'color' },
+            ];
+          });
+        }, 1000);
+      },
+    });
+  </script>
+</dom-module>

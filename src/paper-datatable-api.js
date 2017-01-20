@@ -284,7 +284,7 @@ class DtPaperDatatableApi {
   /** End of frozen mode **/
 
   attached() {
-    this._setColumns();
+    Polymer.dom(this).observeNodes(this._setColumns.bind(this));
     const userLang = navigator.language || navigator.userLanguage;
     this.language = userLang;
   }
@@ -583,6 +583,12 @@ class DtPaperDatatableApi {
   }
 
   _setColumns() {
+    let generateTr = false;
+
+    if (this._columns.length > 0) {
+      generateTr = true;
+    }
+
     this._columns = this.queryAllEffectiveChildren('paper-datatable-api-column')
       .map((columnParams, i) => {
         const column = columnParams;
@@ -593,6 +599,9 @@ class DtPaperDatatableApi {
     this.toggleColumns = this._columns.filter(column => column.hideable);
 
     this._columnsHeight = this.selectable ? this._columns.length + 1 : this._columns.length;
+    if (generateTr) {
+      this._init(this.data);
+    }
   }
 
   /**

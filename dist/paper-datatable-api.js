@@ -325,7 +325,7 @@ var DtPaperDatatableApi = function () {
   }, {
     key: 'attached',
     value: function attached() {
-      this._setColumns();
+      Polymer.dom(this).observeNodes(this._setColumns.bind(this));
       var userLang = navigator.language || navigator.userLanguage;
       this.language = userLang;
     }
@@ -658,6 +658,12 @@ var DtPaperDatatableApi = function () {
   }, {
     key: '_setColumns',
     value: function _setColumns() {
+      var generateTr = false;
+
+      if (this._columns.length > 0) {
+        generateTr = true;
+      }
+
       this._columns = this.queryAllEffectiveChildren('paper-datatable-api-column').map(function (columnParams, i) {
         var column = columnParams;
         column.position = i;
@@ -669,6 +675,9 @@ var DtPaperDatatableApi = function () {
       });
 
       this._columnsHeight = this.selectable ? this._columns.length + 1 : this._columns.length;
+      if (generateTr) {
+        this._init(this.data);
+      }
     }
 
     /**
