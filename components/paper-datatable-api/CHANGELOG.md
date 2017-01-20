@@ -1,5 +1,8 @@
 # Change Log
 
+## [v0.2.7](https://github.com/RoXuS/paper-datatable-api/tree/0.2.7) (2017-01-20)
+- Allow use dynamic headers ([commit](https://github.com/RoXuS/paper-datatable-api/commit/0a07dac))
+
 ## [v0.2.6](https://github.com/RoXuS/paper-datatable-api/tree/0.2.6) (2017-01-18)
 - Better use of _changeColumn function ([commit](https://github.com/RoXuS/paper-datatable-api/commit/7ddce22))
 

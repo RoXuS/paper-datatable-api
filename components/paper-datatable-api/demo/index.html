@@ -20,6 +20,7 @@
 
     <link rel="import" href="advanced-demo.html">
     <link rel="import" href="simple-demo.html">
+    <link rel="import" href="edit-demo.html">
     <link rel="import" href="dynamic-headers-demo.html">
     <link rel="import" href="firebase-demo.html">
     <link rel="import" href="advanced-pagination-front-side-demo.html">
@@ -48,6 +49,7 @@
             <paper-tabs attr-for-selected="demo" selected="{{selected}}">
               <paper-tab demo="advanced">Advanced demo</paper-tab>
               <paper-tab demo="simple">Simple demo</paper-tab>
+              <paper-tab demo="edit">Edit demo</paper-tab>
               <paper-tab demo="dynamicHeaders">Dynamic headers demo</paper-tab>
               <paper-tab demo="firebase">Firebase demo</paper-tab>
               <paper-tab demo="frontpagination">Front side pagination</paper-tab>
@@ -61,6 +63,9 @@
             </template>
             <template is="dom-if" if="[[equals('simple', selected)]]">
               <simple-demo></simple-demo>
+            </template>
+            <template is="dom-if" if="[[equals('edit', selected)]]">
+              <edit-demo></edit-demo>
             </template>
             <template is="dom-if" if="[[equals('dynamicHeaders', selected)]]">
               <dynamic-headers-demo></dynamic-headers-demo>
