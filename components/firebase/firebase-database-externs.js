@@ -1,6 +1,6 @@
 /**
  * @fileoverview Firebase Database API.
- * Version: 3.6.5
+ * Version: 3.6.6
  *
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
@@ -1485,7 +1485,7 @@ firebase.database.DataSnapshot.prototype.hasChildren = function() {};
  *
  * @example
  * var rootRef = firebase.database().ref();
- * ref.once("value")
+ * rootRef.once("value")
  *   .then(function(snapshot) {
  *     var key = snapshot.key; // null
  *     var childKey = snapshot.child("users/ada"); // "ada"

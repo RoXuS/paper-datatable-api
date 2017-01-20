@@ -325,7 +325,7 @@ var DtPaperDatatableApi = function () {
   }, {
     key: 'attached',
     value: function attached() {
-      this._setColumns();
+      Polymer.dom(this).observeNodes(this._setColumns.bind(this));
       var userLang = navigator.language || navigator.userLanguage;
       this.language = userLang;
     }
@@ -400,27 +400,21 @@ var DtPaperDatatableApi = function () {
     value: function _init(data, propertiesOrder) {
       var _this4 = this;
 
-      this._changeColumn(propertiesOrder);
-      this.async(function () {
-        _this4._removeRows();
-        _this4._fillRows(data);
-        _this4._fillColumns();
-        _this4._resizeHeader();
-        _this4._footerPositionChange(_this4.footerPosition);
-        _this4._handleDragAndDrop();
-        if (!_this4.propertiesOrder) {
-          _this4.async(function () {
-            return _this4._generatePropertiesOrder();
-          });
-        }
+      this._changeColumn(propertiesOrder, function () {
+        _this4.async(function () {
+          _this4._removeRows();
+          _this4._fillRows(data);
+          _this4._fillColumns();
+          _this4._resizeHeader();
+          _this4._footerPositionChange(_this4.footerPosition);
+          _this4._handleDragAndDrop();
+        });
       });
     }
   }, {
     key: '_dataChanged',
     value: function _dataChanged(data) {
-      if (data.length > 0) {
-        this._init(data, this.propertiesOrder);
-      }
+      this._init(data, this.propertiesOrder);
     }
   }, {
     key: '_pageChanged',
@@ -664,6 +658,12 @@ var DtPaperDatatableApi = function () {
   }, {
     key: '_setColumns',
     value: function _setColumns() {
+      var generateTr = false;
+
+      if (this._columns.length > 0) {
+        generateTr = true;
+      }
+
       this._columns = this.queryAllEffectiveChildren('paper-datatable-api-column').map(function (columnParams, i) {
         var column = columnParams;
         column.position = i;
@@ -675,6 +675,9 @@ var DtPaperDatatableApi = function () {
       });
 
       this._columnsHeight = this.selectable ? this._columns.length + 1 : this._columns.length;
+      if (generateTr) {
+        this._init(this.data);
+      }
     }
 
     /**
@@ -1148,9 +1151,10 @@ var DtPaperDatatableApi = function () {
 
       this.propertiesOrder = propertiesOrder;
       this.async(function () {
-        return _this17._changeColumn(propertiesOrder);
+        return _this17._changeColumn(propertiesOrder, function () {
+          return _this17.fire('order-column-change', { propertiesOrder: propertiesOrder });
+        });
       }, 100);
-      this.fire('order-column-change', { propertiesOrder: propertiesOrder });
     }
 
     /**
@@ -1169,26 +1173,38 @@ var DtPaperDatatableApi = function () {
     }
   }, {
     key: '_changeColumn',
-    value: function _changeColumn(propertiesOrder) {
+    value: function _changeColumn(propertiesOrder, cb) {
       var _this18 = this;
 
       if (propertiesOrder) {
         (function () {
           var newColumnsOrder = [];
           propertiesOrder.forEach(function (property) {
-            return newColumnsOrder.push(_this18._columns.find(function (column) {
+            var columnObj = _this18._columns.find(function (column) {
               return column.property === property;
-            }));
-          });
-          _this18.splice('_columns', 0, _this18._columns.length);
-          _this18.async(function () {
-            _this18._columns = newColumnsOrder;
-            _this18._resizeHeader();
-            _this18.async(function () {
-              _this18._handleDragAndDrop();
             });
+            if (columnObj) {
+              newColumnsOrder.push(columnObj);
+            }
           });
+          if (newColumnsOrder.length > 0) {
+            _this18.splice('_columns', 0, _this18._columns.length);
+            _this18.async(function () {
+              _this18._columns = newColumnsOrder;
+              _this18._resizeHeader();
+              _this18.async(function () {
+                _this18._handleDragAndDrop();
+                if (cb) {
+                  cb();
+                }
+              });
+            });
+          } else if (cb) {
+            cb();
+          }
         })();
+      } else if (cb) {
+        cb();
       }
     }
   }, {

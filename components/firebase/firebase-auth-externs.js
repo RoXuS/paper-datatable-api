@@ -1,6 +1,6 @@
 /**
  * @fileoverview Firebase Auth API.
- * Version: 3.6.5
+ * Version: 3.6.6
  *
  * Copyright 2016 Google Inc. All Rights Reserved.
  *

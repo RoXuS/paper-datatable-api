@@ -284,7 +284,7 @@ class DtPaperDatatableApi {
   /** End of frozen mode **/
 
   attached() {
-    this._setColumns();
+    Polymer.dom(this).observeNodes(this._setColumns.bind(this));
     const userLang = navigator.language || navigator.userLanguage;
     this.language = userLang;
   }
@@ -348,24 +348,20 @@ class DtPaperDatatableApi {
   }
 
   _init(data, propertiesOrder) {
-    this._changeColumn(propertiesOrder);
-    this.async(() => {
-      this._removeRows();
-      this._fillRows(data);
-      this._fillColumns();
-      this._resizeHeader();
-      this._footerPositionChange(this.footerPosition);
-      this._handleDragAndDrop();
-      if (!this.propertiesOrder) {
-        this.async(() => this._generatePropertiesOrder());
-      }
+    this._changeColumn(propertiesOrder, () => {
+      this.async(() => {
+        this._removeRows();
+        this._fillRows(data);
+        this._fillColumns();
+        this._resizeHeader();
+        this._footerPositionChange(this.footerPosition);
+        this._handleDragAndDrop();
+      });
     });
   }
 
   _dataChanged(data) {
-    if (data.length > 0) {
-      this._init(data, this.propertiesOrder);
-    }
+    this._init(data, this.propertiesOrder);
   }
 
   _pageChanged(page, oldPage) {
@@ -587,6 +583,12 @@ class DtPaperDatatableApi {
   }
 
   _setColumns() {
+    let generateTr = false;
+
+    if (this._columns.length > 0) {
+      generateTr = true;
+    }
+
     this._columns = this.queryAllEffectiveChildren('paper-datatable-api-column')
       .map((columnParams, i) => {
         const column = columnParams;
@@ -597,6 +599,9 @@ class DtPaperDatatableApi {
     this.toggleColumns = this._columns.filter(column => column.hideable);
 
     this._columnsHeight = this.selectable ? this._columns.length + 1 : this._columns.length;
+    if (generateTr) {
+      this._init(this.data);
+    }
   }
 
   /**
@@ -997,8 +1002,9 @@ class DtPaperDatatableApi {
       .map(th => th.getAttribute('property'));
 
     this.propertiesOrder = propertiesOrder;
-    this.async(() => this._changeColumn(propertiesOrder), 100);
-    this.fire('order-column-change', { propertiesOrder });
+    this.async(() => this._changeColumn(propertiesOrder, () =>
+      this.fire('order-column-change', { propertiesOrder })
+    ), 100);
   }
 
   /**
@@ -1013,20 +1019,32 @@ class DtPaperDatatableApi {
     this.fire('order-column-change', { propertiesOrder });
   }
 
-  _changeColumn(propertiesOrder) {
+  _changeColumn(propertiesOrder, cb) {
     if (propertiesOrder) {
       const newColumnsOrder = [];
-      propertiesOrder.forEach(property =>
-        newColumnsOrder.push(this._columns.find(column => column.property === property))
-      );
-      this.splice('_columns', 0, this._columns.length);
-      this.async(() => {
-        this._columns = newColumnsOrder;
-        this._resizeHeader();
-        this.async(() => {
-          this._handleDragAndDrop();
-        });
+      propertiesOrder.forEach((property) => {
+        const columnObj = this._columns.find(column => column.property === property);
+        if (columnObj) {
+          newColumnsOrder.push(columnObj);
+        }
       });
+      if (newColumnsOrder.length > 0) {
+        this.splice('_columns', 0, this._columns.length);
+        this.async(() => {
+          this._columns = newColumnsOrder;
+          this._resizeHeader();
+          this.async(() => {
+            this._handleDragAndDrop();
+            if (cb) {
+              cb();
+            }
+          });
+        });
+      } else if (cb) {
+        cb();
+      }
+    } else if (cb) {
+      cb();
     }
   }
 }
