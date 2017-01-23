@@ -284,7 +284,6 @@ class DtPaperDatatableApi {
   /** End of frozen mode **/
 
   attached() {
-    Polymer.dom(this).observeNodes(this._setColumns.bind(this));
     const userLang = navigator.language || navigator.userLanguage;
     this.language = userLang;
   }
@@ -361,6 +360,10 @@ class DtPaperDatatableApi {
   }
 
   _dataChanged(data) {
+    if (this._observer) {
+      Polymer.dom(this).unobserveNodes(this._observer);
+    }
+    this._observer = Polymer.dom(this).observeNodes(this._setColumns.bind(this));
     this._init(data, this.propertiesOrder);
   }
 
