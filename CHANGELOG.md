@@ -1,5 +1,10 @@
 # Change Log
 
+## [v0.2.8](https://github.com/RoXuS/paper-datatable-api/tree/0.2.8) (2017-01-27)
+- Fix bug when paper-datatable-api is embedded in dom-repeat ([commit](https://github.com/RoXuS/paper-datatable-api/commit/8533f58))
+- Use the good name for dynamic header demo ([commit](https://github.com/RoXuS/paper-datatable-api/commit/6305015))
+- Add example to show how to edit data ([commit](https://github.com/RoXuS/paper-datatable-api/commit/78b6c3c))
+
 ## [v0.2.7](https://github.com/RoXuS/paper-datatable-api/tree/0.2.7) (2017-01-20)
 - Allow use dynamic headers ([commit](https://github.com/RoXuS/paper-datatable-api/commit/0a07dac))
 
