@@ -13,10 +13,7 @@
     "grid",
     "table"
   ],
-  "main": [
-    "dist/paper-datatable-api.html",
-    "dist/paper-datatable-api-column.html"
-  ],
+  "main": "dist/paper-datatable-api.html",
   "ignore": [
     "/.*",
     "/test/"
