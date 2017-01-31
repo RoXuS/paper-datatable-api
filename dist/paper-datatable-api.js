@@ -1224,6 +1224,21 @@ var DtPaperDatatableApi = function () {
         cb();
       }
     }
+
+    /**
+     * Get a column following his property name.
+     *
+     * @property getColumn
+     * @param {Object} property The property.
+     */
+
+  }, {
+    key: 'getColumn',
+    value: function getColumn(property) {
+      return this._columns.find(function (columnElement) {
+        return columnElement.property === property;
+      });
+    }
   }, {
     key: 'behaviors',
     get: function get() {

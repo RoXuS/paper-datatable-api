@@ -1063,6 +1063,15 @@ class DtPaperDatatableApi {
     }
   }
 
+  /**
+   * Get a column following his property name.
+   *
+   * @property getColumn
+   * @param {Object} property The property.
+   */
+  getColumn(property) {
+    return this._columns.find(columnElement => columnElement.property === property);
+  }
 }
 
 Polymer(DtPaperDatatableApi);
