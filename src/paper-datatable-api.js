@@ -170,7 +170,7 @@ class DtPaperDatatableApi {
       /**
        * Order of the columns
        */
-      propertiesOrder: {
+      propertiesOrder: {
         type: Array,
         value: [],
         notify: true,
