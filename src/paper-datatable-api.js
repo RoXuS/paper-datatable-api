@@ -8,7 +8,7 @@ class DtPaperDatatableApi {
        */
       _columns: {
         type: Array,
-        value: [],
+        value: () => [],
       },
       /**
        * The list of hideable columns.
@@ -166,6 +166,14 @@ class DtPaperDatatableApi {
       _dragEnd: {
         type: Boolean,
         value: true,
+      },
+      /**
+       * Order of the columns
+       */
+      propertiesOrder: {
+        type: Array,
+        value: [],
+        notify: true,
       },
     };
 
@@ -598,6 +606,10 @@ class DtPaperDatatableApi {
         column.position = i;
         return column;
       });
+
+    if (this.propertiesOrder.length === 0) {
+      this._generatePropertiesOrder();
+    }
 
     this.toggleColumns = this._columns.filter(column => column.hideable);
 
@@ -1050,6 +1062,7 @@ class DtPaperDatatableApi {
       cb();
     }
   }
+
 }
 
 Polymer(DtPaperDatatableApi);
