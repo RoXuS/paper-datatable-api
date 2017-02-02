@@ -1,5 +1,11 @@
 # Change Log
 
+## [v0.2.9](https://github.com/RoXuS/paper-datatable-api/tree/0.2.9) (2017-02-02)
+- Eslint fix ([commit](https://gitlab.factory.insight.doubletrade.com/frontend-tools/dt-gitlab-tools/commit/ef71cd9))
+- Add method to get a column ([commit](https://gitlab.factory.insight.doubletrade.com/frontend-tools/dt-gitlab-tools/commit/14f3933))
+- Generate properties if it is empty ([commit](https://gitlab.factory.insight.doubletrade.com/frontend-tools/dt-gitlab-tools/commit/954ae4c))
+- Keep only one html file as main file, fix #26 ([commit](https://gitlab.factory.insight.doubletrade.com/frontend-tools/dt-gitlab-tools/commit/04af37d))
+
 ## [v0.2.8](https://github.com/RoXuS/paper-datatable-api/tree/0.2.8) (2017-01-27)
 - Fix bug when paper-datatable-api is embedded in dom-repeat ([commit](https://github.com/RoXuS/paper-datatable-api/commit/8533f58))
 - Use the good name for dynamic header demo ([commit](https://github.com/RoXuS/paper-datatable-api/commit/6305015))
