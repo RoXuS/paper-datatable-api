@@ -127,15 +127,19 @@ class DtPaperDatatableApi {
         value() {
           return {
             en: {
-              rowPerPage: 'Row per page',
+              rowPerPage: 'Rows per page',
               of: 'of',
             },
             'en-en': {
-              rowPerPage: 'Row per page',
+              rowPerPage: 'Rows per page',
               of: 'of',
             },
             'en-US': {
-              rowPerPage: 'Row per page',
+              rowPerPage: 'Rows per page',
+              of: 'of',
+            },
+            'en-us': {
+              rowPerPage: 'Rows per page',
               of: 'of',
             },
             fr: {
