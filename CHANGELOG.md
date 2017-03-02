@@ -1,5 +1,11 @@
 # Change Log
 
+## [v0.3.0](https://github.com/RoXuS/paper-datatable-api/tree/0.2.9) (2017-03-02)
+- Add live example in README.md ([commit](https://gitlab.factory.insight.doubletrade.com/frontend-tools/dt-gitlab-tools/commit/969ae52))
+- Disable drag and drop on a column where the filter is currently activated ([commit](https://gitlab.factory.insight.doubletrade.com/frontend-tools/dt-gitlab-tools/commit/8ea0981))
+- Fix shared style indent ([commit](https://gitlab.factory.insight.doubletrade.com/frontend-tools/dt-gitlab-tools/commit/5fd0514))
+- Add resources for the ‘en-us’ locale, which is what navigator.language returns in Safari. ([commit](https://gitlab.factory.insight.doubletrade.com/frontend-tools/dt-gitlab-tools/commit/505ba37))
+
 ## [v0.2.9](https://github.com/RoXuS/paper-datatable-api/tree/0.2.9) (2017-02-02)
 - Eslint fix ([commit](https://gitlab.factory.insight.doubletrade.com/frontend-tools/dt-gitlab-tools/commit/ef71cd9))
 - Add method to get a column ([commit](https://gitlab.factory.insight.doubletrade.com/frontend-tools/dt-gitlab-tools/commit/14f3933))
