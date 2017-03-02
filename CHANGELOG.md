@@ -1,6 +1,9 @@
 # Change Log
 
-## [v0.3.0](https://github.com/RoXuS/paper-datatable-api/tree/0.2.9) (2017-03-02)
+## [v0.3.1](https://github.com/RoXuS/paper-datatable-api/tree/0.3.1) (2017-03-02)
+- Use input focused instead of active filter to drag and drop column ([commit](https://gitlab.factory.insight.doubletrade.com/frontend-tools/dt-gitlab-tools/commit/814003d))
+
+## [v0.3.0](https://github.com/RoXuS/paper-datatable-api/tree/0.3.0) (2017-03-02)
 - Add live example in README.md ([commit](https://gitlab.factory.insight.doubletrade.com/frontend-tools/dt-gitlab-tools/commit/969ae52))
 - Disable drag and drop on a column where the filter is currently activated ([commit](https://gitlab.factory.insight.doubletrade.com/frontend-tools/dt-gitlab-tools/commit/8ea0981))
 - Fix shared style indent ([commit](https://gitlab.factory.insight.doubletrade.com/frontend-tools/dt-gitlab-tools/commit/5fd0514))
