@@ -102,7 +102,7 @@ Custom property                                   | Description                 
                   property$="[[column.property]]"
                   style$="display: [[_getThDisplayStyle(column.hidden)]];">
 
-                  <div class$="[[_draggableClass(column.draggableColumn)]]" draggable$="[[_isDraggable(column.draggableColumn)]]">
+                  <div class$="[[_draggableClass(column.draggableColumn)]]" draggable$="[[_isDraggable(column.draggableColumn, column.activeFilter)]]">
 
                     <paper-datatable-api-th-content
                       column="[[column]]"
@@ -149,7 +149,7 @@ Custom property                                   | Description                 
                   property$="[[column.property]]"
                   style$="display: [[_getThDisplayStyle(column.hidden)]];">
 
-                  <div class$="[[_draggableClass(column.draggableColumn)]]" draggable$="[[_isDraggable(column.draggableColumn)]]">
+                  <div class$="[[_draggableClass(column.draggableColumn)]]" draggable$="[[_isDraggable(column.draggableColumn, column.activeFilter)]]">
 
                     <paper-datatable-api-th-content
                       column="[[column]]"

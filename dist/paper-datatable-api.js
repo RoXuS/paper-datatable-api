@@ -1,6 +1,6 @@
 'use strict';
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -1023,21 +1023,6 @@ var DtPaperDatatableApi = function () {
       }
       return '';
     }
-
-    // _cleanDragAndDrop() {
-    //   const allTh = Polymer.dom(this.root).querySelectorAll('thead th');
-    //   allTh.forEach((th) => {
-    //     th.removeEventListener('dragover', this._dragOverHandle.bind(this), false);
-    //     th.removeEventListener('dragenter', this._dragEnterHandle.bind(this), false);
-    //     th.removeEventListener('drop', this._dropHandle.bind(this), false);
-    //   });
-    //   const allThDiv = Polymer.dom(this.root).querySelectorAll('thead th div');
-    //   allThDiv.forEach((div) => {
-    //     div.removeEventListener('dragstart', this._dragStartHandle.bind(this), false);
-    //     div.removeEventListener('dragend', this._dragEndHandle.bind(this), false);
-    //   });
-    // }
-
   }, {
     key: '_handleDragAndDrop',
     value: function _handleDragAndDrop() {
@@ -1152,8 +1137,8 @@ var DtPaperDatatableApi = function () {
     }
   }, {
     key: '_isDraggable',
-    value: function _isDraggable(draggableColumn) {
-      if (draggableColumn) {
+    value: function _isDraggable(draggableColumn, activeFilter) {
+      if (draggableColumn && !activeFilter) {
         return 'true';
       }
       return 'false';

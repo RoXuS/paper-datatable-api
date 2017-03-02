@@ -901,20 +901,6 @@ class DtPaperDatatableApi {
     return '';
   }
 
-  // _cleanDragAndDrop() {
-  //   const allTh = Polymer.dom(this.root).querySelectorAll('thead th');
-  //   allTh.forEach((th) => {
-  //     th.removeEventListener('dragover', this._dragOverHandle.bind(this), false);
-  //     th.removeEventListener('dragenter', this._dragEnterHandle.bind(this), false);
-  //     th.removeEventListener('drop', this._dropHandle.bind(this), false);
-  //   });
-  //   const allThDiv = Polymer.dom(this.root).querySelectorAll('thead th div');
-  //   allThDiv.forEach((div) => {
-  //     div.removeEventListener('dragstart', this._dragStartHandle.bind(this), false);
-  //     div.removeEventListener('dragend', this._dragEndHandle.bind(this), false);
-  //   });
-  // }
-
   _handleDragAndDrop() {
     const allTh = Polymer.dom(this.root).querySelectorAll('thead th');
     allTh.forEach((th) => {
@@ -1008,8 +994,8 @@ class DtPaperDatatableApi {
     return '';
   }
 
-  _isDraggable(draggableColumn) {
-    if (draggableColumn) {
+  _isDraggable(draggableColumn, activeFilter) {
+    if (draggableColumn && !activeFilter) {
       return 'true';
     }
     return 'false';
