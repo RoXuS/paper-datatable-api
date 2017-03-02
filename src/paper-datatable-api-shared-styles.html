@@ -6,155 +6,155 @@
   <template>
     <style>
       :host {
-	display: block;
+        display: block;
       }
 
       table:not(#frozenHeaderTable) {
-	width: 100%;
+        width: 100%;
       }
 
       table {
-	border-spacing: 0px;
-	border-collapse: seperate;
-	@apply(--paper-font-common-base);
-	@apply(--paper-datatable-api-table);
+        border-spacing: 0px;
+        border-collapse: seperate;
+        @apply(--paper-font-common-base);
+        @apply(--paper-datatable-api-table);
       }
 
       thead th {
-	font-size: 12px;
-	color: rgba(0, 0, 0, var(--dark-secondary-opacity));
-	font-weight: 500;
-	text-align: left;
-	white-space: nowrap;
-	padding: 6px 26px;
-	height: 43px;
-	border-bottom: 1px solid;
-	border-color: rgba(0, 0, 0, var(--dark-divider-opacity));
-	@apply(--paper-datatable-api-header);
+        font-size: 12px;
+        color: rgba(0, 0, 0, var(--dark-secondary-opacity));
+        font-weight: 500;
+        text-align: left;
+        white-space: nowrap;
+        padding: 6px 26px;
+        height: 43px;
+        border-bottom: 1px solid;
+        border-color: rgba(0, 0, 0, var(--dark-divider-opacity));
+        @apply(--paper-datatable-api-header);
       }
 
       thead th.filters div {
-	cursor: pointer;
+        cursor: pointer;
       }
 
       thead th.customTd {
-	@apply(--paper-datatable-api-custom-td);
+        @apply(--paper-datatable-api-custom-td);
       }
 
       vaadin-date-picker-light input {
-	min-width: 70px;
+        min-width: 70px;
       }
 
       :host ::content tbody tr,
       tbody tr {
-	height: 48px;
+        height: 48px;
       }
 
       tbody tr:nth-child(even) {
-	background-color: var(--paper-datatable-api-tr-even-background-color, none);
+        background-color: var(--paper-datatable-api-tr-even-background-color, none);
       }
 
       tbody tr:nth-child(odd) {
-	background-color: var(--paper-datatable-api-tr-odd-background-color, none);
+        background-color: var(--paper-datatable-api-tr-odd-background-color, none);
       }
 
       :host ::content tbody tr:hover,
       tbody tr:hover {
-	background: var(--paper-datatable-api-tr-hover-background-color, none);
+        background: var(--paper-datatable-api-tr-hover-background-color, none);
       }
 
       :host ::content tbody tr.selected,
       tbody tr.selected {
-	background-color: var(--paper-datatable-api-tr-selected-background, --paper-grey-100);
+        background-color: var(--paper-datatable-api-tr-selected-background, --paper-grey-100);
       }
 
       :host ::content tbody td,
       tbody td {
-	font-size: 13px;
-	font-weight: normal;
-	color: rgba(0, 0, 0, var(--dark-primary-opacity));
-	padding: 6px 26px;
+        font-size: 13px;
+        font-weight: normal;
+        color: rgba(0, 0, 0, var(--dark-primary-opacity));
+        padding: 6px 26px;
       }
 
       :host ::content tbody.frozen td,
       tbody.frozen td {
-	min-width: 190px;
+        min-width: 190px;
       }
 
       :host ::content tbody tr:not(:first-child) td,
       tbody tr:not(:first-child) td {
-	border-top: 1px solid;
-	border-color: rgba(0, 0, 0, var(--dark-divider-opacity));
+        border-top: 1px solid;
+        border-color: rgba(0, 0, 0, var(--dark-divider-opacity));
       }
 
       :host ::content tbody td.customTd,
       tbody td.customTd {
-	@apply(--paper-datatable-api-custom-td);
+        @apply(--paper-datatable-api-custom-td);
       }
 
       :host ::content thead th.selectable,
       thead th.selectable {
-	width: 18px;
+        width: 18px;
       }
 
       :host ::content thead th.selectable,
       :host ::content tbody td.selectable,
       thead th.selectable,
       tbody td.selectable {
-	padding: 6px 0 6px 26px;
-	@apply(--paper-datatable-api-checkbox);
-	min-width: initial;
+        padding: 6px 0 6px 26px;
+        @apply(--paper-datatable-api-checkbox);
+        min-width: initial;
       }
 
       tfoot tr td {
-	font-size: 12px;
-	font-weight: normal;
-	height: 55px;
-	border-top: 1px solid;
-	border-color: rgba(0, 0, 0, var(--dark-divider-opacity));
-	padding: 0 14px 0 0;
-	color: rgba(0, 0, 0, var(--dark-secondary-opacity));
+        font-size: 12px;
+        font-weight: normal;
+        height: 55px;
+        border-top: 1px solid;
+        border-color: rgba(0, 0, 0, var(--dark-divider-opacity));
+        padding: 0 14px 0 0;
+        color: rgba(0, 0, 0, var(--dark-secondary-opacity));
       }
 
       tfoot tr td.left {
-	padding: 0 0 0 14px;
+        padding: 0 0 0 14px;
       }
 
 
       tfoot tr td paper-icon-button {
-	width: 24px;
-	height: 24px;
-	padding: 0;
-	margin-left: 24px;
+        width: 24px;
+        height: 24px;
+        padding: 0;
+        margin-left: 24px;
       }
 
       tfoot tr td .status {
-	margin: 0 8px 0 32px;
+        margin: 0 8px 0 32px;
       }
 
       tfoot tr td div .size {
-	width: 64px;
-	text-align: right;
+        width: 64px;
+        text-align: right;
 
       }
 
       .size paper-dropdown-menu {
-	--paper-input-container-underline: {
-	  display: none;
-	};
-	--paper-input-container-input: {
-	  text-align: right;
-	  font-size: 12px;
-	  font-weight: 500;
-	  color: var(--paper-datatable-navigation-bar-text-color, rgba(0,0,0,.54));
-	};
-	--paper-dropdown-menu-icon: {
-	  color: var(--paper-datatable-navigation-bar-text-color, rgba(0,0,0,.54));
-	};
+        --paper-input-container-underline: {
+          display: none;
+        };
+        --paper-input-container-input: {
+          text-align: right;
+          font-size: 12px;
+          font-weight: 500;
+          color: var(--paper-datatable-navigation-bar-text-color, rgba(0,0,0,.54));
+        };
+        --paper-dropdown-menu-icon: {
+          color: var(--paper-datatable-navigation-bar-text-color, rgba(0,0,0,.54));
+        };
       }
 
       paper-checkbox {
-	--paper-checkbox-label-spacing: 0;
+        --paper-checkbox-label-spacing: 0;
         --paper-checkbox-checked-color: var(--paper-datatable-api-checked-checkbox-color, --primary-color);
         --paper-checkbox-unchecked-color: var(--paper-datatable-api-unchecked-checkbox-color, --primary-text-color);
       }
@@ -162,16 +162,16 @@
       /* Frozen mode */
 
       #wrapper.frozen {
-	overflow: auto;
-	height: var(--paper-datatable-api-height, 48px);
+        overflow: auto;
+        height: var(--paper-datatable-api-height, 48px);
       }
 
       #headerWrapper {
-	overflow: hidden;
+        overflow: hidden;
       }
 
       .draggable {
-	min-width: 60px;
+        min-width: 60px;
       }
     </style>
   </template>
