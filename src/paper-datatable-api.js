@@ -908,7 +908,7 @@ class DtPaperDatatableApi {
       th.addEventListener('dragenter', this._dragEnterHandle.bind(this), false);
       th.addEventListener('drop', this._dropHandle.bind(this), false);
     });
-    const allThDiv = Polymer.dom(this.root).querySelectorAll('thead th div');
+    const allThDiv = Polymer.dom(this.root).querySelectorAll('thead th paper-datatable-api-th-content');
     allThDiv.forEach((div) => {
       div.addEventListener('dragstart', this._dragStartHandle.bind(this), false);
       div.addEventListener('dragend', this._dragEndHandle.bind(this), false);
@@ -985,20 +985,6 @@ class DtPaperDatatableApi {
 
   _dropHandle() {
     this._generatePropertiesOrder();
-  }
-
-  _draggableClass(draggable) {
-    if (draggable) {
-      return 'draggable';
-    }
-    return '';
-  }
-
-  _isDraggable(draggableColumn, activeFilter) {
-    if (draggableColumn && !activeFilter) {
-      return 'true';
-    }
-    return 'false';
   }
 
   _generatePropertiesOrder() {

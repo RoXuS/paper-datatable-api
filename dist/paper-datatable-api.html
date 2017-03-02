@@ -102,22 +102,19 @@ Custom property                                   | Description                 
                   property$="[[column.property]]"
                   style$="display: [[_getThDisplayStyle(column.hidden)]];">
 
-                  <div class$="[[_draggableClass(column.draggableColumn)]]" draggable$="[[_isDraggable(column.draggableColumn, column.activeFilter)]]">
+                  <paper-datatable-api-th-content
+                    column="[[column]]"
+                    locale-date-picker="[[localeDatePicker]]"
+                    position-sort-icon="[[positionSortIcon]]"
+                    sort-direction$="[[column.sortDirection]]"
+                    on-input-change-th-content="_handleInputChange"
+                    on-filter-th-content="_handleFilter"
+                    on-date-input-change-th-content="_handleVaadinDatePickerLight"
+                    sorted$="[[column.sorted]]"
+                    sortable$="[[column.sortable]]"
+                    on-sort-th-content="_handleSort">
+                  </paper-datatable-api-th-content>
 
-                    <paper-datatable-api-th-content
-                      column="[[column]]"
-                      locale-date-picker="[[localeDatePicker]]"
-                      position-sort-icon="[[positionSortIcon]]"
-                      sort-direction$="[[column.sortDirection]]"
-                      on-input-change-th-content="_handleInputChange"
-                      on-filter-th-content="_handleFilter"
-                      on-date-input-change-th-content="_handleVaadinDatePickerLight"
-                      sorted$="[[column.sorted]]"
-                      sortable$="[[column.sortable]]"
-                      on-sort-th-content="_handleSort">
-                    </paper-datatable-api-th-content>
-
-                  </div>
                 </th>
               </template>
             </tr>

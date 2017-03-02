@@ -1034,7 +1034,7 @@ var DtPaperDatatableApi = function () {
         th.addEventListener('dragenter', _this15._dragEnterHandle.bind(_this15), false);
         th.addEventListener('drop', _this15._dropHandle.bind(_this15), false);
       });
-      var allThDiv = Polymer.dom(this.root).querySelectorAll('thead th div');
+      var allThDiv = Polymer.dom(this.root).querySelectorAll('thead th paper-datatable-api-th-content');
       allThDiv.forEach(function (div) {
         div.addEventListener('dragstart', _this15._dragStartHandle.bind(_this15), false);
         div.addEventListener('dragend', _this15._dragEndHandle.bind(_this15), false);
@@ -1126,22 +1126,6 @@ var DtPaperDatatableApi = function () {
     key: '_dropHandle',
     value: function _dropHandle() {
       this._generatePropertiesOrder();
-    }
-  }, {
-    key: '_draggableClass',
-    value: function _draggableClass(draggable) {
-      if (draggable) {
-        return 'draggable';
-      }
-      return '';
-    }
-  }, {
-    key: '_isDraggable',
-    value: function _isDraggable(draggableColumn, activeFilter) {
-      if (draggableColumn && !activeFilter) {
-        return 'true';
-      }
-      return 'false';
     }
   }, {
     key: '_generatePropertiesOrder',
