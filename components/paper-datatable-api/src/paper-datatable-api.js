@@ -8,7 +8,7 @@ class DtPaperDatatableApi {
        */
       _columns: {
         type: Array,
-        value: [],
+        value: () => [],
       },
       /**
        * The list of hideable columns.
@@ -127,15 +127,19 @@ class DtPaperDatatableApi {
         value() {
           return {
             en: {
-              rowPerPage: 'Row per page',
+              rowPerPage: 'Rows per page',
               of: 'of',
             },
             'en-en': {
-              rowPerPage: 'Row per page',
+              rowPerPage: 'Rows per page',
               of: 'of',
             },
             'en-US': {
-              rowPerPage: 'Row per page',
+              rowPerPage: 'Rows per page',
+              of: 'of',
+            },
+            'en-us': {
+              rowPerPage: 'Rows per page',
               of: 'of',
             },
             fr: {
@@ -166,6 +170,14 @@ class DtPaperDatatableApi {
       _dragEnd: {
         type: Boolean,
         value: true,
+      },
+      /**
+       * Order of the columns
+       */
+      propertiesOrder: {
+        type: Array,
+        value: [],
+        notify: true,
       },
     };
 
@@ -284,7 +296,6 @@ class DtPaperDatatableApi {
   /** End of frozen mode **/
 
   attached() {
-    Polymer.dom(this).observeNodes(this._setColumns.bind(this));
     const userLang = navigator.language || navigator.userLanguage;
     this.language = userLang;
   }
@@ -361,6 +372,10 @@ class DtPaperDatatableApi {
   }
 
   _dataChanged(data) {
+    if (this._observer) {
+      Polymer.dom(this).unobserveNodes(this._observer);
+    }
+    this._observer = Polymer.dom(this).observeNodes(this._setColumns.bind(this));
     this._init(data, this.propertiesOrder);
   }
 
@@ -596,6 +611,10 @@ class DtPaperDatatableApi {
         return column;
       });
 
+    if (this.propertiesOrder.length === 0) {
+      this._generatePropertiesOrder();
+    }
+
     this.toggleColumns = this._columns.filter(column => column.hideable);
 
     this._columnsHeight = this.selectable ? this._columns.length + 1 : this._columns.length;
@@ -655,7 +674,7 @@ class DtPaperDatatableApi {
   _handleSort(event) {
     const column = event.detail.column;
     const paperDatatableApiThContent = event.currentTarget;
-    const th = paperDatatableApiThContent.parentNode.parentNode;
+    const th = paperDatatableApiThContent.parentNode;
     const sortDirection = column.sortDirection === 'asc' ? 'desc' : 'asc';
 
     if (column.sortDirection === undefined || column.sortDirection === 'asc') {
@@ -723,7 +742,7 @@ class DtPaperDatatableApi {
       const queryThContent = 'thead th paper-datatable-api-th-content[sortable][sorted]';
       Polymer.dom(this.root).querySelectorAll(queryThContent)
         .forEach((otherThContent) => {
-          const thSorted = otherThContent.parentNode.parentNode;
+          const thSorted = otherThContent.parentNode;
 
           if (thSorted.dataColumn !== column) {
             otherThContent.setAttribute('sort-direction', 'asc');
@@ -745,11 +764,6 @@ class DtPaperDatatableApi {
         column.set('sorted', true);
       }
     }
-  }
-
-  _handleTapClear(event) {
-    const input = event.currentTarget.parentNode.parentNode.parentNode;
-    input.value = '';
   }
 
   _handleVaadinDatePickerLight(event) {
@@ -882,20 +896,6 @@ class DtPaperDatatableApi {
     return '';
   }
 
-  // _cleanDragAndDrop() {
-  //   const allTh = Polymer.dom(this.root).querySelectorAll('thead th');
-  //   allTh.forEach((th) => {
-  //     th.removeEventListener('dragover', this._dragOverHandle.bind(this), false);
-  //     th.removeEventListener('dragenter', this._dragEnterHandle.bind(this), false);
-  //     th.removeEventListener('drop', this._dropHandle.bind(this), false);
-  //   });
-  //   const allThDiv = Polymer.dom(this.root).querySelectorAll('thead th div');
-  //   allThDiv.forEach((div) => {
-  //     div.removeEventListener('dragstart', this._dragStartHandle.bind(this), false);
-  //     div.removeEventListener('dragend', this._dragEndHandle.bind(this), false);
-  //   });
-  // }
-
   _handleDragAndDrop() {
     const allTh = Polymer.dom(this.root).querySelectorAll('thead th');
     allTh.forEach((th) => {
@@ -903,7 +903,7 @@ class DtPaperDatatableApi {
       th.addEventListener('dragenter', this._dragEnterHandle.bind(this), false);
       th.addEventListener('drop', this._dropHandle.bind(this), false);
     });
-    const allThDiv = Polymer.dom(this.root).querySelectorAll('thead th div');
+    const allThDiv = Polymer.dom(this.root).querySelectorAll('thead th paper-datatable-api-th-content');
     allThDiv.forEach((div) => {
       div.addEventListener('dragstart', this._dragStartHandle.bind(this), false);
       div.addEventListener('dragend', this._dragEndHandle.bind(this), false);
@@ -982,21 +982,8 @@ class DtPaperDatatableApi {
     this._generatePropertiesOrder();
   }
 
-  _draggableClass(draggable) {
-    if (draggable) {
-      return 'draggable';
-    }
-    return '';
-  }
-
-  _isDraggable(draggableColumn) {
-    if (draggableColumn) {
-      return 'true';
-    }
-    return 'false';
-  }
-
   _generatePropertiesOrder() {
+    Polymer.dom.flush();
     const allTh = Polymer.dom(this.root).querySelectorAll('thead th');
     const propertiesOrder = allTh.filter(th => th.getAttribute('property') !== null)
       .map(th => th.getAttribute('property'));
@@ -1046,6 +1033,16 @@ class DtPaperDatatableApi {
     } else if (cb) {
       cb();
     }
+  }
+
+  /**
+   * Get a column following his property name.
+   *
+   * @property getColumn
+   * @param {Object} property The property.
+   */
+  getColumn(property) {
+    return this._columns.find(columnElement => columnElement.property === property);
   }
 }
 

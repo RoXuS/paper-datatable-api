@@ -1,8 +1,8 @@
 /**
  * @fileoverview Firebase Auth API.
- * Version: 3.6.6
+ * Version: 3.7.0
  *
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * Copyright 2017 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -388,6 +388,14 @@ firebase.User.prototype.updateProfile = function(profile) {};
  * @return {!firebase.Promise<void>}
  */
 firebase.User.prototype.delete = function() {};
+
+
+/**
+ * Returns a JSON-serializable representation of this object.
+ *
+ * @return {!Object} A JSON-serializable representation of this object.
+ */
+firebase.User.prototype.toJSON = function() {};
 
 
 /**
@@ -1220,8 +1228,6 @@ firebase.auth.GoogleAuthProvider.prototype.setCustomParameters =
  * @example
  * // Using a popup.
  * var provider = new firebase.auth.TwitterAuthProvider();
- * provider.addScope('profile');
- * provider.addScope('email');
  * firebase.auth().signInWithPopup(provider).then(function(result) {
  *   // For accessing the Twitter API.
  *   var token = result.credential.accessToken;

@@ -21,7 +21,9 @@ var DtPaperDatatableApi = function () {
          */
         _columns: {
           type: Array,
-          value: []
+          value: function value() {
+            return [];
+          }
         },
         /**
          * The list of hideable columns.
@@ -142,15 +144,19 @@ var DtPaperDatatableApi = function () {
           value: function value() {
             return {
               en: {
-                rowPerPage: 'Row per page',
+                rowPerPage: 'Rows per page',
                 of: 'of'
               },
               'en-en': {
-                rowPerPage: 'Row per page',
+                rowPerPage: 'Rows per page',
                 of: 'of'
               },
               'en-US': {
-                rowPerPage: 'Row per page',
+                rowPerPage: 'Rows per page',
+                of: 'of'
+              },
+              'en-us': {
+                rowPerPage: 'Rows per page',
                 of: 'of'
               },
               fr: {
@@ -181,6 +187,14 @@ var DtPaperDatatableApi = function () {
         _dragEnd: {
           type: Boolean,
           value: true
+        },
+        /**
+         * Order of the columns
+         */
+        propertiesOrder: {
+          type: Array,
+          value: [],
+          notify: true
         }
       };
 
@@ -325,7 +339,6 @@ var DtPaperDatatableApi = function () {
   }, {
     key: 'attached',
     value: function attached() {
-      Polymer.dom(this).observeNodes(this._setColumns.bind(this));
       var userLang = navigator.language || navigator.userLanguage;
       this.language = userLang;
     }
@@ -414,6 +427,10 @@ var DtPaperDatatableApi = function () {
   }, {
     key: '_dataChanged',
     value: function _dataChanged(data) {
+      if (this._observer) {
+        Polymer.dom(this).unobserveNodes(this._observer);
+      }
+      this._observer = Polymer.dom(this).observeNodes(this._setColumns.bind(this));
       this._init(data, this.propertiesOrder);
     }
   }, {
@@ -670,6 +687,10 @@ var DtPaperDatatableApi = function () {
         return column;
       });
 
+      if (this.propertiesOrder.length === 0) {
+        this._generatePropertiesOrder();
+      }
+
       this.toggleColumns = this._columns.filter(function (column) {
         return column.hideable;
       });
@@ -743,7 +764,7 @@ var DtPaperDatatableApi = function () {
     value: function _handleSort(event) {
       var column = event.detail.column;
       var paperDatatableApiThContent = event.currentTarget;
-      var th = paperDatatableApiThContent.parentNode.parentNode;
+      var th = paperDatatableApiThContent.parentNode;
       var sortDirection = column.sortDirection === 'asc' ? 'desc' : 'asc';
 
       if (column.sortDirection === undefined || column.sortDirection === 'asc') {
@@ -816,7 +837,7 @@ var DtPaperDatatableApi = function () {
         var th = targetTh;
         var queryThContent = 'thead th paper-datatable-api-th-content[sortable][sorted]';
         Polymer.dom(this.root).querySelectorAll(queryThContent).forEach(function (otherThContent) {
-          var thSorted = otherThContent.parentNode.parentNode;
+          var thSorted = otherThContent.parentNode;
 
           if (thSorted.dataColumn !== column) {
             otherThContent.setAttribute('sort-direction', 'asc');
@@ -838,12 +859,6 @@ var DtPaperDatatableApi = function () {
           column.set('sorted', true);
         }
       }
-    }
-  }, {
-    key: '_handleTapClear',
-    value: function _handleTapClear(event) {
-      var input = event.currentTarget.parentNode.parentNode.parentNode;
-      input.value = '';
     }
   }, {
     key: '_handleVaadinDatePickerLight',
@@ -1002,21 +1017,6 @@ var DtPaperDatatableApi = function () {
       }
       return '';
     }
-
-    // _cleanDragAndDrop() {
-    //   const allTh = Polymer.dom(this.root).querySelectorAll('thead th');
-    //   allTh.forEach((th) => {
-    //     th.removeEventListener('dragover', this._dragOverHandle.bind(this), false);
-    //     th.removeEventListener('dragenter', this._dragEnterHandle.bind(this), false);
-    //     th.removeEventListener('drop', this._dropHandle.bind(this), false);
-    //   });
-    //   const allThDiv = Polymer.dom(this.root).querySelectorAll('thead th div');
-    //   allThDiv.forEach((div) => {
-    //     div.removeEventListener('dragstart', this._dragStartHandle.bind(this), false);
-    //     div.removeEventListener('dragend', this._dragEndHandle.bind(this), false);
-    //   });
-    // }
-
   }, {
     key: '_handleDragAndDrop',
     value: function _handleDragAndDrop() {
@@ -1028,7 +1028,7 @@ var DtPaperDatatableApi = function () {
         th.addEventListener('dragenter', _this15._dragEnterHandle.bind(_this15), false);
         th.addEventListener('drop', _this15._dropHandle.bind(_this15), false);
       });
-      var allThDiv = Polymer.dom(this.root).querySelectorAll('thead th div');
+      var allThDiv = Polymer.dom(this.root).querySelectorAll('thead th paper-datatable-api-th-content');
       allThDiv.forEach(function (div) {
         div.addEventListener('dragstart', _this15._dragStartHandle.bind(_this15), false);
         div.addEventListener('dragend', _this15._dragEndHandle.bind(_this15), false);
@@ -1122,26 +1122,11 @@ var DtPaperDatatableApi = function () {
       this._generatePropertiesOrder();
     }
   }, {
-    key: '_draggableClass',
-    value: function _draggableClass(draggable) {
-      if (draggable) {
-        return 'draggable';
-      }
-      return '';
-    }
-  }, {
-    key: '_isDraggable',
-    value: function _isDraggable(draggableColumn) {
-      if (draggableColumn) {
-        return 'true';
-      }
-      return 'false';
-    }
-  }, {
     key: '_generatePropertiesOrder',
     value: function _generatePropertiesOrder() {
       var _this17 = this;
 
+      Polymer.dom.flush();
       var allTh = Polymer.dom(this.root).querySelectorAll('thead th');
       var propertiesOrder = allTh.filter(function (th) {
         return th.getAttribute('property') !== null;
@@ -1206,6 +1191,21 @@ var DtPaperDatatableApi = function () {
       } else if (cb) {
         cb();
       }
+    }
+
+    /**
+     * Get a column following his property name.
+     *
+     * @property getColumn
+     * @param {Object} property The property.
+     */
+
+  }, {
+    key: 'getColumn',
+    value: function getColumn(property) {
+      return this._columns.find(function (columnElement) {
+        return columnElement.property === property;
+      });
     }
   }, {
     key: 'behaviors',

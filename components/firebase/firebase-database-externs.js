@@ -1,8 +1,8 @@
 /**
  * @fileoverview Firebase Database API.
- * Version: 3.6.6
+ * Version: 3.7.0
  *
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * Copyright 2017 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -92,12 +92,19 @@ firebase.database.Database = function() {};
  * // Enable logging across page refreshes
  * firebase.database.enableLogging(true, true);
  *
- * @param {boolean=} enabled Enables logging if `true`; disables logging if
- *   `false`.
+ * @example
+ * // Provide custom logger which prefixes log statements with "[FIREBASE]"
+ * firebase.database.enableLogging(function(message) {
+ *   console.log("[FIREBASE]", message);
+ * });
+ *
+ * @param {(boolean|function(string))=} logger Enables logging if `true`;
+ *   disables logging if `false`. You can also provide a custom logger function
+ *   to control how things get logged.
  * @param {boolean=} persistent Remembers the logging state between page
  *   refreshes if `true`.
  */
-firebase.database.enableLogging = function(enabled, persistent) {};
+firebase.database.enableLogging = function(logger, persistent) {};
 
 /**
  * @namespace
@@ -137,13 +144,13 @@ firebase.database.Database.prototype.app;
  *
  * @example
  * // Get a reference to the root of the Database
- * var rootRef = firebase.database.ref();
+ * var rootRef = firebase.database().ref();
  *
  * @example
  * // Get a reference to the /users/ada node
- * var adaRef = firebase.database.ref("users/ada");
+ * var adaRef = firebase.database().ref("users/ada");
  * // The above is shorthand for the following operations:
- * //var rootRef = firebase.database.ref();
+ * //var rootRef = firebase.database().ref();
  * //var adaRef = rootRef.child("users/ada");
  *
  * @param {string=} path Optional path representing the location the returned
@@ -167,11 +174,11 @@ firebase.database.Database.prototype.ref = function(path) {};
  *
  * @example
  * // Get a reference to the root of the Database
- * var rootRef = firebase.database.ref("https://<DATABASE_NAME>.firebaseio.com");
+ * var rootRef = firebase.database().ref("https://<DATABASE_NAME>.firebaseio.com");
  *
  * @example
  * // Get a reference to the /users/ada node
- * var adaRef = firebase.database.ref("https://<DATABASE_NAME>.firebaseio.com/users/ada");
+ * var adaRef = firebase.database().ref("https://<DATABASE_NAME>.firebaseio.com/users/ada");
  *
  * @param {string} url The Firebase URL at which the returned `Reference` will
  *   point.
@@ -251,7 +258,7 @@ firebase.database.Reference = function() {};
  *
  * @example
  * // The key of any non-root reference is the last token in the path
- * var adaRef = firebase.database.ref("users/ada");
+ * var adaRef = firebase.database().ref("users/ada");
  * var key = adaRef.key;  // key === "ada"
  * key = adaRef.child("name/last").key;  // key === "last"
  *
@@ -311,7 +318,7 @@ firebase.database.Reference.prototype.parent;
  *
  * @example
  * // The root of any non-root reference is the root location
- * var adaRef = firebase.database.ref("users/ada");
+ * var adaRef = firebase.database().ref("users/ada");
  * // rootRef and adaRef.root represent the same location
  *
  * @type {!firebase.database.Reference}
@@ -1081,8 +1088,8 @@ firebase.database.Query.prototype.orderByValue = function() {};
  *   type depends on which `orderBy*()` function was used in this query.
  *   Specify a value that matches the `orderBy*()` type. When used in
  *   combination with `orderByKey()`, the value must be a string.
- * @param {string=} key The child key to start at. This argument is allowed if
- *   ordering by child, value, or priority.
+ * @param {string=} key The child key to start at. This argument is only allowed
+ *   if ordering by child, value, or priority.
  * @return {!firebase.database.Query}
  */
 firebase.database.Query.prototype.startAt = function(value, key) {};
@@ -1118,7 +1125,7 @@ firebase.database.Query.prototype.startAt = function(value, key) {};
  *   combination with `orderByKey()`, the value must be a string.
  * @param {string=} key The child key to end at, among the children with the
  *   previously specified priority. This argument is only allowed if ordering by
- *   priority.
+ *   child, value, or priority.
  * @return {!firebase.database.Query}
  */
 firebase.database.Query.prototype.endAt = function(value, key) {};
@@ -1153,7 +1160,7 @@ firebase.database.Query.prototype.endAt = function(value, key) {};
  *   combination with `orderByKey()`, the value must be a string.
  * @param {string=} key The child key to start at, among the children with the
  *   previously specified priority. This argument is only allowed if ordering by
- *   priority.
+ *   child, value, or priority.
  * @return {!firebase.database.Query}
  */
 firebase.database.Query.prototype.equalTo = function(value, key) {};
@@ -1480,7 +1487,7 @@ firebase.database.DataSnapshot.prototype.hasChildren = function() {};
  * ref.once("value")
  *   .then(function(snapshot) {
  *     var key = snapshot.key; // "ada"
- *     var childKey = snapshot.child("name/last"); // "last"
+ *     var childKey = snapshot.child("name/last").key; // "last"
  *   });
  *
  * @example
@@ -1488,7 +1495,7 @@ firebase.database.DataSnapshot.prototype.hasChildren = function() {};
  * rootRef.once("value")
  *   .then(function(snapshot) {
  *     var key = snapshot.key; // null
- *     var childKey = snapshot.child("users/ada"); // "ada"
+ *     var childKey = snapshot.child("users/ada").key; // "ada"
  *   });
  *
  * @type {string|null}

@@ -55,7 +55,11 @@ var DtPaperDatatableApiThContent = function () {
         localeDatePicker: {
           type: Object
         },
-        timeoutFilter: Number
+        timeoutFilter: Number,
+        focused: {
+          type: Boolean,
+          value: false
+        }
       };
     }
   }, {
@@ -138,6 +142,22 @@ var DtPaperDatatableApiThContent = function () {
     key: 'equals',
     value: function equals(targetedValue, value) {
       return value === targetedValue;
+    }
+  }, {
+    key: '_draggableClass',
+    value: function _draggableClass(draggable) {
+      if (draggable) {
+        return 'draggable';
+      }
+      return '';
+    }
+  }, {
+    key: '_isDraggable',
+    value: function _isDraggable(draggableColumn, focused) {
+      if (draggableColumn && !focused) {
+        return 'true';
+      }
+      return 'false';
     }
   }, {
     key: 'behaviors',

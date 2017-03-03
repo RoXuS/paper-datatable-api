@@ -33,6 +33,10 @@ class DtPaperDatatableApiThContent {
         type: Object,
       },
       timeoutFilter: Number,
+      focused: {
+        type: Boolean,
+        value: false,
+      },
     };
   }
 
@@ -111,6 +115,20 @@ class DtPaperDatatableApiThContent {
 
   equals(targetedValue, value) {
     return value === targetedValue;
+  }
+
+  _draggableClass(draggable) {
+    if (draggable) {
+      return 'draggable';
+    }
+    return '';
+  }
+
+  _isDraggable(draggableColumn, focused) {
+    if (draggableColumn && !focused) {
+      return 'true';
+    }
+    return 'false';
   }
 
 }

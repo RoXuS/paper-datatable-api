@@ -1,5 +1,29 @@
 # Change Log
 
+## [v0.3.2](https://github.com/RoXuS/paper-datatable-api/tree/0.3.2) (2017-03-03)
+- Fix bug on dynamic headers ([commit](https://gitlab.factory.insight.doubletrade.com/frontend-tools/dt-gitlab-tools/commit/278bc5a))
+- Fix drag and drop on no frozen table ([commit](https://gitlab.factory.insight.doubletrade.com/frontend-tools/dt-gitlab-tools/commit/8d876a1))
+
+## [v0.3.1](https://github.com/RoXuS/paper-datatable-api/tree/0.3.1) (2017-03-02)
+- Use input focused instead of active filter to drag and drop column ([commit](https://gitlab.factory.insight.doubletrade.com/frontend-tools/dt-gitlab-tools/commit/814003d))
+
+## [v0.3.0](https://github.com/RoXuS/paper-datatable-api/tree/0.3.0) (2017-03-02)
+- Add live example in README.md ([commit](https://gitlab.factory.insight.doubletrade.com/frontend-tools/dt-gitlab-tools/commit/969ae52))
+- Disable drag and drop on a column where the filter is currently activated ([commit](https://gitlab.factory.insight.doubletrade.com/frontend-tools/dt-gitlab-tools/commit/8ea0981))
+- Fix shared style indent ([commit](https://gitlab.factory.insight.doubletrade.com/frontend-tools/dt-gitlab-tools/commit/5fd0514))
+- Add resources for the ‘en-us’ locale, which is what navigator.language returns in Safari. ([commit](https://gitlab.factory.insight.doubletrade.com/frontend-tools/dt-gitlab-tools/commit/505ba37))
+
+## [v0.2.9](https://github.com/RoXuS/paper-datatable-api/tree/0.2.9) (2017-02-02)
+- Eslint fix ([commit](https://gitlab.factory.insight.doubletrade.com/frontend-tools/dt-gitlab-tools/commit/ef71cd9))
+- Add method to get a column ([commit](https://gitlab.factory.insight.doubletrade.com/frontend-tools/dt-gitlab-tools/commit/14f3933))
+- Generate properties if it is empty ([commit](https://gitlab.factory.insight.doubletrade.com/frontend-tools/dt-gitlab-tools/commit/954ae4c))
+- Keep only one html file as main file, fix #26 ([commit](https://gitlab.factory.insight.doubletrade.com/frontend-tools/dt-gitlab-tools/commit/04af37d))
+
+## [v0.2.8](https://github.com/RoXuS/paper-datatable-api/tree/0.2.8) (2017-01-27)
+- Fix bug when paper-datatable-api is embedded in dom-repeat ([commit](https://github.com/RoXuS/paper-datatable-api/commit/8533f58))
+- Use the good name for dynamic header demo ([commit](https://github.com/RoXuS/paper-datatable-api/commit/6305015))
+- Add example to show how to edit data ([commit](https://github.com/RoXuS/paper-datatable-api/commit/78b6c3c))
+
 ## [v0.2.7](https://github.com/RoXuS/paper-datatable-api/tree/0.2.7) (2017-01-20)
 - Allow use dynamic headers ([commit](https://github.com/RoXuS/paper-datatable-api/commit/0a07dac))
 

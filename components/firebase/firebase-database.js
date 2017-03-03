@@ -1,5 +1,5 @@
-/*! @license Firebase v3.6.6
-    Build: 3.6.6-rc.3
+/*! @license Firebase v3.7.0
+    Build: 3.7.0-rc.2
     Terms: https://firebase.google.com/terms/
 
     ---

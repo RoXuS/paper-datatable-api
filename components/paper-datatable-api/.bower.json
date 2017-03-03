@@ -12,10 +12,7 @@
     "grid",
     "table"
   ],
-  "main": [
-    "dist/paper-datatable-api.html",
-    "dist/paper-datatable-api-column.html"
-  ],
+  "main": "dist/paper-datatable-api.html",
   "ignore": [
     "/.*",
     "/test/"
@@ -46,11 +43,11 @@
     "polymerfire": "firebase/polymerfire#^0.9.3"
   },
   "homepage": "https://github.com/RoXuS/paper-datatable-api",
-  "_release": "6305015ebb",
+  "_release": "53a80db533",
   "_resolution": {
     "type": "branch",
     "branch": "master",
-    "commit": "6305015ebbe0b766515256c2767f0de32d89633b"
+    "commit": "53a80db533dc16ee18203a3efa75934045a9d45e"
   },
   "_source": "https://github.com/RoXuS/paper-datatable-api.git",
   "_target": "master",
