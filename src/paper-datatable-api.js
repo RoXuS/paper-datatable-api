@@ -674,7 +674,7 @@ class DtPaperDatatableApi {
   _handleSort(event) {
     const column = event.detail.column;
     const paperDatatableApiThContent = event.currentTarget;
-    const th = paperDatatableApiThContent.parentNode.parentNode;
+    const th = paperDatatableApiThContent.parentNode;
     const sortDirection = column.sortDirection === 'asc' ? 'desc' : 'asc';
 
     if (column.sortDirection === undefined || column.sortDirection === 'asc') {
@@ -742,7 +742,7 @@ class DtPaperDatatableApi {
       const queryThContent = 'thead th paper-datatable-api-th-content[sortable][sorted]';
       Polymer.dom(this.root).querySelectorAll(queryThContent)
         .forEach((otherThContent) => {
-          const thSorted = otherThContent.parentNode.parentNode;
+          const thSorted = otherThContent.parentNode;
 
           if (thSorted.dataColumn !== column) {
             otherThContent.setAttribute('sort-direction', 'asc');
@@ -764,11 +764,6 @@ class DtPaperDatatableApi {
         column.set('sorted', true);
       }
     }
-  }
-
-  _handleTapClear(event) {
-    const input = event.currentTarget.parentNode.parentNode.parentNode;
-    input.value = '';
   }
 
   _handleVaadinDatePickerLight(event) {
@@ -988,6 +983,7 @@ class DtPaperDatatableApi {
   }
 
   _generatePropertiesOrder() {
+    Polymer.dom.flush();
     const allTh = Polymer.dom(this.root).querySelectorAll('thead th');
     const propertiesOrder = allTh.filter(th => th.getAttribute('property') !== null)
       .map(th => th.getAttribute('property'));

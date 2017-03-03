@@ -65,7 +65,8 @@
           paperDatatableApi.data = data;
 
           flush(function() {
-            let filterDiv = paperDatatableApi.querySelector('thead th div paper-datatable-api-th-content div');
+            let filterDiv = paperDatatableApi.querySelector('thead th paper-datatable-api-th-content div div');
+            console.log(filterDiv);
             filterDiv.click();
 
             flush(function() {

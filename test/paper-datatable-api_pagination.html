@@ -109,14 +109,14 @@
                 assert.equal(event.detail.sort.direction, 'asc');
                 flush(function() {
                   i++;
-                  paperDatatableApi.querySelector('th div paper-datatable-api-th-content[sortable] paper-icon-button[icon="arrow-downward"]').click();
+                  paperDatatableApi.querySelector('th paper-datatable-api-th-content[sortable] div paper-icon-button[icon="arrow-downward"]').click();
                 });
               } else if (i === 1) {
                 assert.equal(event.detail.sort.property, 'fruit');
                 assert.equal(event.detail.sort.direction, 'desc');
                 flush(function() {
                   i++;
-                  paperDatatableApi.querySelector('th div paper-datatable-api-th-content[sortable] paper-icon-button[icon="arrow-downward"]').click();
+                  paperDatatableApi.querySelector('th paper-datatable-api-th-content[sortable] div paper-icon-button[icon="arrow-downward"]').click();
                 });
               } else {
                 assert.equal(event.detail.sort.property, undefined);
@@ -124,7 +124,7 @@
                 done();
               }
             });
-            paperDatatableApi.querySelector('th div paper-datatable-api-th-content[sortable] paper-icon-button[icon="arrow-downward"]').click();
+            paperDatatableApi.querySelector('th paper-datatable-api-th-content[sortable] div paper-icon-button[icon="arrow-downward"]').click();
           });
         });
 

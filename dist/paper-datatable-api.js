@@ -764,7 +764,7 @@ var DtPaperDatatableApi = function () {
     value: function _handleSort(event) {
       var column = event.detail.column;
       var paperDatatableApiThContent = event.currentTarget;
-      var th = paperDatatableApiThContent.parentNode.parentNode;
+      var th = paperDatatableApiThContent.parentNode;
       var sortDirection = column.sortDirection === 'asc' ? 'desc' : 'asc';
 
       if (column.sortDirection === undefined || column.sortDirection === 'asc') {
@@ -837,7 +837,7 @@ var DtPaperDatatableApi = function () {
         var th = targetTh;
         var queryThContent = 'thead th paper-datatable-api-th-content[sortable][sorted]';
         Polymer.dom(this.root).querySelectorAll(queryThContent).forEach(function (otherThContent) {
-          var thSorted = otherThContent.parentNode.parentNode;
+          var thSorted = otherThContent.parentNode;
 
           if (thSorted.dataColumn !== column) {
             otherThContent.setAttribute('sort-direction', 'asc');
@@ -859,12 +859,6 @@ var DtPaperDatatableApi = function () {
           column.set('sorted', true);
         }
       }
-    }
-  }, {
-    key: '_handleTapClear',
-    value: function _handleTapClear(event) {
-      var input = event.currentTarget.parentNode.parentNode.parentNode;
-      input.value = '';
     }
   }, {
     key: '_handleVaadinDatePickerLight',
@@ -1132,6 +1126,7 @@ var DtPaperDatatableApi = function () {
     value: function _generatePropertiesOrder() {
       var _this17 = this;
 
+      Polymer.dom.flush();
       var allTh = Polymer.dom(this.root).querySelectorAll('thead th');
       var propertiesOrder = allTh.filter(function (th) {
         return th.getAttribute('property') !== null;
