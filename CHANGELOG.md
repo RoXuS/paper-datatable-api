@@ -1,5 +1,9 @@
 # Change Log
 
+## [v0.3.2](https://github.com/RoXuS/paper-datatable-api/tree/0.3.2) (2017-03-03)
+- Fix bug on dynamic headers ([commit](https://gitlab.factory.insight.doubletrade.com/frontend-tools/dt-gitlab-tools/commit/278bc5a))
+- Fix drag and drop on no frozen table ([commit](https://gitlab.factory.insight.doubletrade.com/frontend-tools/dt-gitlab-tools/commit/8d876a1))
+
 ## [v0.3.1](https://github.com/RoXuS/paper-datatable-api/tree/0.3.1) (2017-03-02)
 - Use input focused instead of active filter to drag and drop column ([commit](https://gitlab.factory.insight.doubletrade.com/frontend-tools/dt-gitlab-tools/commit/814003d))
 
