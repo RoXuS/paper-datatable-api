@@ -28,6 +28,14 @@ See the [component page](https://roxus.github.io/paper-datatable-api/components/
 </paper-datatable-api>
 ```
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/RoXuS/paper-datatable-api/master/images/advanced-mode.png" alt="advanced view"/>
+</p>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/RoXuS/paper-datatable-api/master/images/edit-mode.png" alt="edit view"/>
+</p>
+
 ## Features
 
 - [Follows the guideline of Material Design](https://material.google.com/components/data-tables.html#)
