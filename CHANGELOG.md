@@ -1,5 +1,10 @@
 # Change Log
 
+## [v0.3.3](https://github.com/RoXuS/paper-datatable-api/tree/0.3.3) (2017-03-20)
+- Add method to scroll to top from inside of the component ([commit](https://github.com/RoXuS/paper-datatable-api/commit/7eaee7c))
+- Update README.md ([commit](https://github.com/RoXuS/paper-datatable-api/commit/3c28cb1))
+- Add image folder ([commit](https://github.com/RoXuS/paper-datatable-api/commit/6cdcf23))
+
 ## [v0.3.2](https://github.com/RoXuS/paper-datatable-api/tree/0.3.2) (2017-03-03)
 - Fix bug on dynamic headers ([commit](https://gitlab.factory.insight.doubletrade.com/frontend-tools/dt-gitlab-tools/commit/278bc5a))
 - Fix drag and drop on no frozen table ([commit](https://gitlab.factory.insight.doubletrade.com/frontend-tools/dt-gitlab-tools/commit/8d876a1))
