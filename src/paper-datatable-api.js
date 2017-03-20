@@ -1044,6 +1044,19 @@ class DtPaperDatatableApi {
   getColumn(property) {
     return this._columns.find(columnElement => columnElement.property === property);
   }
+
+  /**
+   * Scroll to top.
+   *
+   * @property scrollTopTop
+   */
+  scrollToTop() {
+    if (this.frozenHeader) {
+      Polymer.dom(this.root).querySelector('#wrapper').scrollTop = 0;
+    } else {
+      Polymer.dom(this.root).querySelector('tbody').scrollTop = 0;
+    }
+  }
 }
 
 Polymer(DtPaperDatatableApi);

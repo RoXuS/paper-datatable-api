@@ -1207,6 +1207,22 @@ var DtPaperDatatableApi = function () {
         return columnElement.property === property;
       });
     }
+
+    /**
+     * Scroll to top.
+     *
+     * @property scrollTopTop
+     */
+
+  }, {
+    key: 'scrollToTop',
+    value: function scrollToTop() {
+      if (this.frozenHeader) {
+        Polymer.dom(this.root).querySelector('#wrapper').scrollTop = 0;
+      } else {
+        Polymer.dom(this.root).querySelector('tbody').scrollTop = 0;
+      }
+    }
   }, {
     key: 'behaviors',
     get: function get() {
