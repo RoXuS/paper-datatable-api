@@ -17,7 +17,7 @@ before_install:
 before_script:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
-  - npm install -g web-component-tester@6.0.0-prerelease.5
+  - npm install -g web-component-tester@v6.0.0-prerelease.7
   - npm install -g bower
   - npm install -g eslint-config-airbnb@14.1.0 eslint@3.19.0 eslint-plugin-jsx-a11y@4.0.0 eslint-plugin-import@2.2.0 eslint-plugin-react@6.10.3
   - bower install
