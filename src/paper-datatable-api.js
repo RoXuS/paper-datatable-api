@@ -1,6 +1,12 @@
-class DtPaperDatatableApi extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior, Polymer.IronResizableBehavior], Polymer.Element) {
+/* global customElements */
+class DtPaperDatatableApi extends Polymer.mixinBehaviors(
+  [
+    Polymer.AppLocalizeBehavior,
+    Polymer.IronResizableBehavior,
+  ],
+  Polymer.Element) {
 
-  static get is() {return 'paper-datatable-api'}
+  static get is() { return 'paper-datatable-api'; }
 
   static get properties() {
     return {

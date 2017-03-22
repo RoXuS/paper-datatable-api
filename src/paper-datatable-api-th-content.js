@@ -1,6 +1,9 @@
-class DtPaperDatatableApiThContent extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], Polymer.Element) {
+/* global customElements */
+class DtPaperDatatableApiThContent extends Polymer.mixinBehaviors(
+  [Polymer.AppLocalizeBehavior],
+  Polymer.Element) {
 
-  static get is() {return 'paper-datatable-api-th-content'}
+  static get is() { return 'paper-datatable-api-th-content'; }
 
   static get properties() {
     return {

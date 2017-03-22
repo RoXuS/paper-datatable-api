@@ -1,6 +1,9 @@
-class DtPaperDatatableApiColumn extends Polymer.mixinBehaviors([Polymer.Templatizer], Polymer.Element) {
+/* global customElements */
+class DtPaperDatatableApiColumn extends Polymer.mixinBehaviors(
+  [Polymer.Templatizer],
+  Polymer.Element) {
 
-  static get is() {return 'paper-datatable-api-column'}
+  static get is() { return 'paper-datatable-api-column'; }
 
   static get properties() {
     return {
@@ -102,7 +105,7 @@ class DtPaperDatatableApiColumn extends Polymer.mixinBehaviors([Polymer.Templati
     props[this.property] = true;
     this._instanceProps = props;
 
-   if (this.ctor) {
+    if (this.ctor) {
       return;
     }
     const template = this.queryEffectiveChildren('template');
@@ -116,7 +119,7 @@ class DtPaperDatatableApiColumn extends Polymer.mixinBehaviors([Polymer.Templati
    * @param {String} value The value of the property.
    */
   fillTemplate(value, otherValues) {
-    const instance = this.stamp({value, otherValues});
+    const instance = this.stamp({ value, otherValues });
     instance.value = value;
     instance.otherValues = otherValues;
     return instance;
