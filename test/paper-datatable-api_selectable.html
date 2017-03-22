@@ -66,7 +66,7 @@
           paperDatatableApi.data = data;
           flush(function() {
             var i = 0;
-            var paperCheckbox = paperDatatableApi
+            var paperCheckbox = Polymer.dom(paperDatatableApi.root)
               .querySelector('tbody tr td:first-child paper-checkbox');
             paperDatatableApi.addEventListener('selection-changed', function(event) {
               if (i === 0) {
@@ -91,7 +91,7 @@
           paperDatatableApi.data = data;
           flush(function() {
             var i = 0;
-            var paperCheckbox = paperDatatableApi
+            var paperCheckbox = Polymer.dom(paperDatatableApi.root)
               .querySelector('thead tr th:first-child paper-checkbox');
             paperDatatableApi.addEventListener('selection-changed', function(event) {
               switch(i) {
@@ -127,7 +127,7 @@
           paperDatatableApi.data = data;
           flush(function() {
             var i = 0;
-            var paperCheckbox = paperDatatableApi
+            var paperCheckbox = Polymer.dom(paperDatatableApi.root)
               .querySelector('tbody tr td:first-child paper-checkbox');
             paperCheckbox.click();
             assert.equal(paperDatatableApi.selectedRows.length, 1);
@@ -142,7 +142,7 @@
           paperDatatableApi.data = data;
           flush(function() {
             var i = 0;
-            var paperCheckbox = paperDatatableApi
+            var paperCheckbox = Polymer.dom(paperDatatableApi.root)
               .querySelector('thead tr th:first-child paper-checkbox');
             assert.isNull(paperCheckbox);
           });

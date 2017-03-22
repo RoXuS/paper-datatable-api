@@ -54,11 +54,14 @@
           paperDatatableApi.data = data;
 
           flush(function() {
-            var ths = paperDatatableApi.querySelectorAll('thead tr th');
-            assert.equal(ths[0].textContent.trim(), 'Fruit');
-            assert.equal(ths[1].textContent.trim(), 'Color');
-            assert.equal(ths[2].textContent.trim(), 'Color + fruit');
-            assert.equal(ths.length, 3);
+            var thContent = Polymer.dom(paperDatatableApi.root).querySelectorAll('paper-datatable-api-th-content');
+            var th1 = Polymer.dom(thContent[0].root).querySelector('div');
+            assert.equal(th1.textContent.trim(), 'Fruit');
+            var th2 = Polymer.dom(thContent[1].root).querySelector('div');
+            assert.equal(th2.textContent.trim(), 'Color');
+            var th3 = Polymer.dom(thContent[2].root).querySelector('div');
+            assert.equal(th3.textContent.trim(), 'Color + fruit');
+            assert.equal(thContent.length, 3);
             done();
           });
         });
@@ -68,7 +71,7 @@
           paperDatatableApi.data = data;
 
           flush(function() {
-            var trs = paperDatatableApi.querySelectorAll('tbody tr');
+            var trs = Polymer.dom(paperDatatableApi.root).querySelectorAll('tbody tr');
             assert.equal(trs.length, 2);
             done();
           });
@@ -79,7 +82,7 @@
           paperDatatableApi.data = data;
 
           flush(function() {
-            var trs = paperDatatableApi.querySelectorAll('tbody tr');
+            var trs = Polymer.dom(paperDatatableApi.root).querySelectorAll('tbody tr');
             var tr1tds = trs[0].querySelectorAll('td');
             assert.equal(tr1tds.length, 3);
             assert.equal(tr1tds[0].querySelector('span').textContent, 'banana');
@@ -100,7 +103,7 @@
           paperDatatableApi.data = data;
 
           flush(function() {
-            var trs = paperDatatableApi.querySelectorAll('tbody tr');
+            var trs = Polymer.dom(paperDatatableApi.root).querySelectorAll('tbody tr');
 
             var tr1tds = trs[0].querySelectorAll('td');
             assert.equal(tr1tds[0].style.display, '');

@@ -99,7 +99,7 @@
           paperDatatableApi.page = 1;
           paperDatatableApi.size = 2;
           flush(function() {
-            paperDatatableApi.querySelector('paper-listbox').select('4');
+            Polymer.dom(paperDatatableApi.root).querySelector('paper-listbox').select('4');
             assert.equal(paperDatatableApi.page, 0);
             assert.equal(paperDatatableApi.size, 4);
             done();
@@ -119,14 +119,16 @@
                 assert.equal(event.detail.sort.direction, 'asc');
                 flush(function() {
                   i++;
-                  paperDatatableApi.querySelector('th paper-datatable-api-th-content[sortable] div paper-icon-button[icon="arrow-downward"]').click();
+                  let thContent = Polymer.dom(paperDatatableApi.root).querySelector('paper-datatable-api-th-content[sortable]');
+                  Polymer.dom(thContent.root).querySelector('div paper-icon-button[icon="arrow-downward"]').click();
                 });
               } else if (i === 1) {
                 assert.equal(event.detail.sort.property, 'fruit');
                 assert.equal(event.detail.sort.direction, 'desc');
                 flush(function() {
                   i++;
-                  paperDatatableApi.querySelector('th paper-datatable-api-th-content[sortable] div paper-icon-button[icon="arrow-downward"]').click();
+                  let thContent = Polymer.dom(paperDatatableApi.root).querySelector('paper-datatable-api-th-content[sortable]');
+                  Polymer.dom(thContent.root).querySelector('div paper-icon-button[icon="arrow-downward"]').click();
                 });
               } else {
                 assert.equal(event.detail.sort.property, undefined);
@@ -134,7 +136,8 @@
                 done();
               }
             });
-            paperDatatableApi.querySelector('th paper-datatable-api-th-content[sortable] div paper-icon-button[icon="arrow-downward"]').click();
+            let thContent = Polymer.dom(paperDatatableApi.root).querySelector('paper-datatable-api-th-content[sortable]');
+            Polymer.dom(thContent.root).querySelector('div paper-icon-button[icon="arrow-downward"]').click();
           });
         });
 

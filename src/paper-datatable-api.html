@@ -1,4 +1,4 @@
-<link rel="import" href="../../polymer/polymer.html">
+<link rel="import" href="../../polymer/polymer-element.html">
 
 <link rel="import" href="paper-datatable-api-shared-styles.html">
 <link rel="import" href="paper-datatable-api-th-content.html">
@@ -95,9 +95,8 @@ Custom property                                   | Description                 
               property$="[[column.property]]" style$="display: [[_getThDisplayStyle(column.hidden)]];">
               <paper-datatable-api-th-content column="[[column]]" locale-date-picker="[[localeDatePicker]]" position-sort-icon="[[positionSortIcon]]"
                 sort-direction$="[[column.sortDirection]]" on-input-change-th-content="_handleInputChange"
-                on-choices-change-th-content="_handleInputChange" on-date-input-change-th-content="_handleVaadinDatePickerLight"
-                sorted$="[[column.sorted]]" sortable$="[[column.sortable]]" on-filter-th-content="_handleFilter"
-                on-sort-th-content="_handleSort">
+                on-date-input-change-th-content="_handleVaadinDatePickerLight" sorted$="[[column.sorted]]"
+                sortable$="[[column.sortable]]" on-filter-th-content="_handleFilter" on-sort-th-content="_handleSort">
               </paper-datatable-api-th-content>
             </th>
           </template>

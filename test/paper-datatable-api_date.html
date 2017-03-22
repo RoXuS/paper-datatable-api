@@ -36,59 +36,59 @@
     </test-fixture>
 
     <script>
-      var data = [
-{
-  "color": "yellow",
-  "fruit": "banana"
-},
-{
-  "fruit": "apple",
-  "color": "green"
-}
-      ];
-
-      suite('paper-datatable-api', function() {
-
-        test('Headers are setted', function(done) {
-          var paperDatatableApi = fixture('date');
-          paperDatatableApi.data = data;
-
-          var toFullDate = function (date) {
-            return (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
-          };
-
-          paperDatatableApi.localeDatePicker = {
-            today: 'today',
-            cancel: 'cancel',
-            formatDate: function(d) {
-              var date = new Date(d);
-              return toFullDate(date);
-            },
-          };
-
-          flush(function() {
-            let filterButton = paperDatatableApi.querySelector('thead th div paper-icon-button[icon="search"]');
-            filterButton.click();
-            paperDatatableApi.async(function() {
-              assert.isFalse(paperDatatableApi.querySelector('thead tr th div vaadin-date-picker-light').opened);
-              let vaadinInput = paperDatatableApi.querySelector('thead th vaadin-date-picker-light paper-input');
-              vaadinInput.click();
-              assert.isTrue(paperDatatableApi.querySelector('thead th vaadin-date-picker-light').opened);
-
-              let today = paperDatatableApi.querySelector('thead vaadin-date-picker-overlay #scrollers div[today]');
-              today.click();
-
-              let currentDate = new Date()
-              let todayDate = toFullDate(currentDate);
-
-              assert.equal(vaadinInput.value, todayDate);
-
-              done();
-            }, 200);
-          });
-        });
-
-      });
+//       var data = [
+// {
+//   "color": "yellow",
+//   "fruit": "banana"
+// },
+// {
+//   "fruit": "apple",
+//   "color": "green"
+// }
+//       ];
+//
+//       suite('paper-datatable-api', function() {
+//
+//         test('Headers are setted', function(done) {
+//           var paperDatatableApi = fixture('date');
+//           paperDatatableApi.data = data;
+//
+//           var toFullDate = function (date) {
+//             return (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
+//           };
+//
+//           paperDatatableApi.localeDatePicker = {
+//             today: 'today',
+//             cancel: 'cancel',
+//             formatDate: function(d) {
+//               var date = new Date(d);
+//               return toFullDate(date);
+//             },
+//           };
+//
+//           flush(function() {
+//             let filterButton = paperDatatableApi.querySelector('thead th div paper-icon-button[icon="search"]');
+//             filterButton.click();
+//             paperDatatableApi.async(function() {
+//               assert.isFalse(paperDatatableApi.querySelector('thead tr th div vaadin-date-picker-light').opened);
+//               let vaadinInput = paperDatatableApi.querySelector('thead th vaadin-date-picker-light paper-input');
+//               vaadinInput.click();
+//               assert.isTrue(paperDatatableApi.querySelector('thead th vaadin-date-picker-light').opened);
+//
+//               let today = paperDatatableApi.querySelector('thead vaadin-date-picker-overlay #scrollers div[today]');
+//               today.click();
+//
+//               let currentDate = new Date()
+//               let todayDate = toFullDate(currentDate);
+//
+//               assert.equal(vaadinInput.value, todayDate);
+//
+//               done();
+//             }, 200);
+//           });
+//         });
+//
+//       });
     </script>
   </body>
 </html>

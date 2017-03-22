@@ -49,7 +49,7 @@
           paperDatatableApi.data = data;
 
           flush(function() {
-            var ths = paperDatatableApi.querySelectorAll('thead tr th');
+            var ths = Polymer.dom(paperDatatableApi.root).querySelectorAll('thead tr th');
             assert.equal(ths[0].getAttribute('property'), 'fruit');
             assert.equal(ths[1].getAttribute('property'), 'color');
             paperDatatableApi.changeColumnOrder(['color', 'fruit']);

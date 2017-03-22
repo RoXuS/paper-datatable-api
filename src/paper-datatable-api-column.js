@@ -1,9 +1,9 @@
-class DtPaperDatatableApiColumn {
+class DtPaperDatatableApiColumn extends Polymer.mixinBehaviors([Polymer.Templatizer], Polymer.Element) {
 
-  beforeRegister() {
-    this.is = 'paper-datatable-api-column';
+  static get is() {return 'paper-datatable-api-column'}
 
-    this.properties = {
+  static get properties() {
+    return {
       /**
        * The name of the header for this column.
        */
@@ -95,20 +95,17 @@ class DtPaperDatatableApiColumn {
     };
   }
 
-  get behaviors() {
-    return [
-      Polymer.Templatizer,
-    ];
-  }
-
-  ready() {
+  attached() {
     const props = {};
     props.__key__ = true;
     props[this.header] = true;
     props[this.property] = true;
     this._instanceProps = props;
 
-    const template = Polymer.dom(this).querySelector('template');
+   if (this.ctor) {
+      return;
+    }
+    const template = this.queryEffectiveChildren('template');
     this.templatize(template);
   }
 
@@ -119,9 +116,12 @@ class DtPaperDatatableApiColumn {
    * @param {String} value The value of the property.
    */
   fillTemplate(value, otherValues) {
-    const instance = this.stamp({ value, otherValues });
+    const instance = this.stamp({value, otherValues});
+    instance.value = value;
+    instance.otherValues = otherValues;
     return instance;
   }
 }
 
-Polymer(DtPaperDatatableApiColumn);
+
+customElements.define(DtPaperDatatableApiColumn.is, DtPaperDatatableApiColumn);

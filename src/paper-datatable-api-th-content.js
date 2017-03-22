@@ -1,8 +1,9 @@
-class DtPaperDatatableApiThContent {
+class DtPaperDatatableApiThContent extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], Polymer.Element) {
 
-  beforeRegister() {
-    this.is = 'paper-datatable-api-th-content';
-    this.properties = {
+  static get is() {return 'paper-datatable-api-th-content'}
+
+  static get properties() {
+    return {
       column: {
         type: Object,
         notify: true,
@@ -38,13 +39,6 @@ class DtPaperDatatableApiThContent {
         value: false,
       },
     };
-  }
-
-  get behaviors() {
-    return [
-      Polymer.AppLocalizeBehavior,
-      Polymer.IronResizableBehavior,
-    ];
   }
 
   _handleSort() {
@@ -153,4 +147,4 @@ class DtPaperDatatableApiThContent {
 
 }
 
-Polymer(DtPaperDatatableApiThContent);
+customElements.define(DtPaperDatatableApiThContent.is, DtPaperDatatableApiThContent);

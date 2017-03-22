@@ -9,15 +9,16 @@
         display: block;
       }
 
-      table {
-        width: 100%;
+      dom-if {
+        display: none;
       }
 
       table {
+        width: 100%;
         border-spacing: 0px;
         border-collapse: seperate;
-        @apply(--paper-font-common-base);
-        @apply(--paper-datatable-api-table);
+        @apply --paper-font-common-base;
+        @apply --paper-datatable-api-table;
       }
 
       thead th {
@@ -30,7 +31,7 @@
         height: 43px;
         border-bottom: 1px solid;
         border-color: rgba(0, 0, 0, var(--dark-divider-opacity));
-        @apply(--paper-datatable-api-header);
+        @apply --paper-datatable-api-header;
       }
 
       thead th.filters div {
@@ -38,7 +39,7 @@
       }
 
       thead th.customTd {
-        @apply(--paper-datatable-api-custom-td);
+        @apply --paper-datatable-api-custom-td;
       }
 
       vaadin-date-picker-light input {
