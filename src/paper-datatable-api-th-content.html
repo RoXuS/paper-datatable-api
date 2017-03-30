@@ -5,6 +5,7 @@
 <link rel="import" href="../../app-localize-behavior/app-localize-behavior.html">
 
 <link rel="import" href="../../vaadin-date-picker/vaadin-date-picker-light.html">
+<link rel="import" href="paper-datatable-api-icons.html">
 
 <link rel="import" href="../../paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../paper-item/paper-icon-item.html">
@@ -102,7 +103,7 @@
         <!-- Sort -->
         <template is="dom-if" if="[[column.sortable]]">
           <paper-icon-button
-            icon="arrow-downward"
+            icon="paper-datatable-api-icons:arrow-downward"
             sorted$="[[sorted]]"
             class="sort"
             on-tap="_handleSort"
@@ -112,10 +113,10 @@
         <!-- Filter icon -->
         <template is="dom-if" if="[[column.filter]]">
           <template is="dom-if" if="[[column.activeFilter]]">
-            <paper-icon-button icon="clear" sortable$="[[sortable]]" class="filter active" on-tap="_handleFilter"></paper-icon-button>
+            <paper-icon-button icon="paper-datatable-api-icons:clear" sortable$="[[sortable]]" class="filter active" on-tap="_handleFilter"></paper-icon-button>
           </template>
           <template is="dom-if" if="[[!column.activeFilter]]">
-            <paper-icon-button icon="search" sortable$="[[sortable]]" class="filter" on-tap="_handleFilter"></paper-icon-button>
+            <paper-icon-button icon="paper-datatable-api-icons:search" sortable$="[[sortable]]" class="filter" on-tap="_handleFilter"></paper-icon-button>
           </template>
         </template>
 
@@ -170,17 +171,17 @@
         <!-- Filter icon -->
         <template is="dom-if" if="[[column.filter]]">
           <template is="dom-if" if="[[column.activeFilter]]">
-            <paper-icon-button icon="clear" sortable$="[[sortable]]" class="filter active" on-tap="_handleFilter"></paper-icon-button>
+            <paper-icon-button icon="paper-datatable-api-icons:clear" sortable$="[[sortable]]" class="filter active" on-tap="_handleFilter"></paper-icon-button>
           </template>
           <template is="dom-if" if="[[!column.activeFilter]]">
-            <paper-icon-button icon="search" sortable$="[[sortable]]" class="filter" on-tap="_handleFilter"></paper-icon-button>
+            <paper-icon-button icon="paper-datatable-api-icons:search" sortable$="[[sortable]]" class="filter" on-tap="_handleFilter"></paper-icon-button>
           </template>
         </template>
 
         <!-- Sort -->
         <template is="dom-if" if="[[column.sortable]]">
           <paper-icon-button
-            icon="arrow-downward"
+            icon="paper-datatable-api-icons:arrow-downward"
             sorted$="[[sorted]]"
             class="sort"
             on-tap="_handleSort"

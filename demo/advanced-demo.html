@@ -8,8 +8,9 @@
 <link rel="import" href="../../iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="../../iron-icon/iron-icon.html">
 
-<link rel="import" href="../dist/paper-datatable-api.html">
-<link rel="import" href="../dist/paper-datatable-api-column.html">
+<link rel="import" href="../src/paper-datatable-api.html">
+<link rel="import" href="../src/paper-datatable-api-column.html">
+<link rel="import" href="../src/paper-datatable-api-icons.html">
 <link rel="import" href="api-sample.html">
 
 <dom-module id="advanced-demo">
@@ -50,18 +51,18 @@
 
           <div class="horizontal end-justified center layout">
             <paper-input no-label-float label="Search">
-              <iron-icon icon="search" prefix></iron-icon>
+              <iron-icon icon="paper-datatable-api-icons:search" prefix></iron-icon>
             </paper-input>
             <paper-menu-button ignore-select horizontal-align="right">
-              <paper-icon-button icon="menu" class="dropdown-trigger"></paper-icon-button>
+              <paper-icon-button icon="paper-datatable-api-icons:menu" class="dropdown-trigger"></paper-icon-button>
               <paper-menu class="dropdown-content">
                 <template is="dom-repeat" items="[[toggleColumns]]" as="column" index-as="index">
                   <paper-icon-item column-property="[[column.property]]" on-tap="_hideColumn">
                     <template is="dom-if" if="[[!column.hidden]]">
-                      <iron-icon icon="visibility-off" item-icon></iron-icon>
+                      <iron-icon icon="paper-datatable-api-icons:visibility-off" item-icon></iron-icon>
                     </template>
                     <template is="dom-if" if="[[column.hidden]]">
-                      <iron-icon disabled icon="visibility" item-icon></iron-icon>
+                      <iron-icon disabled icon="paper-datatable-api-icons:visibility" item-icon></iron-icon>
                     </template>
                     [[column.header]]
                   </paper-icon-item>
