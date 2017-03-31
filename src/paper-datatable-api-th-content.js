@@ -51,7 +51,7 @@ class DtPaperDatatableApiThContent extends Polymer.mixinBehaviors(
   _handleFilter() {
     if (this.column.filter) {
       if (this.column.activeFilter) {
-        const paperInput = this.$$('paper-input');
+        const paperInput = this.shadowRoot.querySelector('paper-input');
         if (paperInput) {
           paperInput.value = '';
         }
@@ -63,9 +63,9 @@ class DtPaperDatatableApiThContent extends Polymer.mixinBehaviors(
 
   setPaperInputValue(value) {
     if (this.column.date) {
-      this.$$('vaadin-date-picker-light paper-input').value = value;
+      this.shadowRoot.querySelector('vaadin-date-picker-light paper-input').value = value;
     }
-    this.$$('paper-input').value = value;
+    this.shadowRoot.querySelector('paper-input').value = value;
   }
 
   _handleChoiceChanged() {
@@ -77,7 +77,7 @@ class DtPaperDatatableApiThContent extends Polymer.mixinBehaviors(
     this.async(() => {
       let paperInput;
       if (!this.column.date && !this.column.choices) {
-        paperInput = this.$$('paper-input');
+        paperInput = this.shadowRoot.querySelector('paper-input');
         if (paperInput) {
           paperInput.focus();
           if (this.column.activeFilterValue) {
