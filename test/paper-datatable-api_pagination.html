@@ -120,7 +120,7 @@
                 flush(function() {
                   i++;
                   let thContent = Polymer.dom(paperDatatableApi.root).querySelector('paper-datatable-api-th-content[sortable]');
-                  Polymer.dom(thContent.root).querySelector('div paper-icon-button[icon="arrow-downward"]').click();
+                  Polymer.dom(thContent.root).querySelector('div paper-icon-button[icon="paper-datatable-api-icons:arrow-downward"]').click();
                 });
               } else if (i === 1) {
                 assert.equal(event.detail.sort.property, 'fruit');
@@ -128,7 +128,7 @@
                 flush(function() {
                   i++;
                   let thContent = Polymer.dom(paperDatatableApi.root).querySelector('paper-datatable-api-th-content[sortable]');
-                  Polymer.dom(thContent.root).querySelector('div paper-icon-button[icon="arrow-downward"]').click();
+                  Polymer.dom(thContent.root).querySelector('div paper-icon-button[icon="paper-datatable-api-icons:arrow-downward"]').click();
                 });
               } else {
                 assert.equal(event.detail.sort.property, undefined);
@@ -137,7 +137,7 @@
               }
             });
             let thContent = Polymer.dom(paperDatatableApi.root).querySelector('paper-datatable-api-th-content[sortable]');
-            Polymer.dom(thContent.root).querySelector('div paper-icon-button[icon="arrow-downward"]').click();
+            Polymer.dom(thContent.root).querySelector('div paper-icon-button[icon="paper-datatable-api-icons:arrow-downward"]').click();
           });
         });
 
