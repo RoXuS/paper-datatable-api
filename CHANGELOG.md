@@ -1,5 +1,8 @@
 # Change Log
 
+## [v0.3.4](https://github.com/RoXuS/paper-datatable-api/tree/0.3.4) (2017-03-31)
+- Clean input after filter ([commit](https://github.com/RoXuS/paper-datatable-api/commit/f7b339e))
+
 ## [v0.3.3](https://github.com/RoXuS/paper-datatable-api/tree/0.3.3) (2017-03-20)
 - Add method to scroll to top from inside of the component ([commit](https://github.com/RoXuS/paper-datatable-api/commit/7eaee7c))
 - Update README.md ([commit](https://github.com/RoXuS/paper-datatable-api/commit/3c28cb1))
