@@ -615,7 +615,7 @@ class DtPaperDatatableApi {
       this._generatePropertiesOrder();
     }
 
-    this.toggleColumns = this._columns.filter(column => column.hideable);
+    this.toggleColumns = this._columns.filter(column => column.hideable || column.draggableColumn);
 
     this._columnsHeight = this.selectable ? this._columns.length + 1 : this._columns.length;
     if (generateTr) {

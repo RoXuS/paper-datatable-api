@@ -678,7 +678,7 @@ var DtPaperDatatableApi = function () {
       }
 
       this.toggleColumns = this._columns.filter(function (column) {
-        return column.hideable;
+        return column.hideable || column.draggableColumn;
       });
 
       this._columnsHeight = this.selectable ? this._columns.length + 1 : this._columns.length;
