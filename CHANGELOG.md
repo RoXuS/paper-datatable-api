@@ -1,5 +1,8 @@
 # Change Log
 
+## [v0.3.5](https://github.com/RoXuS/paper-datatable-api/tree/0.3.5) (20170-04-05)
+- Add draggable column in toggleColumn property ([commit](https://github.com/RoXuS/paper-datatable-api/commit/9e76f48))
+
 ## [v0.3.4](https://github.com/RoXuS/paper-datatable-api/tree/0.3.4) (2017-03-31)
 - Clean input after filter ([commit](https://github.com/RoXuS/paper-datatable-api/commit/f7b339e))
 
