@@ -968,7 +968,7 @@ var DtPaperDatatableApi = function () {
       var column = event.detail.column;
       var value = event.detail.value;
 
-      if (column && value) {
+      if (column && value !== null && value !== undefined) {
         this._launchFilterEvent(value, column);
       }
     }

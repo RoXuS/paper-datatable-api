@@ -870,7 +870,7 @@ class DtPaperDatatableApi {
     const column = event.detail.column;
     const value = event.detail.value;
 
-    if (column && value) {
+    if (column && value !== null && value !== undefined) {
       this._launchFilterEvent(value, column);
     }
   }
