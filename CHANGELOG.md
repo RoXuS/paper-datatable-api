@@ -1,5 +1,11 @@
 # Change Log
 
+## [v0.3.6](https://github.com/RoXuS/paper-datatable-api/tree/0.3.6) (20170-04-07)
+- Use arrow function ([commit](https://github.com/RoXuS/paper-datatable-api/commit/1033542))
+- Delete unused console ([commit](https://github.com/RoXuS/paper-datatable-api/commit/9dec79f))
+- Authorize empty value on filter ([commit](https://github.com/RoXuS/paper-datatable-api/commit/a404a44))
+- Use clear icon instead of search icon when a filter is in activate state ([commit](https://github.com/RoXuS/paper-datatable-api/commit/f5b9410))
+
 ## [v0.3.5](https://github.com/RoXuS/paper-datatable-api/tree/0.3.5) (20170-04-05)
 - Add draggable column in toggleColumn property ([commit](https://github.com/RoXuS/paper-datatable-api/commit/9e76f48))
 
