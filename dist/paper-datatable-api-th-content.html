@@ -92,7 +92,7 @@
         <!-- Filter icon -->
         <template is="dom-if" if="[[column.filter]]">
           <template is="dom-if" if="[[column.activeFilter]]">
-            <paper-icon-button icon="search" sortable$="[[sortable]]" class="filter active" on-tap="_handleFilter"></paper-icon-button>
+            <paper-icon-button icon="clear" sortable$="[[sortable]]" class="filter active" on-tap="_handleFilter"></paper-icon-button>
           </template>
           <template is="dom-if" if="[[!column.activeFilter]]">
             <paper-icon-button icon="search" sortable$="[[sortable]]" class="filter" on-tap="_handleFilter"></paper-icon-button>
@@ -125,7 +125,7 @@
         <!-- Filter icon -->
         <template is="dom-if" if="[[column.filter]]">
           <template is="dom-if" if="[[column.activeFilter]]">
-            <paper-icon-button icon="search" sortable$="[[sortable]]" class="filter active" on-tap="_handleFilter"></paper-icon-button>
+            <paper-icon-button icon="clear" sortable$="[[sortable]]" class="filter active" on-tap="_handleFilter"></paper-icon-button>
           </template>
           <template is="dom-if" if="[[!column.activeFilter]]">
             <paper-icon-button icon="search" sortable$="[[sortable]]" class="filter" on-tap="_handleFilter"></paper-icon-button>
