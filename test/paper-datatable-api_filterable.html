@@ -66,7 +66,6 @@
 
           flush(function() {
             let filterDiv = paperDatatableApi.querySelector('thead th paper-datatable-api-th-content div div');
-            console.log(filterDiv);
             filterDiv.click();
 
             flush(function() {
@@ -83,7 +82,6 @@
 
           flush(function() {
             let secondDiv = paperDatatableApi.querySelectorAll('thead tr th')[1];
-            console.log(secondDiv);
             secondDiv.querySelector('div paper-datatable-api-th-content div').click();
 
             flush(function() {
