@@ -776,6 +776,7 @@ class DtPaperDatatableApi {
   }
 
   _toggleFilter(column) {
+    Polymer.dom.flush();
     const columnIndex = this._columns.findIndex(_column => _column.property === column.property);
 
     if (column.activeFilter) {

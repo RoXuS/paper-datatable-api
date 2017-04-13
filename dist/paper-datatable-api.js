@@ -1,5 +1,7 @@
 'use strict';
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -268,10 +270,16 @@ var DtPaperDatatableApi = function () {
     value: function _getTheadWidths() {
       var frozenHeaderTable = this.$$('#frozenHeaderTable');
       if (frozenHeaderTable) {
-        var allTheadTrTh = frozenHeaderTable.querySelectorAll('thead tr th');
-        return Object.keys(allTheadTrTh).map(function (headerThIndex) {
-          return allTheadTrTh[headerThIndex].offsetWidth;
-        });
+        var _ret = function () {
+          var allTheadTrTh = frozenHeaderTable.querySelectorAll('thead tr th');
+          return {
+            v: Object.keys(allTheadTrTh).map(function (headerThIndex) {
+              return allTheadTrTh[headerThIndex].offsetWidth;
+            })
+          };
+        }();
+
+        if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
       }
       return null;
     }
@@ -282,10 +290,16 @@ var DtPaperDatatableApi = function () {
       var tbody = table.querySelector('tbody tr');
 
       if (tbody) {
-        var allTbodyTd = tbody.querySelectorAll('td');
-        return Object.keys(allTbodyTd).map(function (bodyTdIndex) {
-          return allTbodyTd[bodyTdIndex].offsetWidth;
-        });
+        var _ret2 = function () {
+          var allTbodyTd = tbody.querySelectorAll('td');
+          return {
+            v: Object.keys(allTbodyTd).map(function (bodyTdIndex) {
+              return allTbodyTd[bodyTdIndex].offsetWidth;
+            })
+          };
+        }();
+
+        if ((typeof _ret2 === 'undefined' ? 'undefined' : _typeof(_ret2)) === "object") return _ret2.v;
       }
       return null;
     }
@@ -697,6 +711,8 @@ var DtPaperDatatableApi = function () {
   }, {
     key: 'toggleColumn',
     value: function toggleColumn(columnProperty) {
+      var _this10 = this;
+
       var column = this._columns.find(function (columnElement) {
         return columnElement.property === columnProperty;
       });
@@ -704,20 +720,22 @@ var DtPaperDatatableApi = function () {
         return columnElement.property === columnProperty;
       });
       if (column && column.hideable) {
-        var isHidden = column.hidden;
-        var indexColumn = this.selectable ? index + 2 : index + 1;
-        var cssQuery = 'tr th:nth-of-type(' + indexColumn + '), tr td:nth-of-type(' + indexColumn + ')';
-        Polymer.dom(this.root).querySelectorAll(cssQuery).forEach(function (tdThParams) {
-          var tdTh = tdThParams;
-          tdTh.style.display = isHidden ? 'table-cell' : 'none';
-        });
+        (function () {
+          var isHidden = column.hidden;
+          var indexColumn = _this10.selectable ? index + 2 : index + 1;
+          var cssQuery = 'tr th:nth-of-type(' + indexColumn + '), tr td:nth-of-type(' + indexColumn + ')';
+          Polymer.dom(_this10.root).querySelectorAll(cssQuery).forEach(function (tdThParams) {
+            var tdTh = tdThParams;
+            tdTh.style.display = isHidden ? 'table-cell' : 'none';
+          });
 
-        column.hidden = !isHidden;
-        var toggleColumnIndex = this.toggleColumns.findIndex(function (toggleColumn) {
-          return toggleColumn.property === columnProperty;
-        });
+          column.hidden = !isHidden;
+          var toggleColumnIndex = _this10.toggleColumns.findIndex(function (toggleColumn) {
+            return toggleColumn.property === columnProperty;
+          });
 
-        this.set('toggleColumns.' + toggleColumnIndex + '.hidden', !isHidden);
+          _this10.set('toggleColumns.' + toggleColumnIndex + '.hidden', !isHidden);
+        })();
       }
       this._resizeHeader();
     }
@@ -845,18 +863,19 @@ var DtPaperDatatableApi = function () {
   }, {
     key: '_handleVaadinDatePickerLight',
     value: function _handleVaadinDatePickerLight(event) {
-      var _this10 = this;
+      var _this11 = this;
 
       var column = event.detail.column;
       var value = event.detail.value;
 
       this.async(function () {
-        _this10._launchFilterEvent(value, column);
+        _this11._launchFilterEvent(value, column);
       });
     }
   }, {
     key: '_toggleFilter',
     value: function _toggleFilter(column) {
+      Polymer.dom.flush();
       var columnIndex = this._columns.findIndex(function (_column) {
         return _column.property === column.property;
       });
@@ -879,26 +898,28 @@ var DtPaperDatatableApi = function () {
   }, {
     key: 'activeFilter',
     value: function activeFilter(column, value) {
-      var _this11 = this;
+      var _this12 = this;
 
       if (column) {
-        var columnIndex = this._columns.findIndex(function (_column) {
-          return _column.property === column.property;
-        });
-        this.set('_columns.' + columnIndex + '.activeFilter', true);
-        this.fire('filter', {
-          filter: {
-            property: column.property,
-            value: value
-          },
-          column: column
-        });
-        this._resizeHeader();
-        this.async(function () {
-          if (value) {
-            _this11.set('_columns.' + columnIndex + '.activeFilterValue', value);
-          }
-        }, 100);
+        (function () {
+          var columnIndex = _this12._columns.findIndex(function (_column) {
+            return _column.property === column.property;
+          });
+          _this12.set('_columns.' + columnIndex + '.activeFilter', true);
+          _this12.fire('filter', {
+            filter: {
+              property: column.property,
+              value: value
+            },
+            column: column
+          });
+          _this12._resizeHeader();
+          _this12.async(function () {
+            if (value) {
+              _this12.set('_columns.' + columnIndex + '.activeFilterValue', value);
+            }
+          }, 100);
+        })();
       }
     }
 
@@ -913,7 +934,7 @@ var DtPaperDatatableApi = function () {
   }, {
     key: 'toggleFilter',
     value: function toggleFilter(column, value) {
-      var _this12 = this;
+      var _this13 = this;
 
       if (column) {
         this._toggleFilter(column);
@@ -927,10 +948,10 @@ var DtPaperDatatableApi = function () {
         this._resizeHeader();
         this.async(function () {
           if (value) {
-            var columnIndex = _this12._columns.findIndex(function (_column) {
+            var columnIndex = _this13._columns.findIndex(function (_column) {
               return _column.property === column.property;
             });
-            _this12.set('_columns.' + columnIndex + '.activeFilterValue', value);
+            _this13.set('_columns.' + columnIndex + '.activeFilterValue', value);
           }
         }, 100);
       }
@@ -975,10 +996,10 @@ var DtPaperDatatableApi = function () {
   }, {
     key: '_footerPositionChange',
     value: function _footerPositionChange(position) {
-      var _this13 = this;
+      var _this14 = this;
 
       this.async(function () {
-        var footerDiv = Polymer.dom(_this13.root).querySelector('tfoot > tr > td > div > div');
+        var footerDiv = Polymer.dom(_this14.root).querySelector('tfoot > tr > td > div > div');
 
         if (footerDiv) {
           if (position === 'right') {
@@ -1000,18 +1021,18 @@ var DtPaperDatatableApi = function () {
   }, {
     key: '_handleDragAndDrop',
     value: function _handleDragAndDrop() {
-      var _this14 = this;
+      var _this15 = this;
 
       var allTh = Polymer.dom(this.root).querySelectorAll('thead th');
       allTh.forEach(function (th) {
-        th.addEventListener('dragover', _this14._dragOverHandle.bind(_this14), false);
-        th.addEventListener('dragenter', _this14._dragEnterHandle.bind(_this14), false);
-        th.addEventListener('drop', _this14._dropHandle.bind(_this14), false);
+        th.addEventListener('dragover', _this15._dragOverHandle.bind(_this15), false);
+        th.addEventListener('dragenter', _this15._dragEnterHandle.bind(_this15), false);
+        th.addEventListener('drop', _this15._dropHandle.bind(_this15), false);
       });
       var allThDiv = Polymer.dom(this.root).querySelectorAll('thead th paper-datatable-api-th-content');
       allThDiv.forEach(function (div) {
-        div.addEventListener('dragstart', _this14._dragStartHandle.bind(_this14), false);
-        div.addEventListener('dragend', _this14._dragEndHandle.bind(_this14), false);
+        div.addEventListener('dragstart', _this15._dragStartHandle.bind(_this15), false);
+        div.addEventListener('dragend', _this15._dragEndHandle.bind(_this15), false);
       });
     }
   }, {
@@ -1067,31 +1088,31 @@ var DtPaperDatatableApi = function () {
   }, {
     key: '_moveTh',
     value: function _moveTh(from, to) {
-      var _this15 = this;
+      var _this16 = this;
 
       var fromProperty = from.parentNode.getAttribute('property');
       var toProperty = to.getAttribute('property');
       if (fromProperty !== toProperty) {
         this.async(function () {
-          var allTh = Polymer.dom(_this15.root).querySelectorAll('thead th');
+          var allTh = Polymer.dom(_this16.root).querySelectorAll('thead th');
           var toIndex = allTh.findIndex(function (th) {
             return th.getAttribute('property') === toProperty;
           });
           var fromIndex = allTh.findIndex(function (th) {
             return th.getAttribute('property') === fromProperty;
           });
-          _this15._insertElement(allTh, toIndex, fromIndex);
+          _this16._insertElement(allTh, toIndex, fromIndex);
 
-          var allTr = Polymer.dom(_this15.root).querySelectorAll('tbody tr');
+          var allTr = Polymer.dom(_this16.root).querySelectorAll('tbody tr');
           allTr.forEach(function (tr) {
             var allTd = Polymer.dom(tr).querySelectorAll('td');
-            _this15._insertElement(allTd, toIndex, fromIndex);
+            _this16._insertElement(allTd, toIndex, fromIndex);
           });
 
-          _this15._resizeHeader();
-          _this15._dragEnd = false;
-          _this15.async(function () {
-            _this15._dragEnd = true;
+          _this16._resizeHeader();
+          _this16._dragEnd = false;
+          _this16.async(function () {
+            _this16._dragEnd = true;
           }, 100);
         });
       }
@@ -1104,7 +1125,7 @@ var DtPaperDatatableApi = function () {
   }, {
     key: '_generatePropertiesOrder',
     value: function _generatePropertiesOrder() {
-      var _this16 = this;
+      var _this17 = this;
 
       Polymer.dom.flush();
       var allTh = Polymer.dom(this.root).querySelectorAll('thead th');
@@ -1116,8 +1137,8 @@ var DtPaperDatatableApi = function () {
 
       this.propertiesOrder = propertiesOrder;
       this.async(function () {
-        return _this16._changeColumn(propertiesOrder, function () {
-          return _this16.fire('order-column-change', { propertiesOrder: propertiesOrder });
+        return _this17._changeColumn(propertiesOrder, function () {
+          return _this17.fire('order-column-change', { propertiesOrder: propertiesOrder });
         });
       }, 100);
     }
@@ -1139,33 +1160,35 @@ var DtPaperDatatableApi = function () {
   }, {
     key: '_changeColumn',
     value: function _changeColumn(propertiesOrder, cb) {
-      var _this17 = this;
+      var _this18 = this;
 
       if (propertiesOrder) {
-        var newColumnsOrder = [];
-        propertiesOrder.forEach(function (property) {
-          var columnObj = _this17._columns.find(function (column) {
-            return column.property === property;
-          });
-          if (columnObj) {
-            newColumnsOrder.push(columnObj);
-          }
-        });
-        if (newColumnsOrder.length > 0) {
-          this.splice('_columns', 0, this._columns.length);
-          this.async(function () {
-            _this17._columns = newColumnsOrder;
-            _this17._resizeHeader();
-            _this17.async(function () {
-              _this17._handleDragAndDrop();
-              if (cb) {
-                cb();
-              }
+        (function () {
+          var newColumnsOrder = [];
+          propertiesOrder.forEach(function (property) {
+            var columnObj = _this18._columns.find(function (column) {
+              return column.property === property;
             });
+            if (columnObj) {
+              newColumnsOrder.push(columnObj);
+            }
           });
-        } else if (cb) {
-          cb();
-        }
+          if (newColumnsOrder.length > 0) {
+            _this18.splice('_columns', 0, _this18._columns.length);
+            _this18.async(function () {
+              _this18._columns = newColumnsOrder;
+              _this18._resizeHeader();
+              _this18.async(function () {
+                _this18._handleDragAndDrop();
+                if (cb) {
+                  cb();
+                }
+              });
+            });
+          } else if (cb) {
+            cb();
+          }
+        })();
       } else if (cb) {
         cb();
       }
