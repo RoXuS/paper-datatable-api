@@ -46,11 +46,12 @@ See the [component page](https://roxus.github.io/paper-datatable-api/components/
 - Checkboxes to select or manipulate data
 - Keep the selected data throught the pages
 - Filter a column
+- Filter a column with a list of choices
 - Ability to filter columns
 - Frozen header
 - Drag and drop column
 
-## Roadmap
+## Roadmap
 
 - Freezes a column
 - Display only selected rows
