@@ -1,5 +1,11 @@
 # Change Log
 
+## [v0.3.7](https://github.com/RoXuS/paper-datatable-api/tree/0.3.7) (20170-04-14)
+- Update readme ([commit](https://github.com/RoXuS/paper-datatable-api/commit/b42a3c7))
+- Add new filter with list of choices ([commit](https://github.com/RoXuS/paper-datatable-api/commit/a5e60a4))
+- Add .vscode to ignore folder ([commit](https://github.com/RoXuS/paper-datatable-api/commit/cf2b7df))
+- Flush dom before toggle filter ([commit](https://github.com/RoXuS/paper-datatable-api/commit/db903fb))
+
 ## [v0.3.6](https://github.com/RoXuS/paper-datatable-api/tree/0.3.6) (20170-04-07)
 - Use arrow function ([commit](https://github.com/RoXuS/paper-datatable-api/commit/1033542))
 - Delete unused console ([commit](https://github.com/RoXuS/paper-datatable-api/commit/9dec79f))
