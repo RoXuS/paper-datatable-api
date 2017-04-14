@@ -98,7 +98,11 @@ var DtPaperDatatableApiColumn = function () {
         tdCustomStyle: {
           type: Boolean,
           value: false
-        }
+        },
+        /**
+         * If setted, the choices are displayed in place of the paper-input (in filter mode)
+         */
+        choices: Array
       };
     }
   }, {

@@ -90,6 +90,8 @@
               <paper-datatable-api-column
                 header="Fruit"
                 property="fruit"
+                filter
+                choices='[{"key": "banana","label": "banana"},{"key": "apple","label": "apple"},{"key": "orange","label": "orange"},{"key":"strawberry","label": "strawberry"}]'
                 sortable
                 draggable-column
                 hideable>
@@ -158,7 +160,7 @@
         var divLocal = document.createElement('div');
         var filter = event.detail.filter.value;
         var column = event.detail.filter.property;
-        var eventRow = document.createTextNode(filter + ' is filtered on ' + column + 'column');
+        var eventRow = document.createTextNode(filter + ' is filtered on ' + column + ' column');
         Polymer.dom(divLocal).appendChild(eventRow);
         Polymer.dom(this.$.paperCardEvent).querySelector('.card-content').appendChild(divLocal);
       },

@@ -29,5 +29,8 @@
     "iron-ajax": "PolymerElements/iron-ajax#^1.2.0",
     "paper-header-panel": "PolymerElements/paper-header-panel#^1.1.6",
     "polymerfire": "firebase/polymerfire#^0.9.3"
+  },
+  "resolutions": {
+    "app-localize-behavior": "^0.10.0"
   }
 }

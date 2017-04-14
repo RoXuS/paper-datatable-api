@@ -179,6 +179,11 @@ Polymer.AppLocalizeBehavior = {
   loadResources: function(path) {
     var proto = this.constructor.prototype;
 
+    // In the event proto not have __localizationCache object, create it.
+    if(proto['__localizationCache'] === undefined) {
+      proto['__localizationCache'] = {requests: {}, messages: {}, ajax: null};
+    }
+
     // If the global ajax object has not been initialized, initialize and cache it.
     var ajax = proto.__localizationCache.ajax;
     if (!ajax) {

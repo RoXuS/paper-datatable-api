@@ -1,6 +1,6 @@
 {
   "name": "app-localize-behavior",
-  "version": "0.10.1",
+  "version": "0.10.2",
   "description": "A behavior to help with internationalizating apps",
   "authors": [
     "The Polymer Authors"
@@ -35,11 +35,11 @@
     "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
   },
   "main": "app-localize-behavior.html",
-  "_release": "0.10.1",
+  "_release": "0.10.2",
   "_resolution": {
     "type": "version",
-    "tag": "v0.10.1",
-    "commit": "b76ae4e288c515bf753ad027a69492a3e1a9b9ac"
+    "tag": "v0.10.2",
+    "commit": "b386e9ad9d7fd7b9801840a38359b8a0fc460660"
   },
   "_source": "https://github.com/PolymerElements/app-localize-behavior.git",
   "_target": "^0.10.0",

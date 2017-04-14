@@ -615,7 +615,7 @@ class DtPaperDatatableApi {
       this._generatePropertiesOrder();
     }
 
-    this.toggleColumns = this._columns.filter(column => column.hideable);
+    this.toggleColumns = this._columns.filter(column => column.hideable || column.draggableColumn);
 
     this._columnsHeight = this.selectable ? this._columns.length + 1 : this._columns.length;
     if (generateTr) {
@@ -637,7 +637,7 @@ class DtPaperDatatableApi {
     if (column && column.hideable) {
       const isHidden = column.hidden;
       const indexColumn = this.selectable ? index + 2 : index + 1;
-      const cssQuery = `tr th:nth-of-type(${indexColumn}), tr td:nth-of-type(${indexColumn})`;
+      const cssQuery = `thead tr th:nth-of-type(${indexColumn}), tbody tr td:nth-of-type(${indexColumn})`;
       Polymer.dom(this.root).querySelectorAll(cssQuery).forEach((tdThParams) => {
         const tdTh = tdThParams;
         tdTh.style.display = isHidden ? 'table-cell' : 'none';
@@ -776,6 +776,7 @@ class DtPaperDatatableApi {
   }
 
   _toggleFilter(column) {
+    Polymer.dom.flush();
     const columnIndex = this._columns.findIndex(_column => _column.property === column.property);
 
     if (column.activeFilter) {
@@ -870,7 +871,7 @@ class DtPaperDatatableApi {
     const column = event.detail.column;
     const value = event.detail.value;
 
-    if (column && value) {
+    if (column && value !== null && value !== undefined) {
       this._launchFilterEvent(value, column);
     }
   }
@@ -1043,6 +1044,19 @@ class DtPaperDatatableApi {
    */
   getColumn(property) {
     return this._columns.find(columnElement => columnElement.property === property);
+  }
+
+  /**
+   * Scroll to top.
+   *
+   * @property scrollTopTop
+   */
+  scrollToTop() {
+    if (this.frozenHeader) {
+      Polymer.dom(this.root).querySelector('#wrapper').scrollTop = 0;
+    } else {
+      Polymer.dom(this.root).querySelector('tbody').scrollTop = 0;
+    }
   }
 }
 

@@ -1,5 +1,28 @@
 # Change Log
 
+## [v0.3.7](https://github.com/RoXuS/paper-datatable-api/tree/0.3.7) (20170-04-14)
+- Update readme ([commit](https://github.com/RoXuS/paper-datatable-api/commit/b42a3c7))
+- Add new filter with list of choices ([commit](https://github.com/RoXuS/paper-datatable-api/commit/a5e60a4))
+- Add .vscode to ignore folder ([commit](https://github.com/RoXuS/paper-datatable-api/commit/cf2b7df))
+- Flush dom before toggle filter ([commit](https://github.com/RoXuS/paper-datatable-api/commit/db903fb))
+
+## [v0.3.6](https://github.com/RoXuS/paper-datatable-api/tree/0.3.6) (20170-04-07)
+- Use arrow function ([commit](https://github.com/RoXuS/paper-datatable-api/commit/1033542))
+- Delete unused console ([commit](https://github.com/RoXuS/paper-datatable-api/commit/9dec79f))
+- Authorize empty value on filter ([commit](https://github.com/RoXuS/paper-datatable-api/commit/a404a44))
+- Use clear icon instead of search icon when a filter is in activate state ([commit](https://github.com/RoXuS/paper-datatable-api/commit/f5b9410))
+
+## [v0.3.5](https://github.com/RoXuS/paper-datatable-api/tree/0.3.5) (20170-04-05)
+- Add draggable column in toggleColumn property ([commit](https://github.com/RoXuS/paper-datatable-api/commit/9e76f48))
+
+## [v0.3.4](https://github.com/RoXuS/paper-datatable-api/tree/0.3.4) (2017-03-31)
+- Clean input after filter ([commit](https://github.com/RoXuS/paper-datatable-api/commit/f7b339e))
+
+## [v0.3.3](https://github.com/RoXuS/paper-datatable-api/tree/0.3.3) (2017-03-20)
+- Add method to scroll to top from inside of the component ([commit](https://github.com/RoXuS/paper-datatable-api/commit/7eaee7c))
+- Update README.md ([commit](https://github.com/RoXuS/paper-datatable-api/commit/3c28cb1))
+- Add image folder ([commit](https://github.com/RoXuS/paper-datatable-api/commit/6cdcf23))
+
 ## [v0.3.2](https://github.com/RoXuS/paper-datatable-api/tree/0.3.2) (2017-03-03)
 - Fix bug on dynamic headers ([commit](https://gitlab.factory.insight.doubletrade.com/frontend-tools/dt-gitlab-tools/commit/278bc5a))
 - Fix drag and drop on no frozen table ([commit](https://gitlab.factory.insight.doubletrade.com/frontend-tools/dt-gitlab-tools/commit/8d876a1))

@@ -53,6 +53,13 @@ class DtPaperDatatableApiThContent {
 
   _handleFilter() {
     if (this.column.filter) {
+      if (this.column.activeFilter) {
+        const paperInput = this.$$('paper-input');
+        if (paperInput) {
+          paperInput.value = '';
+        }
+        this.previousValue = null;
+      }
       this.fire('filter-th-content', { column: this.column });
     }
   }
@@ -64,11 +71,15 @@ class DtPaperDatatableApiThContent {
     this.$$('paper-input').value = value;
   }
 
+  _handleChoiceChanged() {
+    this.fire('input-change-th-content', { column: this.column, value: this._selectedChoices });
+  }
+
   _handleActiveFilterChange(event) {
     const parentDiv = event.currentTarget.parentNode;
     this.async(() => {
       let paperInput;
-      if (!this.column.date) {
+      if (!this.column.date && !this.column.choices) {
         paperInput = this.$$('paper-input');
         if (paperInput) {
           paperInput.focus();
@@ -76,7 +87,7 @@ class DtPaperDatatableApiThContent {
             this.previousValue = this.column.activeFilterValue;
           }
         }
-      } else {
+      } else if (this.column.date) {
         const datePicker = parentDiv.querySelector('vaadin-date-picker-light');
         if (datePicker) {
           if (this.column.activeFilterValue) {
@@ -84,6 +95,8 @@ class DtPaperDatatableApiThContent {
           }
           datePicker.i18n = this.localeDatePicker;
         }
+      } else {
+        this._selectedChoices = [];
       }
     });
   }
@@ -129,6 +142,13 @@ class DtPaperDatatableApiThContent {
       return 'true';
     }
     return 'false';
+  }
+
+  _computeIconName(choice, selectedChoices) {
+    if (selectedChoices.base.indexOf(choice) === -1) {
+      return 'check-box-outline-blank';
+    }
+    return 'check-box';
   }
 
 }

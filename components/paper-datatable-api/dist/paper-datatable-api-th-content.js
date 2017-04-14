@@ -71,6 +71,13 @@ var DtPaperDatatableApiThContent = function () {
     key: '_handleFilter',
     value: function _handleFilter() {
       if (this.column.filter) {
+        if (this.column.activeFilter) {
+          var paperInput = this.$$('paper-input');
+          if (paperInput) {
+            paperInput.value = '';
+          }
+          this.previousValue = null;
+        }
         this.fire('filter-th-content', { column: this.column });
       }
     }
@@ -83,6 +90,11 @@ var DtPaperDatatableApiThContent = function () {
       this.$$('paper-input').value = value;
     }
   }, {
+    key: '_handleChoiceChanged',
+    value: function _handleChoiceChanged() {
+      this.fire('input-change-th-content', { column: this.column, value: this._selectedChoices });
+    }
+  }, {
     key: '_handleActiveFilterChange',
     value: function _handleActiveFilterChange(event) {
       var _this = this;
@@ -90,7 +102,7 @@ var DtPaperDatatableApiThContent = function () {
       var parentDiv = event.currentTarget.parentNode;
       this.async(function () {
         var paperInput = void 0;
-        if (!_this.column.date) {
+        if (!_this.column.date && !_this.column.choices) {
           paperInput = _this.$$('paper-input');
           if (paperInput) {
             paperInput.focus();
@@ -98,7 +110,7 @@ var DtPaperDatatableApiThContent = function () {
               _this.previousValue = _this.column.activeFilterValue;
             }
           }
-        } else {
+        } else if (_this.column.date) {
           var datePicker = parentDiv.querySelector('vaadin-date-picker-light');
           if (datePicker) {
             if (_this.column.activeFilterValue) {
@@ -106,6 +118,8 @@ var DtPaperDatatableApiThContent = function () {
             }
             datePicker.i18n = _this.localeDatePicker;
           }
+        } else {
+          _this._selectedChoices = [];
         }
       });
     }
@@ -158,6 +172,14 @@ var DtPaperDatatableApiThContent = function () {
         return 'true';
       }
       return 'false';
+    }
+  }, {
+    key: '_computeIconName',
+    value: function _computeIconName(choice, selectedChoices) {
+      if (selectedChoices.base.indexOf(choice) === -1) {
+        return 'check-box-outline-blank';
+      }
+      return 'check-box';
     }
   }, {
     key: 'behaviors',

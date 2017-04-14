@@ -12,6 +12,8 @@ thing! https://github.com/PolymerLabs/tedium/issues
 
 -->
 
+[![Build status](https://travis-ci.org/PolymerElements/app-localize-behavior.svg?branch=master)](https://travis-ci.org/PolymerElements/app-localize-behavior)
+
 
 ##Polymer.AppLocalizeBehavior
 

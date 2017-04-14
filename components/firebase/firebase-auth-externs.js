@@ -1,6 +1,10 @@
+/*! @license Firebase v3.7.6
+Build: rev-d1c8cec
+Terms: https://firebase.google.com/terms/ */
+
 /**
  * @fileoverview Firebase Auth API.
- * Version: 3.7.0
+ * Version: 3.7.6
  *
  * Copyright 2017 Google Inc. All Rights Reserved.
  *
