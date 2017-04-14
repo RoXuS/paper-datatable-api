@@ -1,9 +1,17 @@
 <link rel="import" href="../../polymer/polymer.html">
+
 <link rel="import" href="../../iron-flex-layout/iron-flex-layout-classes.html">
-<link rel="import" href="../../paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../../paper-input/paper-input.html">
+
 <link rel="import" href="../../app-localize-behavior/app-localize-behavior.html">
+
 <link rel="import" href="../../vaadin-date-picker/vaadin-date-picker-light.html">
+
+<link rel="import" href="../../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../paper-item/paper-icon-item.html">
+<link rel="import" href="../../paper-item/paper-item-body.html">
+<link rel="import" href="../../paper-menu/paper-menu.html">
+<link rel="import" href="../../paper-menu-button/paper-menu-button.html">
+<link rel="import" href="../../paper-input/paper-input.html">
 
 <dom-module id="paper-datatable-api-th-content">
   <template>
@@ -73,6 +81,19 @@
         transform: rotate(180deg);
       }
 
+      paper-menu-button {
+        min-width: 110px;
+        padding: 0;
+      }
+
+      iron-icon[icon="check-box"] {
+        color: var(--paper-datatable-api-checked-checkbox-color, --primary-color);
+      }
+
+      iron-icon[icon="check-box-outline-blank"] {
+        color: var(--paper-datatable-api-unchecked-checkbox-color, --primary-text-color);
+      }
+
     </style>
 
     <div class$="[[_draggableClass(column.draggableColumn)]]" draggable$="[[_isDraggable(column.draggableColumn, focused)]]">
@@ -104,7 +125,29 @@
       <!-- Header with filter active -->
       <template is="dom-if" if="[[column.activeFilter]]" on-dom-change="_handleActiveFilterChange">
         <template is="dom-if" if="[[!column.date]]" restamp>
-          <paper-input class="flex" value="{{column.activeFilterValue}}" no-label-float placeholder="[[column.header]]" on-keyup="_handleKeyDownInput" focused="{{focused}}"></paper-input>
+          <template is="dom-if" if="[[!column.choices]]" restamp>
+            <paper-input class="flex" value="{{column.activeFilterValue}}" no-label-float placeholder="[[column.header]]" on-keyup="_handleKeyDownInput" focused="{{focused}}"></paper-input>
+          </template>
+        </template>
+        <template is="dom-if" if="[[column.choices]]" restamp>
+
+          <paper-menu-button ignore-select>
+            <div class="layout horizontal center dropdown-trigger">
+              <span class="flex">[[column.header]]</span>
+              <iron-icon icon="arrow-drop-down"></iron-icon>
+            </div>
+            <paper-menu class="dropdown-content" selected-values="{{_selectedChoices}}" multi attr-for-selected="name" on-iron-select="_handleChoiceChanged" on-iron-deselect="_handleChoiceChanged">
+              <template is="dom-repeat" items="[[column.choices]]" as="choice">
+                <paper-icon-item name="[[choice.key]]">
+                  <iron-icon item-icon icon$="[[_computeIconName(choice.key, _selectedChoices.*)]]"></iron-icon>
+                  <paper-item-body>
+                    [[choice.label]]
+                  </paper-item-body>
+                </paper-icon-item>
+              </template>
+            </paper-menu>
+          </paper-menu-button>
+
         </template>
         <template is="dom-if" if="[[column.date]]" restamp>
           <vaadin-date-picker-light attr-for-value="value" on-value-changed="_handleVaadinDatePickerLight" value="{{column.activeFilterValue}}">

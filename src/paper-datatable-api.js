@@ -637,7 +637,7 @@ class DtPaperDatatableApi {
     if (column && column.hideable) {
       const isHidden = column.hidden;
       const indexColumn = this.selectable ? index + 2 : index + 1;
-      const cssQuery = `tr th:nth-of-type(${indexColumn}), tr td:nth-of-type(${indexColumn})`;
+      const cssQuery = `thead tr th:nth-of-type(${indexColumn}), tbody tr td:nth-of-type(${indexColumn})`;
       Polymer.dom(this.root).querySelectorAll(cssQuery).forEach((tdThParams) => {
         const tdTh = tdThParams;
         tdTh.style.display = isHidden ? 'table-cell' : 'none';
