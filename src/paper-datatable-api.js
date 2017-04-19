@@ -224,6 +224,10 @@ class DtPaperDatatableApi {
           this._resizeWidth(bodyWidth, headerWidth, 'header', true);
         }
         this.fire('end-of-resize', { });
+
+        if (this.lastScrollLeft) {
+          this.$$('#headerWrapper').scrollLeft = this.lastScrollLeft;
+        }
       }
     }, 10);
   }
@@ -289,7 +293,8 @@ class DtPaperDatatableApi {
 
   _handleWrapperScroll(event) {
     if (this.frozenHeader) {
-      this.$$('#headerWrapper').scrollLeft = event.target.scrollLeft;
+      this.lastScrollLeft = event.target.scrollLeft;
+      this.$$('#headerWrapper').scrollLeft = this.lastScrollLeft;
     }
   }
 

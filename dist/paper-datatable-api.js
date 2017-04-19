@@ -237,6 +237,10 @@ var DtPaperDatatableApi = function () {
             _this._resizeWidth(bodyWidth, headerWidth, 'header', true);
           }
           _this.fire('end-of-resize', {});
+
+          if (_this.lastScrollLeft) {
+            _this.$$('#headerWrapper').scrollLeft = _this.lastScrollLeft;
+          }
         }
       }, 10);
     }
@@ -316,7 +320,8 @@ var DtPaperDatatableApi = function () {
     key: '_handleWrapperScroll',
     value: function _handleWrapperScroll(event) {
       if (this.frozenHeader) {
-        this.$$('#headerWrapper').scrollLeft = event.target.scrollLeft;
+        this.lastScrollLeft = event.target.scrollLeft;
+        this.$$('#headerWrapper').scrollLeft = this.lastScrollLeft;
       }
     }
 
