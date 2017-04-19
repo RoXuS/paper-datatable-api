@@ -1,5 +1,8 @@
 # Change Log
 
+## [v0.3.8](https://github.com/RoXuS/paper-datatable-api/tree/0.3.8) (20170-04-19)
+- Fix for large table in frozen header mode ([commit](https://github.com/RoXuS/paper-datatable-api/commit/9d78c7b))
+
 ## [v0.3.7](https://github.com/RoXuS/paper-datatable-api/tree/0.3.7) (20170-04-14)
 - Update readme ([commit](https://github.com/RoXuS/paper-datatable-api/commit/b42a3c7))
 - Add new filter with list of choices ([commit](https://github.com/RoXuS/paper-datatable-api/commit/a5e60a4))
