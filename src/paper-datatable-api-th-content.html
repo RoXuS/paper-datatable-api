@@ -140,7 +140,7 @@
               <template is="dom-repeat" items="[[column.choices]]" as="choice">
                 <paper-icon-item name="[[choice.key]]">
                   <iron-icon item-icon icon$="[[_computeIconName(choice.key, _selectedChoices.*)]]"></iron-icon>
-                  <paper-item-body>
+                  <paper-item-body style$="[[choice.style]]">
                     [[choice.label]]
                   </paper-item-body>
                 </paper-icon-item>
