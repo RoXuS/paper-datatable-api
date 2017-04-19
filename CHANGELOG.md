@@ -1,5 +1,8 @@
 # Change Log
 
+## [v0.3.9](https://github.com/RoXuS/paper-datatable-api/tree/0.3.9) (20170-04-19)
+- Add way to add style on choice label ([commit](https://github.com/RoXuS/paper-datatable-api/commit/33fb860))
+
 ## [v0.3.8](https://github.com/RoXuS/paper-datatable-api/tree/0.3.8) (20170-04-19)
 - Fix for large table in frozen header mode ([commit](https://github.com/RoXuS/paper-datatable-api/commit/9d78c7b))
 
