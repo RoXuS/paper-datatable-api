@@ -652,11 +652,11 @@ var DtPaperDatatableApi = function () {
         var splittedProperties = columnProperty.split('.');
         if (splittedProperties.length > 1) {
           return splittedProperties.reduce(function (prevRow, property) {
-            if (typeof prevRow === 'string') {
+            if (typeof prevRow === 'string' && rowData[prevRow] && rowData[prevRow][property]) {
               return rowData[prevRow][property];
             }
 
-            return prevRow[property];
+            return prevRow[property] || '';
           });
         }
         return rowData[columnProperty];

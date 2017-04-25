@@ -590,11 +590,11 @@ class DtPaperDatatableApi {
       const splittedProperties = columnProperty.split('.');
       if (splittedProperties.length > 1) {
         return splittedProperties.reduce((prevRow, property) => {
-          if (typeof prevRow === 'string') {
+          if (typeof prevRow === 'string' && rowData[prevRow] && rowData[prevRow][property]) {
             return rowData[prevRow][property];
           }
 
-          return prevRow[property];
+          return prevRow[property] || '';
         });
       }
       return rowData[columnProperty];
