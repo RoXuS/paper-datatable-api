@@ -1,24 +1,30 @@
 # Change Log
 
-## [v0.3.9](https://github.com/RoXuS/paper-datatable-api/tree/0.3.9) (20170-04-19)
+## [v0.3.10](https://github.com/RoXuS/paper-datatable-api/tree/0.3.10) (2017-04-25)
+- Update eslint config ([commit](https://github.com/RoXuS/paper-datatable-api/commit/d6d7fa7))
+- Fix when column is undefined ([commit](https://github.com/RoXuS/paper-datatable-api/commit/7be9499))
+- Fix when property of a column is undefined ([commit](https://github.com/RoXuS/paper-datatable-api/commit/077deec))
+- Change eslint rules ([commit](https://github.com/RoXuS/paper-datatable-api/commit/5afe120))
+
+## [v0.3.9](https://github.com/RoXuS/paper-datatable-api/tree/0.3.9) (2017-04-19)
 - Add way to add style on choice label ([commit](https://github.com/RoXuS/paper-datatable-api/commit/33fb860))
 
-## [v0.3.8](https://github.com/RoXuS/paper-datatable-api/tree/0.3.8) (20170-04-19)
+## [v0.3.8](https://github.com/RoXuS/paper-datatable-api/tree/0.3.8) (2017-04-19)
 - Fix for large table in frozen header mode ([commit](https://github.com/RoXuS/paper-datatable-api/commit/9d78c7b))
 
-## [v0.3.7](https://github.com/RoXuS/paper-datatable-api/tree/0.3.7) (20170-04-14)
+## [v0.3.7](https://github.com/RoXuS/paper-datatable-api/tree/0.3.7) (2017-04-14)
 - Update readme ([commit](https://github.com/RoXuS/paper-datatable-api/commit/b42a3c7))
 - Add new filter with list of choices ([commit](https://github.com/RoXuS/paper-datatable-api/commit/a5e60a4))
 - Add .vscode to ignore folder ([commit](https://github.com/RoXuS/paper-datatable-api/commit/cf2b7df))
 - Flush dom before toggle filter ([commit](https://github.com/RoXuS/paper-datatable-api/commit/db903fb))
 
-## [v0.3.6](https://github.com/RoXuS/paper-datatable-api/tree/0.3.6) (20170-04-07)
+## [v0.3.6](https://github.com/RoXuS/paper-datatable-api/tree/0.3.6) (2017-04-07)
 - Use arrow function ([commit](https://github.com/RoXuS/paper-datatable-api/commit/1033542))
 - Delete unused console ([commit](https://github.com/RoXuS/paper-datatable-api/commit/9dec79f))
 - Authorize empty value on filter ([commit](https://github.com/RoXuS/paper-datatable-api/commit/a404a44))
 - Use clear icon instead of search icon when a filter is in activate state ([commit](https://github.com/RoXuS/paper-datatable-api/commit/f5b9410))
 
-## [v0.3.5](https://github.com/RoXuS/paper-datatable-api/tree/0.3.5) (20170-04-05)
+## [v0.3.5](https://github.com/RoXuS/paper-datatable-api/tree/0.3.5) (2017-04-05)
 - Add draggable column in toggleColumn property ([commit](https://github.com/RoXuS/paper-datatable-api/commit/9e76f48))
 
 ## [v0.3.4](https://github.com/RoXuS/paper-datatable-api/tree/0.3.4) (2017-03-31)
