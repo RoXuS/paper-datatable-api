@@ -742,7 +742,7 @@ class DtPaperDatatableApi {
    * @param {th} column Th element.
    */
   sortColumn(column, sortDirection, targetTh) {
-    if (column.sortable) {
+    if (column && column.sortable) {
       let th = targetTh;
       const queryThContent = 'thead th paper-datatable-api-th-content[sortable][sorted]';
       Polymer.dom(this.root).querySelectorAll(queryThContent)

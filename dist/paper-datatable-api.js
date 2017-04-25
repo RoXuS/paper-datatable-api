@@ -820,7 +820,7 @@ var DtPaperDatatableApi = function () {
   }, {
     key: 'sortColumn',
     value: function sortColumn(column, sortDirection, targetTh) {
-      if (column.sortable) {
+      if (column && column.sortable) {
         var th = targetTh;
         var queryThContent = 'thead th paper-datatable-api-th-content[sortable][sorted]';
         Polymer.dom(this.root).querySelectorAll(queryThContent).forEach(function (otherThContent) {
