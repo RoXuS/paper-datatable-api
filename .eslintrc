@@ -5,13 +5,23 @@
     "new-cap": "off",
     "import/no-extraneous-dependencies": "off",
     "class-methods-use-this": "off",
-    "no-param-reassign": "off"
+    "no-param-reassign": "off",
+    "comma-dangle": [
+      "error",
+      {
+        "arrays": "always-multiline",
+        "objects": "always-multiline",
+        "imports": "never",
+        "exports": "never",
+        "functions": "never"
+      }
+    ]
   },
   "env": {
     "mocha": true,
     "browser": true
   },
-  "globals": { 
+  "globals": {
     "Polymer": true,
     "sinon": true,
     "flush": true,
