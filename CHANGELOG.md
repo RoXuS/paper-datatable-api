@@ -1,5 +1,9 @@
 # Change Log
 
+## [v0.4.0](https://github.com/RoXuS/paper-datatable-api/tree/0.4.0) (2017-04-26)
+- Delete frozen header mode, create footer element ([commit](https://github.com/RoXuS/paper-datatable-api/commit/5ee24cf))
+- Add way to set a custom horizontal padding ([commit](https://github.com/RoXuS/paper-datatable-api/commit/0985710))
+
 ## [v0.3.10](https://github.com/RoXuS/paper-datatable-api/tree/0.3.10) (2017-04-25)
 - Update eslint config ([commit](https://github.com/RoXuS/paper-datatable-api/commit/d6d7fa7))
 - Fix when column is undefined ([commit](https://github.com/RoXuS/paper-datatable-api/commit/7be9499))
