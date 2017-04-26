@@ -26,7 +26,7 @@
         font-weight: 500;
         text-align: left;
         white-space: nowrap;
-        padding: 6px 26px;
+        padding: 6px var(--paper-datatable-api-horizontal-padding, 26px);
         height: 43px;
         border-bottom: 1px solid;
         border-color: rgba(0, 0, 0, var(--dark-divider-opacity));
@@ -73,7 +73,7 @@
         font-size: 13px;
         font-weight: normal;
         color: rgba(0, 0, 0, var(--dark-primary-opacity));
-        padding: 6px 26px;
+        padding: 6px var(--paper-datatable-api-horizontal-padding, 26px);
       }
 
       :host ::content tbody.frozen td,
@@ -101,7 +101,7 @@
       :host ::content tbody td.selectable,
       thead th.selectable,
       tbody td.selectable {
-        padding: 6px 0 6px 26px;
+        padding: 6px 0 6px var(--paper-datatable-api-horizontal-padding, 26px);
         @apply(--paper-datatable-api-checkbox);
         min-width: initial;
       }
