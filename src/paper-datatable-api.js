@@ -119,11 +119,8 @@ class DtPaperDatatableApi {
       localeDatePicker: {
         type: Object,
       },
-      frozenHeader: {
-        type: Boolean,
-        value: false,
-      },
       resources: {
+        notify: true,
         value() {
           return {
             en: {
@@ -179,126 +176,21 @@ class DtPaperDatatableApi {
         value: [],
         notify: true,
       },
-    };
-
-    this.listeners = {
-      'iron-resize': '_resizeHeader',
+      /**
+       * The number of the previous page
+       */
+      oldPage: {
+        type: Number,
+        notify: true,
+      },
     };
   }
 
   get behaviors() {
     return [
       Polymer.AppLocalizeBehavior,
-      Polymer.IronResizableBehavior,
     ];
   }
-
-  /** Frozen Mode **/
-
-  _resizeHeader() {
-    this.async(() => {
-      if (this.frozenHeader) {
-        let bodyWidth = this._getTbodyWidths();
-        let headerWidth = this._getTheadWidths();
-
-        if (headerWidth && bodyWidth) {
-          /**
-           * Set all width to auto.
-           */
-          this._resizeAllWidthToAuto(bodyWidth);
-          /**
-           * Resize header width following body width.
-           */
-          this._resizeWidth(bodyWidth, headerWidth, 'header');
-          bodyWidth = this._getTbodyWidths();
-          headerWidth = this._getTheadWidths();
-          /**
-           * Resize body width following header width.
-           */
-          this._resizeWidth(headerWidth, bodyWidth, 'body');
-          bodyWidth = this._getTbodyWidths();
-          headerWidth = this._getTheadWidths();
-          /**
-           * Reajust header width with the new width of body.
-           */
-          this._resizeWidth(bodyWidth, headerWidth, 'header', true);
-        }
-        this.fire('end-of-resize', { });
-
-        if (this.lastScrollLeft) {
-          this.$$('#headerWrapper').scrollLeft = this.lastScrollLeft;
-        }
-      }
-    }, 10);
-  }
-
-  _resizeAllWidthToAuto(bodyWidth) {
-    bodyWidth.forEach((bodyTrWidth, index) => {
-      this._resizeTd('auto', index, 'header');
-      this._resizeTd('auto', index, 'body');
-    });
-  }
-
-  _resizeWidth(iterateArray, arrayWidth, type, force = false) {
-    iterateArray.forEach((width, index) => {
-      if (width > arrayWidth[index] || force) {
-        this._resizeTd(width, index, type);
-      }
-    });
-  }
-
-  _getTheadWidths() {
-    const frozenHeaderTable = this.$$('#frozenHeaderTable');
-    if (frozenHeaderTable) {
-      const allTheadTrTh = frozenHeaderTable.querySelectorAll('thead tr th');
-      return Object.keys(allTheadTrTh).map(
-        headerThIndex => allTheadTrTh[headerThIndex].offsetWidth
-      );
-    }
-    return null;
-  }
-
-  _getTbodyWidths() {
-    const table = this.$$('table:not(#frozenHeaderTable)');
-    const tbody = table.querySelector('tbody tr');
-
-    if (tbody) {
-      const allTbodyTd = tbody.querySelectorAll('td');
-      return Object.keys(allTbodyTd).map(bodyTdIndex => allTbodyTd[bodyTdIndex].offsetWidth);
-    }
-    return null;
-  }
-
-  _resizeTd(size, columnIndex, type) {
-    let allTheadTrTh = this.$$('tbody tr').querySelectorAll('td');
-    if (type === 'header') {
-      allTheadTrTh = this.$$('#frozenHeaderTable thead tr').querySelectorAll('th');
-    }
-
-    if (allTheadTrTh.length > 0) {
-      const paddingLeftPx = window.getComputedStyle(allTheadTrTh[columnIndex]).paddingLeft;
-      const paddingLeft = paddingLeftPx.split('px')[0];
-      const paddingRightPx = window.getComputedStyle(allTheadTrTh[columnIndex]).paddingRight;
-      const paddingRight = paddingRightPx.split('px')[0];
-      const horizontalPadding = parseInt(paddingRight, 10) + parseInt(paddingLeft, 10);
-
-      if (size !== 'auto' && (size - horizontalPadding) !== 0) {
-        const sizeWithoutPad = size - horizontalPadding;
-        Polymer.dom(allTheadTrTh[columnIndex]).firstElementChild.style.width = `${sizeWithoutPad}px`;
-      } else if (size === 'auto') {
-        Polymer.dom(allTheadTrTh[columnIndex]).firstElementChild.style.width = 'auto';
-      }
-    }
-  }
-
-  _handleWrapperScroll(event) {
-    if (this.frozenHeader) {
-      this.lastScrollLeft = event.target.scrollLeft;
-      this.$$('#headerWrapper').scrollLeft = this.lastScrollLeft;
-    }
-  }
-
-  /** End of frozen mode **/
 
   attached() {
     const userLang = navigator.language || navigator.userLanguage;
@@ -309,16 +201,7 @@ class DtPaperDatatableApi {
     return value === targetedValue;
   }
 
-  _generateClass(frozenHeader, filters, paginate) {
-    if (frozenHeader && filters && paginate) {
-      return 'filters frozen paginate';
-    }
-    if (frozenHeader && filters) {
-      return 'filters frozen';
-    }
-    if (frozenHeader && paginate) {
-      return 'paginate frozen';
-    }
+  _generateClass(filters, paginate) {
     if (filters && paginate) {
       return 'paginate filters';
     }
@@ -328,39 +211,7 @@ class DtPaperDatatableApi {
     if (paginate) {
       return 'paginate';
     }
-    if (frozenHeader) {
-      return 'frozen';
-    }
     return '';
-  }
-
-  _nextPage() {
-    if ((this.page + 1) < this.totalPages) {
-      this.page = this.page + 1;
-    }
-  }
-
-  _prevPage() {
-    if (this.page > 0) {
-      this.page = this.page - 1;
-    }
-  }
-
-  _nextButtonEnabled(page, totalPages) {
-    return (page + 1) < totalPages;
-  }
-
-  _prevButtonEnabled(page) {
-    return page > 0;
-  }
-
-  _computeCurrentSize(page, size) {
-    return (page * size) + 1;
-  }
-
-  _computeCurrentMaxSize(page, size, totalElements) {
-    const maxSize = size * (page + 1);
-    return (maxSize > totalElements ? totalElements : maxSize);
   }
 
   _init(data, propertiesOrder) {
@@ -369,7 +220,6 @@ class DtPaperDatatableApi {
         this._removeRows();
         this._fillRows(data);
         this._fillColumns();
-        this._resizeHeader();
         this._footerPositionChange(this.footerPosition);
         this._handleDragAndDrop();
       });
@@ -517,7 +367,7 @@ class DtPaperDatatableApi {
    * @param {String} value The value of the row following the selectableDatakey.
    */
   selectRow(value) {
-    const table = this.$$('table:not(#frozenHeaderTable)');
+    const table = this.$$('table');
     const allTr = table.querySelectorAll('tbody tr');
     allTr.forEach((tr) => {
       const selectedRow = this._findSelectableElement(tr.rowData);
@@ -655,7 +505,6 @@ class DtPaperDatatableApi {
 
       this.set(`toggleColumns.${toggleColumnIndex}.hidden`, !isHidden);
     }
-    this._resizeHeader();
   }
 
   _getThDisplayStyle(hidden) {
@@ -664,16 +513,6 @@ class DtPaperDatatableApi {
     }
 
     return 'table-cell';
-  }
-
-  _newSizeIsSelected() {
-    const newSize = this.$$('paper-listbox').selected;
-    if (newSize) {
-      if (this.oldPage !== null && this.oldPage !== undefined) {
-        this.page = 0;
-      }
-      this.size = newSize;
-    }
   }
 
   _handleSort(event) {
@@ -809,7 +648,6 @@ class DtPaperDatatableApi {
         },
         column,
       });
-      this._resizeHeader();
       this.async(() => {
         if (value) {
           this.set(`_columns.${columnIndex}.activeFilterValue`, value);
@@ -835,7 +673,6 @@ class DtPaperDatatableApi {
         },
         column,
       });
-      this._resizeHeader();
       this.async(() => {
         if (value) {
           const columnIndex = this._columns.findIndex(
@@ -883,7 +720,7 @@ class DtPaperDatatableApi {
 
   _footerPositionChange(position) {
     this.async(() => {
-      const footerDiv = Polymer.dom(this.root).querySelector('tfoot > tr > td > div > div');
+      const footerDiv = Polymer.dom(this.root).querySelector('.foot > div > div');
 
       if (footerDiv) {
         if (position === 'right') {
@@ -975,7 +812,6 @@ class DtPaperDatatableApi {
           this._insertElement(allTd, toIndex, fromIndex);
         });
 
-        this._resizeHeader();
         this._dragEnd = false;
         this.async(() => {
           this._dragEnd = true;
@@ -1025,7 +861,6 @@ class DtPaperDatatableApi {
         this.splice('_columns', 0, this._columns.length);
         this.async(() => {
           this._columns = newColumnsOrder;
-          this._resizeHeader();
           this.async(() => {
             this._handleDragAndDrop();
             if (cb) {
@@ -1057,11 +892,7 @@ class DtPaperDatatableApi {
    * @property scrollTopTop
    */
   scrollToTop() {
-    if (this.frozenHeader) {
-      Polymer.dom(this.root).querySelector('#wrapper').scrollTop = 0;
-    } else {
-      Polymer.dom(this.root).querySelector('tbody').scrollTop = 0;
-    }
+    Polymer.dom(this.root).querySelector('tbody').scrollTop = 0;
   }
 }
 

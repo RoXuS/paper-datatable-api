@@ -22,17 +22,12 @@
         display: block;
       }
 
-      .draggable {
-        min-width: 60px;
-      }
-
       :host > div {
-        @apply(--layout-horizontal);
-        @apply(--layout-center);
+        @apply --layout-horizontal;
+        @apply --layout-center;
       }
 
       paper-input {
-        min-width: 110px;
         --paper-input-container-underline-focus: {
           display: block;
         };
@@ -61,7 +56,7 @@
       }
 
       paper-icon-button[sortable].filter.active {
-        @apply(--paper-datatable-api-header-sorted);
+        @apply --paper-datatable-api-header-sorted;
       }
 
       paper-icon-button.sort {
@@ -69,7 +64,7 @@
       }
 
       paper-icon-button[sorted].sort {
-        @apply(--paper-datatable-api-header-sorted);
+        @apply --paper-datatable-api-header-sorted;
       }
 
       paper-icon-button.sort:not([sorted]):not([sort-direction='desc']) {
@@ -82,8 +77,11 @@
       }
 
       paper-menu-button {
-        min-width: 110px;
         padding: 0;
+      }
+
+      paper-icon-button[icon="arrow-drop-down"] {
+        color: rgba(0,0,0, .26);
       }
 
       iron-icon[icon="check-box"] {
@@ -129,12 +127,26 @@
             <paper-input class="flex" value="{{column.activeFilterValue}}" no-label-float placeholder="[[column.header]]" on-keyup="_handleKeyDownInput" focused="{{focused}}"></paper-input>
           </template>
         </template>
+        <template is="dom-if" if="[[column.date]]" restamp>
+          <vaadin-date-picker-light attr-for-value="value" on-value-changed="_handleVaadinDatePickerLight" value="{{column.activeFilterValue}}">
+            <paper-input class="flex" no-label-float placeholder="[[column.header]]" focused="{{focused}}"></paper-input>
+          </vaadin-date-picker-light>
+        </template>
+      </template>
+
+      <!-- Header with filter inactive -->
+      <template is="dom-if" if="[[!column.activeFilter]]">
+        <div class="flex" on-tap="_handleFilter">
+          <template is="dom-if" if="[[!column.choices]]" restamp>
+          [[column.header]]
+      </template>
+
         <template is="dom-if" if="[[column.choices]]" restamp>
 
-          <paper-menu-button ignore-select>
+          <paper-menu-button ignore-select dynamic-align>
             <div class="layout horizontal center dropdown-trigger">
               <span class="flex">[[column.header]]</span>
-              <iron-icon icon="arrow-drop-down"></iron-icon>
+              <paper-icon-button icon="arrow-drop-down"></paper-icon-button>
             </div>
             <paper-menu class="dropdown-content" selected-values="{{_selectedChoices}}" multi attr-for-selected="name" on-iron-select="_handleChoiceChanged" on-iron-deselect="_handleChoiceChanged">
               <template is="dom-repeat" items="[[column.choices]]" as="choice">
@@ -149,17 +161,6 @@
           </paper-menu-button>
 
         </template>
-        <template is="dom-if" if="[[column.date]]" restamp>
-          <vaadin-date-picker-light attr-for-value="value" on-value-changed="_handleVaadinDatePickerLight" value="{{column.activeFilterValue}}">
-            <paper-input class="flex" no-label-float placeholder="[[column.header]]" focused="{{focused}}"></paper-input>
-          </vaadin-date-picker-light>
-        </template>
-      </template>
-
-      <!-- Header with filter inactive -->
-      <template is="dom-if" if="[[!column.activeFilter]]">
-        <div class="flex" on-tap="_handleFilter">
-          [[column.header]]
         </div>
       </template>
 

@@ -21,12 +21,12 @@
               <span>[[value]]</span>
             </template>
           </paper-datatable-api-column>
-          <paper-datatable-api-column header="Color" property="color">
+          <paper-datatable-api-column header="Color" property="color" filter>
             <template>
               <div>[[value]]</div>
             </template>
           </paper-datatable-api-column>
-          <paper-datatable-api-column header="Weight" property="weight" filter choices='[{"label": 1, "key": 1}, {"label": 2, "key": 2}]'>
+          <paper-datatable-api-column header="Weight" property="weight" choices='[{"label": 1, "key": 1}, {"label": 2, "key": 2}]'>
             <template>
               <div>[[value]]</div>
             </template>
@@ -88,8 +88,8 @@
           paperDatatableApi.data = data;
 
           flush(function() {
-            let secondDiv = paperDatatableApi.querySelectorAll('thead tr th')[1];
-            secondDiv.querySelector('div paper-datatable-api-th-content div').click();
+            let paperDatatableApiThContent = Polymer.dom(paperDatatableApi.root).querySelectorAll('thead tr th paper-datatable-api-th-content')[0];
+            Polymer.dom(paperDatatableApiThContent.root).querySelector('div').click();
 
             flush(function() {
               let secondDivForInput = paperDatatableApi.querySelectorAll('thead tr th')[1];
@@ -111,21 +111,10 @@
             i += 1;
             if (i === 1) {
               assert.equal(event.detail.filter.value[0], 1);
-            } else if (i === 2) {
-              assert.equal(event.detail.filter.value.length, 0);
             }
-            if (i === 2) {
-              done();
-            } else if (i === 1) {
-              let clearButton = paperDatatableApi.querySelector('thead th div paper-icon-button[icon="clear"]');
-              clearButton.click();
-            }
+            done();
           });
           flush(function() {
-            let filterButton = paperDatatableApi.querySelectorAll('thead th div paper-icon-button[icon="search"]');
-
-            filterButton[1].click();
-
             paperDatatableApi.async(() => {
               var paperMenu = paperDatatableApi.querySelector('thead tr th paper-menu');
               paperMenu.select(1);

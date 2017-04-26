@@ -2,15 +2,12 @@
 
 <link rel="import" href="paper-datatable-api-shared-styles.html">
 <link rel="import" href="paper-datatable-api-th-content.html">
+<link rel="import" href="paper-datatable-api-footer.html">
 
 <link rel="import" href="../../iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="../../iron-icons/iron-icons.html">
 <link rel="import" href="../../iron-input/iron-input.html">
 
-<link rel="import" href="../../paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../../paper-dropdown-menu/paper-dropdown-menu.html">
-<link rel="import" href="../../paper-listbox/paper-listbox.html">
-<link rel="import" href="../../paper-item/paper-item.html">
 <link rel="import" href="../../paper-checkbox/paper-checkbox.html">
 
 <link rel="import" href="../../app-localize-behavior/app-localize-behavior.html">
@@ -49,7 +46,6 @@
 - Keep the selected data throught the pages
 - Filter a column
 - Ability to filter columns
-- Frozen header
 - Drag and drop column
 
 ### Styling
@@ -67,7 +63,6 @@ Custom property                                   | Description                 
 `--paper-datatable-api-header`                    | Mixin applied to the columns header            | `{}`
 `--paper-datatable-api-tr-hover-background-color` | Define color of the tr background hover        | `none`
 `--paper-datatable-api-header-sorted`             | Mixin applied to the sorted columns header     | `{}`
-`--paper-datatable-api-height`                    | Mixin applied to the wrapper in frozen mode    | `48px`
 `--paper-datatable-api-custom-td`                 | Mixin applied to the custom style td           | `{}`
 `--paper-datatable-api-checkbox`                  | Mixin applied to the paper-checkbox            | `{}`
 `--paper-datatable-api-horizontal-padding`        | Mixin applied to the horizontal padding        | `26px`
@@ -80,184 +75,52 @@ Custom property                                   | Description                 
     <style include="paper-datatable-api-shared-styles"></style>
     <style include="iron-flex iron-flex-alignment"></style>
 
-    <template is="dom-if" if="[[frozenHeader]]" restamp>
-      <div id="headerWrapper">
-        <table id="frozenHeaderTable">
-          <thead class$="[[_generateClass(frozenHeader, filters)]]">
-            <tr>
-              <template is="dom-repeat" items="[[_columns]]" as="column" index-as="index">
-                <template is="dom-if" if="[[selectable]]" restamp>
-                  <template is="dom-if" if="[[equals(index, checkboxColumnPosition)]]" restamp>
-                    <th class="selectable">
-                      <div>
-                        <template is="dom-if" if="[[allowTheSelectionOfAllTheElements]]" restamp>
-                          <paper-checkbox on-change="_selectAllCheckbox"></paper-checkbox>
-                        </template>
-                      </div>
-                    </th>
-                  </template>
-                </template>
-                <th
-                  class$="[[_generateClass(frozenHeader, column.filter)]] pgTh [[_addCustomTdClass(column.tdCustomStyle)]]"
-                  data-column="[[column]]"
-                  property$="[[column.property]]"
-                  style$="display: [[_getThDisplayStyle(column.hidden)]];">
-
-                  <paper-datatable-api-th-content
-                    column="[[column]]"
-                    locale-date-picker="[[localeDatePicker]]"
-                    position-sort-icon="[[positionSortIcon]]"
-                    sort-direction$="[[column.sortDirection]]"
-                    on-input-change-th-content="_handleInputChange"
-                    on-filter-th-content="_handleFilter"
-                    on-date-input-change-th-content="_handleVaadinDatePickerLight"
-                    sorted$="[[column.sorted]]"
-                    sortable$="[[column.sortable]]"
-                    on-sort-th-content="_handleSort">
-                  </paper-datatable-api-th-content>
-
-                </th>
-              </template>
-            </tr>
-          </thead>
-        </table>
-      </div>
-    </template>
-
-    <div id="wrapper" on-scroll="_handleWrapperScroll" class$="[[_generateClass(frozenHeader)]]">
-      <table>
-        <template is="dom-if" if="[[!frozenHeader]]" restamp>
-          <thead class$="[[_generateClass(frozenHeader, filters)]]">
-            <tr>
-              <template is="dom-repeat" items="[[_columns]]" as="column" index-as="index">
-                <template is="dom-if" if="[[selectable]]" restamp>
-                  <template is="dom-if" if="[[equals(index, checkboxColumnPosition)]]" restamp>
-                    <th class="selectable">
-                      <div>
-                        <template is="dom-if" if="[[allowTheSelectionOfAllTheElements]]" restamp>
-                          <paper-checkbox on-change="_selectAllCheckbox"></paper-checkbox>
-                        </template>
-                      </div>
-                    </th>
-                  </template>
-                </template>
-                <th
-                  class$="[[_generateClass(frozenHeader, column.filter)]] pgTh [[_addCustomTdClass(column.tdCustomStyle)]]"
-                  data-column="[[column]]"
-                  property$="[[column.property]]"
-                  style$="display: [[_getThDisplayStyle(column.hidden)]];">
-                  <paper-datatable-api-th-content
-                    column="[[column]]"
-                    locale-date-picker="[[localeDatePicker]]"
-                    position-sort-icon="[[positionSortIcon]]"
-                    sort-direction$="[[column.sortDirection]]"
-                    on-input-change-th-content="_handleInputChange"
-                    on-choices-change-th-content="_handleInputChange"
-                    on-date-input-change-th-content="_handleVaadinDatePickerLight"
-                    sorted$="[[column.sorted]]"
-                    sortable$="[[column.sortable]]"
-                    on-filter-th-content="_handleFilter"
-                    on-sort-th-content="_handleSort">
-                  </paper-datatable-api-th-content>
-                </th>
-              </template>
-            </tr>
-          </thead>
-        </template>
-        <tbody class$="[[_generateClass(frozenHeader, filters)]]">
-        </tbody>
-        <template is="dom-if" if="[[paginate]]" restamp>
-          <template is="dom-if" if="[[!frozenHeader]]" restamp>
-            <tfoot class$="[[_generateClass(frozenHeader, filters, paginate)]]">
-              <tr>
-                <td colspan$="[[_columnsHeight]]" class$="[[footerPosition]]">
+    <table>
+      <thead class$="[[_generateClass(filters)]]">
+        <tr>
+          <template is="dom-repeat" items="[[_columns]]" as="column" index-as="index">
+            <template is="dom-if" if="[[selectable]]" restamp>
+              <template is="dom-if" if="[[equals(index, checkboxColumnPosition)]]" restamp>
+                <th class="selectable">
                   <div>
-                    <div class="layout horizontal end-justified center">
-                      <div class="layout horizontal center">
-                        <div>
-                          [[localize('rowPerPage')]]:
-                        </div>
-                        <div class="size">
-                          <paper-dropdown-menu no-label-float vertical-align="bottom">
-                            <paper-listbox attr-for-selected="size" on-iron-select="_newSizeIsSelected" selected="[[size]]" class="dropdown-content">
-                              <template is="dom-repeat" items="[[availableSize]]" as="size">
-                                <paper-item size="[[size]]">[[size]]</paper-item>
-                              </template>
-                            </paper-listbox>
-                          </paper-dropdown-menu>
-                        </div>
-                      </div>
-                      <div class="status">
-                        [[_computeCurrentSize(page, size)]]-[[_computeCurrentMaxSize(page, size, totalElements)]] [[localize('of')]] [[totalElements]]
-                      </div>
-                      <template is="dom-if" if="[[!_prevButtonEnabled(page)]]">
-                        <paper-icon-button icon="chevron-left" disabled on-tap="_prevPage"></paper-icon-button>
-                      </template>
-                      <template is="dom-if" if="[[_prevButtonEnabled(page)]]">
-                        <paper-icon-button icon="chevron-left" on-tap="_prevPage"></paper-icon-button>
-                      </template>
-                      <template is="dom-if" if="[[!_nextButtonEnabled(page, totalPages)]]">
-                        <paper-icon-button icon="chevron-right" disabled on-tap="_nextPage"></paper-icon-button>
-                      </template>
-                      <template is="dom-if" if="[[_nextButtonEnabled(page, totalPages)]]">
-                        <paper-icon-button icon="chevron-right" on-tap="_nextPage"></paper-icon-button>
-                      </template>
-                    </div>
+                    <template is="dom-if" if="[[allowTheSelectionOfAllTheElements]]" restamp>
+                      <paper-checkbox on-change="_selectAllCheckbox"></paper-checkbox>
+                    </template>
                   </div>
-                </td>
-              </tr>
-            </tfoot>
+                </th>
+              </template>
+            </template>
+            <th class$="[[_generateClass(column.filter)]] pgTh [[_addCustomTdClass(column.tdCustomStyle)]]" data-column="[[column]]"
+              property$="[[column.property]]" style$="display: [[_getThDisplayStyle(column.hidden)]];">
+              <paper-datatable-api-th-content column="[[column]]" locale-date-picker="[[localeDatePicker]]" position-sort-icon="[[positionSortIcon]]"
+                sort-direction$="[[column.sortDirection]]" on-input-change-th-content="_handleInputChange"
+                on-choices-change-th-content="_handleInputChange" on-date-input-change-th-content="_handleVaadinDatePickerLight"
+                sorted$="[[column.sorted]]" sortable$="[[column.sortable]]" on-filter-th-content="_handleFilter"
+                on-sort-th-content="_handleSort">
+              </paper-datatable-api-th-content>
+            </th>
           </template>
-        </template>
-      </table>
-    </div>
-    <template is="dom-if" if="[[frozenHeader]]" restamp>
-      <template is="dom-if" if="[[paginate]]" restamp>
-        <div id="footerWrapper">
-          <table>
-            <tfoot class$="[[_generateClass(frozenHeader, filters, paginate)]]">
-              <tr>
-                <td colspan$="[[_columnsHeight]]" class$="[[footerPosition]]">
-                  <div>
-                    <div class="layout horizontal end-justified center">
-                      <div class="layout horizontal center">
-                        <div>
-                          [[localize('rowPerPage')]]:
-                        </div>
-                        <div class="size">
-                          <paper-dropdown-menu no-label-float vertical-align="bottom">
-                            <paper-listbox attr-for-selected="size" on-iron-select="_newSizeIsSelected" selected="[[size]]" class="dropdown-content">
-                              <template is="dom-repeat" items="[[availableSize]]" as="size">
-                                <paper-item size="[[size]]">[[size]]</paper-item>
-                              </template>
-                            </paper-listbox>
-                          </paper-dropdown-menu>
-                        </div>
-                      </div>
-                      <div class="status">
-                        [[_computeCurrentSize(page, size)]]-[[_computeCurrentMaxSize(page, size, totalElements)]] [[localize('of')]] [[totalElements]]
-                      </div>
-                      <template is="dom-if" if="[[!_prevButtonEnabled(page)]]">
-                        <paper-icon-button icon="chevron-left" disabled on-tap="_prevPage"></paper-icon-button>
-                      </template>
-                      <template is="dom-if" if="[[_prevButtonEnabled(page)]]">
-                        <paper-icon-button icon="chevron-left" on-tap="_prevPage"></paper-icon-button>
-                      </template>
-                      <template is="dom-if" if="[[!_nextButtonEnabled(page, totalPages)]]">
-                        <paper-icon-button icon="chevron-right" disabled on-tap="_nextPage"></paper-icon-button>
-                      </template>
-                      <template is="dom-if" if="[[_nextButtonEnabled(page, totalPages)]]">
-                        <paper-icon-button icon="chevron-right" on-tap="_nextPage"></paper-icon-button>
-                      </template>
-                    </div>
-                  </div>
-                </td>
-              </tr>
-            </tfoot>
-          </table>
-        </template>
-      </div>
+        </tr>
+      </thead>
+
+      <tbody class$="[[_generateClass(filters)]]">
+      </tbody>
+    </table>
+
+    <template is="dom-if" if="[[paginate]]" restamp>
+      <paper-datatable-api-footer
+        resources="[[resources]]"
+        language="[[language]]"
+        footer-position="[[footerPosition]]"
+        available-size="[[availableSize]]"
+        total-pages="[[totalPages]]"
+        total-elements="[[totalElements]]"
+        old-page="[[oldPage]]"
+        size="{{size}}"
+        page="{{page}}">
+      </paper-datatable-api-footer>
     </template>
+
   </template>
   <script src="paper-datatable-api.js"></script>
 </dom-module>

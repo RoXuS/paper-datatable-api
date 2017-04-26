@@ -9,7 +9,7 @@
         display: block;
       }
 
-      table:not(#frozenHeaderTable) {
+      table {
         width: 100%;
       }
 
@@ -76,11 +76,6 @@
         padding: 6px var(--paper-datatable-api-horizontal-padding, 26px);
       }
 
-      :host ::content tbody.frozen td,
-      tbody.frozen td {
-        min-width: 190px;
-      }
-
       :host ::content tbody tr:not(:first-child) td,
       tbody tr:not(:first-child) td {
         border-top: 1px solid;
@@ -89,7 +84,7 @@
 
       :host ::content tbody td.customTd,
       tbody td.customTd {
-        @apply(--paper-datatable-api-custom-td);
+        @apply --paper-datatable-api-custom-td;
       }
 
       :host ::content thead th.selectable,
@@ -102,72 +97,14 @@
       thead th.selectable,
       tbody td.selectable {
         padding: 6px 0 6px var(--paper-datatable-api-horizontal-padding, 26px);
-        @apply(--paper-datatable-api-checkbox);
+        @apply --paper-datatable-api-checkbox;
         min-width: initial;
-      }
-
-      tfoot tr td {
-        font-size: 12px;
-        font-weight: normal;
-        height: 55px;
-        border-top: 1px solid;
-        border-color: rgba(0, 0, 0, var(--dark-divider-opacity));
-        padding: 0 14px 0 0;
-        color: rgba(0, 0, 0, var(--dark-secondary-opacity));
-      }
-
-      tfoot tr td.left {
-        padding: 0 0 0 14px;
-      }
-
-
-      tfoot tr td paper-icon-button {
-        width: 24px;
-        height: 24px;
-        padding: 0;
-        margin-left: 24px;
-      }
-
-      tfoot tr td .status {
-        margin: 0 8px 0 32px;
-      }
-
-      tfoot tr td div .size {
-        width: 64px;
-        text-align: right;
-
-      }
-
-      .size paper-dropdown-menu {
-        --paper-input-container-underline: {
-          display: none;
-        };
-        --paper-input-container-input: {
-          text-align: right;
-          font-size: 12px;
-          font-weight: 500;
-          color: var(--paper-datatable-navigation-bar-text-color, rgba(0,0,0,.54));
-        };
-        --paper-dropdown-menu-icon: {
-          color: var(--paper-datatable-navigation-bar-text-color, rgba(0,0,0,.54));
-        };
       }
 
       paper-checkbox {
         --paper-checkbox-label-spacing: 0;
         --paper-checkbox-checked-color: var(--paper-datatable-api-checked-checkbox-color, --primary-color);
         --paper-checkbox-unchecked-color: var(--paper-datatable-api-unchecked-checkbox-color, --primary-text-color);
-      }
-
-      /* Frozen mode */
-
-      #wrapper.frozen {
-        overflow: auto;
-        height: var(--paper-datatable-api-height, 48px);
-      }
-
-      #headerWrapper {
-        overflow: hidden;
       }
 
     </style>

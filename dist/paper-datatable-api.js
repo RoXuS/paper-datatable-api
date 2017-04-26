@@ -134,11 +134,8 @@ var DtPaperDatatableApi = function () {
         localeDatePicker: {
           type: Object
         },
-        frozenHeader: {
-          type: Boolean,
-          value: false
-        },
         resources: {
+          notify: true,
           value: function value() {
             return {
               en: {
@@ -193,140 +190,16 @@ var DtPaperDatatableApi = function () {
           type: Array,
           value: [],
           notify: true
+        },
+        /**
+         * The number of the previous page
+         */
+        oldPage: {
+          type: Number,
+          notify: true
         }
       };
-
-      this.listeners = {
-        'iron-resize': '_resizeHeader'
-      };
     }
-  }, {
-    key: '_resizeHeader',
-
-
-    /** Frozen Mode **/
-
-    value: function _resizeHeader() {
-      var _this = this;
-
-      this.async(function () {
-        if (_this.frozenHeader) {
-          var bodyWidth = _this._getTbodyWidths();
-          var headerWidth = _this._getTheadWidths();
-
-          if (headerWidth && bodyWidth) {
-            /**
-             * Set all width to auto.
-             */
-            _this._resizeAllWidthToAuto(bodyWidth);
-            /**
-             * Resize header width following body width.
-             */
-            _this._resizeWidth(bodyWidth, headerWidth, 'header');
-            bodyWidth = _this._getTbodyWidths();
-            headerWidth = _this._getTheadWidths();
-            /**
-             * Resize body width following header width.
-             */
-            _this._resizeWidth(headerWidth, bodyWidth, 'body');
-            bodyWidth = _this._getTbodyWidths();
-            headerWidth = _this._getTheadWidths();
-            /**
-             * Reajust header width with the new width of body.
-             */
-            _this._resizeWidth(bodyWidth, headerWidth, 'header', true);
-          }
-          _this.fire('end-of-resize', {});
-
-          if (_this.lastScrollLeft) {
-            _this.$$('#headerWrapper').scrollLeft = _this.lastScrollLeft;
-          }
-        }
-      }, 10);
-    }
-  }, {
-    key: '_resizeAllWidthToAuto',
-    value: function _resizeAllWidthToAuto(bodyWidth) {
-      var _this2 = this;
-
-      bodyWidth.forEach(function (bodyTrWidth, index) {
-        _this2._resizeTd('auto', index, 'header');
-        _this2._resizeTd('auto', index, 'body');
-      });
-    }
-  }, {
-    key: '_resizeWidth',
-    value: function _resizeWidth(iterateArray, arrayWidth, type) {
-      var _this3 = this;
-
-      var force = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
-
-      iterateArray.forEach(function (width, index) {
-        if (width > arrayWidth[index] || force) {
-          _this3._resizeTd(width, index, type);
-        }
-      });
-    }
-  }, {
-    key: '_getTheadWidths',
-    value: function _getTheadWidths() {
-      var frozenHeaderTable = this.$$('#frozenHeaderTable');
-      if (frozenHeaderTable) {
-        var allTheadTrTh = frozenHeaderTable.querySelectorAll('thead tr th');
-        return Object.keys(allTheadTrTh).map(function (headerThIndex) {
-          return allTheadTrTh[headerThIndex].offsetWidth;
-        });
-      }
-      return null;
-    }
-  }, {
-    key: '_getTbodyWidths',
-    value: function _getTbodyWidths() {
-      var table = this.$$('table:not(#frozenHeaderTable)');
-      var tbody = table.querySelector('tbody tr');
-
-      if (tbody) {
-        var allTbodyTd = tbody.querySelectorAll('td');
-        return Object.keys(allTbodyTd).map(function (bodyTdIndex) {
-          return allTbodyTd[bodyTdIndex].offsetWidth;
-        });
-      }
-      return null;
-    }
-  }, {
-    key: '_resizeTd',
-    value: function _resizeTd(size, columnIndex, type) {
-      var allTheadTrTh = this.$$('tbody tr').querySelectorAll('td');
-      if (type === 'header') {
-        allTheadTrTh = this.$$('#frozenHeaderTable thead tr').querySelectorAll('th');
-      }
-
-      if (allTheadTrTh.length > 0) {
-        var paddingLeftPx = window.getComputedStyle(allTheadTrTh[columnIndex]).paddingLeft;
-        var paddingLeft = paddingLeftPx.split('px')[0];
-        var paddingRightPx = window.getComputedStyle(allTheadTrTh[columnIndex]).paddingRight;
-        var paddingRight = paddingRightPx.split('px')[0];
-        var horizontalPadding = parseInt(paddingRight, 10) + parseInt(paddingLeft, 10);
-
-        if (size !== 'auto' && size - horizontalPadding !== 0) {
-          var sizeWithoutPad = size - horizontalPadding;
-          Polymer.dom(allTheadTrTh[columnIndex]).firstElementChild.style.width = sizeWithoutPad + 'px';
-        } else if (size === 'auto') {
-          Polymer.dom(allTheadTrTh[columnIndex]).firstElementChild.style.width = 'auto';
-        }
-      }
-    }
-  }, {
-    key: '_handleWrapperScroll',
-    value: function _handleWrapperScroll(event) {
-      if (this.frozenHeader) {
-        this.lastScrollLeft = event.target.scrollLeft;
-        this.$$('#headerWrapper').scrollLeft = this.lastScrollLeft;
-      }
-    }
-
-    /** End of frozen mode **/
-
   }, {
     key: 'attached',
     value: function attached() {
@@ -340,16 +213,7 @@ var DtPaperDatatableApi = function () {
     }
   }, {
     key: '_generateClass',
-    value: function _generateClass(frozenHeader, filters, paginate) {
-      if (frozenHeader && filters && paginate) {
-        return 'filters frozen paginate';
-      }
-      if (frozenHeader && filters) {
-        return 'filters frozen';
-      }
-      if (frozenHeader && paginate) {
-        return 'paginate frozen';
-      }
+    value: function _generateClass(filters, paginate) {
       if (filters && paginate) {
         return 'paginate filters';
       }
@@ -359,59 +223,20 @@ var DtPaperDatatableApi = function () {
       if (paginate) {
         return 'paginate';
       }
-      if (frozenHeader) {
-        return 'frozen';
-      }
       return '';
-    }
-  }, {
-    key: '_nextPage',
-    value: function _nextPage() {
-      if (this.page + 1 < this.totalPages) {
-        this.page = this.page + 1;
-      }
-    }
-  }, {
-    key: '_prevPage',
-    value: function _prevPage() {
-      if (this.page > 0) {
-        this.page = this.page - 1;
-      }
-    }
-  }, {
-    key: '_nextButtonEnabled',
-    value: function _nextButtonEnabled(page, totalPages) {
-      return page + 1 < totalPages;
-    }
-  }, {
-    key: '_prevButtonEnabled',
-    value: function _prevButtonEnabled(page) {
-      return page > 0;
-    }
-  }, {
-    key: '_computeCurrentSize',
-    value: function _computeCurrentSize(page, size) {
-      return page * size + 1;
-    }
-  }, {
-    key: '_computeCurrentMaxSize',
-    value: function _computeCurrentMaxSize(page, size, totalElements) {
-      var maxSize = size * (page + 1);
-      return maxSize > totalElements ? totalElements : maxSize;
     }
   }, {
     key: '_init',
     value: function _init(data, propertiesOrder) {
-      var _this4 = this;
+      var _this = this;
 
       this._changeColumn(propertiesOrder, function () {
-        _this4.async(function () {
-          _this4._removeRows();
-          _this4._fillRows(data);
-          _this4._fillColumns();
-          _this4._resizeHeader();
-          _this4._footerPositionChange(_this4.footerPosition);
-          _this4._handleDragAndDrop();
+        _this.async(function () {
+          _this._removeRows();
+          _this._fillRows(data);
+          _this._fillColumns();
+          _this._footerPositionChange(_this.footerPosition);
+          _this._handleDragAndDrop();
         });
       });
     }
@@ -432,17 +257,17 @@ var DtPaperDatatableApi = function () {
   }, {
     key: '_removeRows',
     value: function _removeRows() {
-      var _this5 = this;
+      var _this2 = this;
 
       var pgTrs = Polymer.dom(this.root).querySelectorAll('.paper-datatable-api-tr');
       pgTrs.forEach(function (pgTr) {
-        return Polymer.dom(_this5.$$('tbody')).removeChild(pgTr);
+        return Polymer.dom(_this2.$$('tbody')).removeChild(pgTr);
       });
     }
   }, {
     key: '_fillRows',
     value: function _fillRows(data) {
-      var _this6 = this;
+      var _this3 = this;
 
       if (data) {
         data.forEach(function (rowData) {
@@ -450,10 +275,10 @@ var DtPaperDatatableApi = function () {
           trLocal.rowData = rowData;
           trLocal.className = 'paper-datatable-api-tr';
 
-          _this6.listen(trLocal, 'mouseover', 'onOverTr');
-          _this6.listen(trLocal, 'mouseout', 'onOutTr');
+          _this3.listen(trLocal, 'mouseover', 'onOverTr');
+          _this3.listen(trLocal, 'mouseout', 'onOutTr');
 
-          Polymer.dom(_this6.$$('tbody')).appendChild(trLocal);
+          Polymer.dom(_this3.$$('tbody')).appendChild(trLocal);
         });
       }
     }
@@ -491,25 +316,25 @@ var DtPaperDatatableApi = function () {
   }, {
     key: '_fillColumns',
     value: function _fillColumns() {
-      var _this7 = this;
+      var _this4 = this;
 
       var pgTrs = Polymer.dom(this.root).querySelectorAll('.paper-datatable-api-tr');
 
       pgTrs.forEach(function (pgTr, i) {
         var rowData = pgTr.rowData;
 
-        _this7._columns.forEach(function (paperDatatableApiColumn, p) {
-          if (_this7.selectable && p === _this7.checkboxColumnPosition) {
+        _this4._columns.forEach(function (paperDatatableApiColumn, p) {
+          if (_this4.selectable && p === _this4.checkboxColumnPosition) {
             var tdSelectable = document.createElement('td');
             tdSelectable.className = 'selectable';
             var paperCheckbox = document.createElement('paper-checkbox');
-            _this7.listen(paperCheckbox, 'change', '_selectChange');
+            _this4.listen(paperCheckbox, 'change', '_selectChange');
             paperCheckbox.rowData = rowData;
             paperCheckbox.rowIndex = i;
 
-            if (_this7.selectableDataKey !== undefined) {
-              var selectedRow = _this7._findSelectableElement(rowData);
-              if (selectedRow !== undefined && _this7.selectedRows.indexOf(selectedRow) !== -1) {
+            if (_this4.selectableDataKey !== undefined) {
+              var selectedRow = _this4._findSelectableElement(rowData);
+              if (selectedRow !== undefined && _this4.selectedRows.indexOf(selectedRow) !== -1) {
                 paperCheckbox.checked = true;
               }
             }
@@ -519,11 +344,11 @@ var DtPaperDatatableApi = function () {
             Polymer.dom.flush();
           }
 
-          var valueFromRowData = _this7._extractData(rowData, paperDatatableApiColumn.property);
+          var valueFromRowData = _this4._extractData(rowData, paperDatatableApiColumn.property);
 
           var otherPropertiesValue = {};
           paperDatatableApiColumn.otherProperties.forEach(function (property) {
-            otherPropertiesValue[property] = _this7._extractData(rowData, property);
+            otherPropertiesValue[property] = _this4._extractData(rowData, property);
           });
 
           var tdLocal = document.createElement('td');
@@ -531,8 +356,8 @@ var DtPaperDatatableApi = function () {
             tdLocal.classList.add('customTd');
           }
 
-          _this7.listen(tdLocal, 'mouseover', 'onOverTd');
-          _this7.listen(tdLocal, 'mouseout', 'onOutTd');
+          _this4.listen(tdLocal, 'mouseover', 'onOverTd');
+          _this4.listen(tdLocal, 'mouseout', 'onOutTd');
 
           var template = paperDatatableApiColumn.fillTemplate(valueFromRowData, otherPropertiesValue);
 
@@ -548,7 +373,7 @@ var DtPaperDatatableApi = function () {
   }, {
     key: '_selectAllCheckbox',
     value: function _selectAllCheckbox(event) {
-      var _this8 = this;
+      var _this5 = this;
 
       var localTarget = Polymer.dom(event).localTarget;
       var allPaperCheckbox = Polymer.dom(this.root).querySelectorAll('tbody tr td paper-checkbox');
@@ -557,11 +382,11 @@ var DtPaperDatatableApi = function () {
         if (localTarget.checked) {
           if (!paperCheckbox.checked) {
             paperCheckbox.checked = true;
-            _this8._selectChange(paperCheckbox);
+            _this5._selectChange(paperCheckbox);
           }
         } else if (paperCheckbox.checked) {
           paperCheckbox.checked = false;
-          _this8._selectChange(paperCheckbox);
+          _this5._selectChange(paperCheckbox);
         }
       });
     }
@@ -576,12 +401,12 @@ var DtPaperDatatableApi = function () {
   }, {
     key: 'selectRow',
     value: function selectRow(value) {
-      var _this9 = this;
+      var _this6 = this;
 
-      var table = this.$$('table:not(#frozenHeaderTable)');
+      var table = this.$$('table');
       var allTr = table.querySelectorAll('tbody tr');
       allTr.forEach(function (tr) {
-        var selectedRow = _this9._findSelectableElement(tr.rowData);
+        var selectedRow = _this6._findSelectableElement(tr.rowData);
 
         if (selectedRow === value) {
           var checkbox = tr.querySelector('paper-checkbox');
@@ -589,10 +414,10 @@ var DtPaperDatatableApi = function () {
             checkbox.checked = true;
 
             var rowId = checkbox.rowIndex;
-            if (_this9.selectableDataKey !== undefined && selectedRow !== undefined) {
+            if (_this6.selectableDataKey !== undefined && selectedRow !== undefined) {
               rowId = selectedRow;
             }
-            _this9.push('selectedRows', rowId);
+            _this6.push('selectedRows', rowId);
             tr.classList.add('selected');
           }
         }
@@ -724,7 +549,6 @@ var DtPaperDatatableApi = function () {
 
         this.set('toggleColumns.' + toggleColumnIndex + '.hidden', !isHidden);
       }
-      this._resizeHeader();
     }
   }, {
     key: '_getThDisplayStyle',
@@ -734,17 +558,6 @@ var DtPaperDatatableApi = function () {
       }
 
       return 'table-cell';
-    }
-  }, {
-    key: '_newSizeIsSelected',
-    value: function _newSizeIsSelected() {
-      var newSize = this.$$('paper-listbox').selected;
-      if (newSize) {
-        if (this.oldPage !== null && this.oldPage !== undefined) {
-          this.page = 0;
-        }
-        this.size = newSize;
-      }
     }
   }, {
     key: '_handleSort',
@@ -850,13 +663,13 @@ var DtPaperDatatableApi = function () {
   }, {
     key: '_handleVaadinDatePickerLight',
     value: function _handleVaadinDatePickerLight(event) {
-      var _this10 = this;
+      var _this7 = this;
 
       var column = event.detail.column;
       var value = event.detail.value;
 
       this.async(function () {
-        _this10._launchFilterEvent(value, column);
+        _this7._launchFilterEvent(value, column);
       });
     }
   }, {
@@ -885,7 +698,7 @@ var DtPaperDatatableApi = function () {
   }, {
     key: 'activeFilter',
     value: function activeFilter(column, value) {
-      var _this11 = this;
+      var _this8 = this;
 
       if (column) {
         var columnIndex = this._columns.findIndex(function (_column) {
@@ -899,10 +712,9 @@ var DtPaperDatatableApi = function () {
           },
           column: column
         });
-        this._resizeHeader();
         this.async(function () {
           if (value) {
-            _this11.set('_columns.' + columnIndex + '.activeFilterValue', value);
+            _this8.set('_columns.' + columnIndex + '.activeFilterValue', value);
           }
         }, 100);
       }
@@ -919,7 +731,7 @@ var DtPaperDatatableApi = function () {
   }, {
     key: 'toggleFilter',
     value: function toggleFilter(column, value) {
-      var _this12 = this;
+      var _this9 = this;
 
       if (column) {
         this._toggleFilter(column);
@@ -930,13 +742,12 @@ var DtPaperDatatableApi = function () {
           },
           column: column
         });
-        this._resizeHeader();
         this.async(function () {
           if (value) {
-            var columnIndex = _this12._columns.findIndex(function (_column) {
+            var columnIndex = _this9._columns.findIndex(function (_column) {
               return _column.property === column.property;
             });
-            _this12.set('_columns.' + columnIndex + '.activeFilterValue', value);
+            _this9.set('_columns.' + columnIndex + '.activeFilterValue', value);
           }
         }, 100);
       }
@@ -981,10 +792,10 @@ var DtPaperDatatableApi = function () {
   }, {
     key: '_footerPositionChange',
     value: function _footerPositionChange(position) {
-      var _this13 = this;
+      var _this10 = this;
 
       this.async(function () {
-        var footerDiv = Polymer.dom(_this13.root).querySelector('tfoot > tr > td > div > div');
+        var footerDiv = Polymer.dom(_this10.root).querySelector('.foot > div > div');
 
         if (footerDiv) {
           if (position === 'right') {
@@ -1006,18 +817,18 @@ var DtPaperDatatableApi = function () {
   }, {
     key: '_handleDragAndDrop',
     value: function _handleDragAndDrop() {
-      var _this14 = this;
+      var _this11 = this;
 
       var allTh = Polymer.dom(this.root).querySelectorAll('thead th');
       allTh.forEach(function (th) {
-        th.addEventListener('dragover', _this14._dragOverHandle.bind(_this14), false);
-        th.addEventListener('dragenter', _this14._dragEnterHandle.bind(_this14), false);
-        th.addEventListener('drop', _this14._dropHandle.bind(_this14), false);
+        th.addEventListener('dragover', _this11._dragOverHandle.bind(_this11), false);
+        th.addEventListener('dragenter', _this11._dragEnterHandle.bind(_this11), false);
+        th.addEventListener('drop', _this11._dropHandle.bind(_this11), false);
       });
       var allThDiv = Polymer.dom(this.root).querySelectorAll('thead th paper-datatable-api-th-content');
       allThDiv.forEach(function (div) {
-        div.addEventListener('dragstart', _this14._dragStartHandle.bind(_this14), false);
-        div.addEventListener('dragend', _this14._dragEndHandle.bind(_this14), false);
+        div.addEventListener('dragstart', _this11._dragStartHandle.bind(_this11), false);
+        div.addEventListener('dragend', _this11._dragEndHandle.bind(_this11), false);
       });
     }
   }, {
@@ -1073,31 +884,30 @@ var DtPaperDatatableApi = function () {
   }, {
     key: '_moveTh',
     value: function _moveTh(from, to) {
-      var _this15 = this;
+      var _this12 = this;
 
       var fromProperty = from.parentNode.getAttribute('property');
       var toProperty = to.getAttribute('property');
       if (fromProperty !== toProperty) {
         this.async(function () {
-          var allTh = Polymer.dom(_this15.root).querySelectorAll('thead th');
+          var allTh = Polymer.dom(_this12.root).querySelectorAll('thead th');
           var toIndex = allTh.findIndex(function (th) {
             return th.getAttribute('property') === toProperty;
           });
           var fromIndex = allTh.findIndex(function (th) {
             return th.getAttribute('property') === fromProperty;
           });
-          _this15._insertElement(allTh, toIndex, fromIndex);
+          _this12._insertElement(allTh, toIndex, fromIndex);
 
-          var allTr = Polymer.dom(_this15.root).querySelectorAll('tbody tr');
+          var allTr = Polymer.dom(_this12.root).querySelectorAll('tbody tr');
           allTr.forEach(function (tr) {
             var allTd = Polymer.dom(tr).querySelectorAll('td');
-            _this15._insertElement(allTd, toIndex, fromIndex);
+            _this12._insertElement(allTd, toIndex, fromIndex);
           });
 
-          _this15._resizeHeader();
-          _this15._dragEnd = false;
-          _this15.async(function () {
-            _this15._dragEnd = true;
+          _this12._dragEnd = false;
+          _this12.async(function () {
+            _this12._dragEnd = true;
           }, 100);
         });
       }
@@ -1110,7 +920,7 @@ var DtPaperDatatableApi = function () {
   }, {
     key: '_generatePropertiesOrder',
     value: function _generatePropertiesOrder() {
-      var _this16 = this;
+      var _this13 = this;
 
       Polymer.dom.flush();
       var allTh = Polymer.dom(this.root).querySelectorAll('thead th');
@@ -1122,8 +932,8 @@ var DtPaperDatatableApi = function () {
 
       this.propertiesOrder = propertiesOrder;
       this.async(function () {
-        return _this16._changeColumn(propertiesOrder, function () {
-          return _this16.fire('order-column-change', { propertiesOrder: propertiesOrder });
+        return _this13._changeColumn(propertiesOrder, function () {
+          return _this13.fire('order-column-change', { propertiesOrder: propertiesOrder });
         });
       }, 100);
     }
@@ -1145,12 +955,12 @@ var DtPaperDatatableApi = function () {
   }, {
     key: '_changeColumn',
     value: function _changeColumn(propertiesOrder, cb) {
-      var _this17 = this;
+      var _this14 = this;
 
       if (propertiesOrder) {
         var newColumnsOrder = [];
         propertiesOrder.forEach(function (property) {
-          var columnObj = _this17._columns.find(function (column) {
+          var columnObj = _this14._columns.find(function (column) {
             return column.property === property;
           });
           if (columnObj) {
@@ -1160,10 +970,9 @@ var DtPaperDatatableApi = function () {
         if (newColumnsOrder.length > 0) {
           this.splice('_columns', 0, this._columns.length);
           this.async(function () {
-            _this17._columns = newColumnsOrder;
-            _this17._resizeHeader();
-            _this17.async(function () {
-              _this17._handleDragAndDrop();
+            _this14._columns = newColumnsOrder;
+            _this14.async(function () {
+              _this14._handleDragAndDrop();
               if (cb) {
                 cb();
               }
@@ -1201,16 +1010,12 @@ var DtPaperDatatableApi = function () {
   }, {
     key: 'scrollToTop',
     value: function scrollToTop() {
-      if (this.frozenHeader) {
-        Polymer.dom(this.root).querySelector('#wrapper').scrollTop = 0;
-      } else {
-        Polymer.dom(this.root).querySelector('tbody').scrollTop = 0;
-      }
+      Polymer.dom(this.root).querySelector('tbody').scrollTop = 0;
     }
   }, {
     key: 'behaviors',
     get: function get() {
-      return [Polymer.AppLocalizeBehavior, Polymer.IronResizableBehavior];
+      return [Polymer.AppLocalizeBehavior];
     }
   }]);
 

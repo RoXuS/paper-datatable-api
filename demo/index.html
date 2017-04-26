@@ -25,7 +25,6 @@
     <link rel="import" href="firebase-demo.html">
     <link rel="import" href="advanced-pagination-front-side-demo.html">
     <link rel="import" href="styling-demo.html">
-    <link rel="import" href="frozen-demo.html">
 
     <style>
       .container {
@@ -54,7 +53,6 @@
               <paper-tab demo="firebase">Firebase demo</paper-tab>
               <paper-tab demo="frontpagination">Front side pagination</paper-tab>
               <paper-tab demo="styling">Styling demo</paper-tab>
-              <paper-tab demo="frozen">Frozen demo</paper-tab>
             </paper-tabs>
           </paper-toolbar>
           <div class="main">
@@ -80,9 +78,6 @@
             </template>
             <template is="dom-if" if="[[equals('styling', selected)]]">
               <styling-demo></styling-demo>
-            </template>
-            <template is="dom-if" if="[[equals('frozen', selected)]]">
-              <frozen-demo></frozen-demo>
             </template>
           </div>
         </paper-header-panel>

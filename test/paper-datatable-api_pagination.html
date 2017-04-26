@@ -46,40 +46,50 @@
 
         test('Next page', function() {
           var paperDatatableApi = fixture('pagination');
-          paperDatatableApi.data = data;
-          paperDatatableApi.page = 0;
-          paperDatatableApi.totalPages = 1;
-          paperDatatableApi._nextPage();
-          assert.equal(paperDatatableApi.page, 0);
-          paperDatatableApi.totalPages = 2;
-          paperDatatableApi._nextPage();
-          assert.equal(paperDatatableApi.page, 1);
+          flush(() => {
+            paperDatatableApi.data = data;
+            paperDatatableApi.page = 0;
+            paperDatatableApi.totalPages = 1;
+            Polymer.dom(paperDatatableApi.root).querySelector('paper-datatable-api-footer')._nextPage();
+            assert.equal(paperDatatableApi.page, 0);
+            paperDatatableApi.totalPages = 2;
+            Polymer.dom(paperDatatableApi.root).querySelector('paper-datatable-api-footer')._nextPage();
+            assert.equal(paperDatatableApi.page, 1);
+          });
         });
 
         test('Prev page', function() {
           var paperDatatableApi = fixture('pagination');
-          paperDatatableApi.data = data;
-          paperDatatableApi.page = 0;
-          paperDatatableApi._prevPage();
-          assert.equal(paperDatatableApi.page, 0);
-          paperDatatableApi.page = 1;
-          paperDatatableApi._prevPage();
-          assert.equal(paperDatatableApi.page, 0);
+          flush(() => {
+            paperDatatableApi.data = data;
+            paperDatatableApi.page = 0;
+            Polymer.dom(paperDatatableApi.root).querySelector('paper-datatable-api-footer')._prevPage();
+            assert.equal(paperDatatableApi.page, 0);
+            paperDatatableApi.page = 1;
+            Polymer.dom(paperDatatableApi.root).querySelector('paper-datatable-api-footer')._prevPage();
+            assert.equal(paperDatatableApi.page, 0);
+          });
         });
 
         test('Next button status', function() {
           var paperDatatableApi = fixture('pagination');
           paperDatatableApi.data = data;
-          assert.equal(paperDatatableApi._nextButtonEnabled(0, 0), false);
-          assert.equal(paperDatatableApi._nextButtonEnabled(0, 2), true);
-          assert.equal(paperDatatableApi._nextButtonEnabled(1, 2), false);
+          flush(() => {
+            const footer = Polymer.dom(paperDatatableApi.root).querySelector('paper-datatable-api-footer');
+            assert.equal(footer._nextButtonEnabled(0, 0), false);
+            assert.equal(footer._nextButtonEnabled(0, 2), true);
+            assert.equal(footer._nextButtonEnabled(1, 2), false);
+          });
         });
 
         test('Prev button status', function() {
           var paperDatatableApi = fixture('pagination');
           paperDatatableApi.data = data;
-          assert.equal(paperDatatableApi._prevButtonEnabled(0), false);
-          assert.equal(paperDatatableApi._prevButtonEnabled(1), true);
+          flush(() => {
+            const footer = Polymer.dom(paperDatatableApi.root).querySelector('paper-datatable-api-footer');
+            assert.equal(footer._prevButtonEnabled(0), false);
+            assert.equal(footer._prevButtonEnabled(1), true);
+          }); 
         });
 
         test('New size is selected', function(done) {
