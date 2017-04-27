@@ -1,5 +1,8 @@
 # Change Log
 
+## [v0.4.1](https://github.com/RoXuS/paper-datatable-api/tree/0.4.1) (2017-04-27)
+ - Add way to set paper-input width ([commit](https://github.com/RoXuS/paper-datatable-api/commit/35411d3))
+
 ## [v0.4.0](https://github.com/RoXuS/paper-datatable-api/tree/0.4.0) (2017-04-26)
 - Delete frozen header mode, create footer element ([commit](https://github.com/RoXuS/paper-datatable-api/commit/5ee24cf))
 - Add way to set a custom horizontal padding ([commit](https://github.com/RoXuS/paper-datatable-api/commit/0985710))
