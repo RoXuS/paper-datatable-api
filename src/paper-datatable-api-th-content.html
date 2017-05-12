@@ -125,12 +125,12 @@
       <template is="dom-if" if="[[column.activeFilter]]" on-dom-change="_handleActiveFilterChange">
         <template is="dom-if" if="[[!column.date]]" restamp>
           <template is="dom-if" if="[[!column.choices]]" restamp>
-            <paper-input class="flex" value="{{column.activeFilterValue}}" no-label-float label="[[column.header]]" on-keyup="_handleKeyDownInput" focused="{{focused}}"></paper-input>
+            <paper-input class="flex" value="{{column.activeFilterValue}}" no-label-float placeholder="[[column.header]]" on-keyup="_handleKeyDownInput" focused="{{focused}}"></paper-input>
           </template>
         </template>
         <template is="dom-if" if="[[column.date]]" restamp>
           <vaadin-date-picker-light attr-for-value="value" on-value-changed="_handleVaadinDatePickerLight" value="{{column.activeFilterValue}}">
-            <paper-input class="flex" no-label-float label="[[column.header]]" focused="{{focused}}"></paper-input>
+            <paper-input class="flex" no-label-float placeholder="[[column.header]]" focused="{{focused}}"></paper-input>
           </vaadin-date-picker-light>
         </template>
       </template>
