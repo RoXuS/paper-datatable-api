@@ -1,5 +1,8 @@
 # Change Log
 
+## [v0.4.2](https://github.com/RoXuS/paper-datatable-api/tree/0.4.2) (2017-05-12)
+- Use placeholder instead of label ([commit](https://github.com/RoXuS/paper-datatable-api/commit/a63c4a6))
+
 ## [v0.4.1](https://github.com/RoXuS/paper-datatable-api/tree/0.4.1) (2017-04-27)
  - Add way to set paper-input width ([commit](https://github.com/RoXuS/paper-datatable-api/commit/35411d3))
 
