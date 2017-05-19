@@ -1,8 +1,11 @@
-class DtPaperDatatableApiFooter {
+class DtPaperDatatableApiFooter
+  extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], Polymer.Element) {
+  static get is() {
+    return 'paper-datatable-api-footer';
+  }
 
-  beforeRegister() {
-    this.is = 'paper-datatable-api-footer';
-    this.properties = {
+  static get properties() {
+    return {
       footerPosition: String,
       size: {
         type: Number,
@@ -15,23 +18,17 @@ class DtPaperDatatableApiFooter {
     };
   }
 
-  get behaviors() {
-    return [
-      Polymer.AppLocalizeBehavior,
-    ];
-  }
-
   _computeCurrentSize(page, size) {
-    return (page * size) + 1;
+    return page * size + 1;
   }
 
   _computeCurrentMaxSize(page, size, totalElements) {
     const maxSize = size * (page + 1);
-    return (maxSize > totalElements ? totalElements : maxSize);
+    return maxSize > totalElements ? totalElements : maxSize;
   }
 
   _nextPage() {
-    if ((this.page + 1) < this.totalPages) {
+    if (this.page + 1 < this.totalPages) {
       this.page = this.page + 1;
     }
   }
@@ -43,7 +40,7 @@ class DtPaperDatatableApiFooter {
   }
 
   _nextButtonEnabled(page, totalPages) {
-    return (page + 1) < totalPages;
+    return page + 1 < totalPages;
   }
 
   _prevButtonEnabled(page) {
@@ -61,4 +58,4 @@ class DtPaperDatatableApiFooter {
   }
 }
 
-Polymer(DtPaperDatatableApiFooter);
+customElements.define(DtPaperDatatableApiFooter.is, DtPaperDatatableApiFooter);
