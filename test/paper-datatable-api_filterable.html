@@ -121,7 +121,7 @@
           });
           flush(function() {
             paperDatatableApi.async(() => {
-              var paperMenu = paperDatatableApi.querySelector('thead tr th paper-menu');
+              var paperMenu = paperDatatableApi.querySelector('thead tr th paper-listbox');
               paperMenu.select(1);
             }, 100);
           });

@@ -2,7 +2,7 @@
 
 <link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html">
 
-<link rel="import" href="../../app-localize-behavior/app-localize-behaviorml">
+<link rel="import" href="../app-localize-behavior/app-localize-behavior.html">
 
 <link rel="import" href="../vaadin-date-picker/vaadin-date-picker-light.html">
 <link rel="import" href="paper-datatable-api-icons.html">
@@ -10,7 +10,7 @@
 <link rel="import" href="../paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../paper-item/paper-icon-item.html">
 <link rel="import" href="../paper-item/paper-item-body.html">
-<link rel="import" href="../paper-menu/paper-menu.html">
+<link rel="import" href="../paper-listbox/paper-listbox.html">
 <link rel="import" href="../paper-menu-button/paper-menu-button.html">
 <link rel="import" href="../paper-input/paper-input.html">
 
@@ -150,7 +150,7 @@
               <span class="flex">[[column.header]]</span>
               <paper-icon-button icon="arrow-drop-down"></paper-icon-button>
             </div>
-            <paper-menu class="dropdown-content" selected-values="{{_selectedChoices}}" multi attr-for-selected="name" on-iron-select="_handleChoiceChanged" on-iron-deselect="_handleChoiceChanged">
+            <paper-listbox class="dropdown-content" selected-values="{{_selectedChoices}}" multi attr-for-selected="name" on-iron-select="_handleChoiceChanged" on-iron-deselect="_handleChoiceChanged">
               <template is="dom-repeat" items="[[column.choices]]" as="choice">
                 <paper-icon-item name="[[choice.key]]">
                   <iron-icon item-icon icon$="[[_computeIconName(choice.key, _selectedChoices.*)]]"></iron-icon>
@@ -159,7 +159,7 @@
                   </paper-item-body>
                 </paper-icon-item>
               </template>
-            </paper-menu>
+            </paper-listbox>
           </paper-menu-button>
 
         </template>

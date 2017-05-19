@@ -1,6 +1,6 @@
 <link rel="import" href="../../polymer/polymer.html">
 
-<link rel="import" href="../../paper-menu/paper-menu.html">
+<link rel="import" href="../../paper-listbox/paper-listbox.html">
 <link rel="import" href="../../paper-menu-button/paper-menu-button.html">
 <link rel="import" href="../../paper-item/paper-icon-item.html">
 <link rel="import" href="../../paper-card/paper-card.html">
@@ -55,7 +55,7 @@
             </paper-input>
             <paper-menu-button ignore-select horizontal-align="right">
               <paper-icon-button icon="paper-datatable-api-icons:menu" class="dropdown-trigger"></paper-icon-button>
-              <paper-menu class="dropdown-content">
+              <paper-listbox class="dropdown-content">
                 <template is="dom-repeat" items="[[toggleColumns]]" as="column" index-as="index">
                   <paper-icon-item column-property="[[column.property]]" on-tap="_hideColumn">
                     <template is="dom-if" if="[[!column.hidden]]">
@@ -67,7 +67,7 @@
                     [[column.header]]
                   </paper-icon-item>
                 </template>
-              </paper-menu>
+              </paper-listbox>
             </paper-menu-button>
           </div>
 
