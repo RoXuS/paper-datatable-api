@@ -146,14 +146,14 @@
         <template is="dom-if" if="[[column.choices]]" restamp>
 
           <paper-menu-button ignore-select dynamic-align>
-            <div class="layout horizontal center dropdown-trigger">
+            <div slot="dropdown-trigger" class="layout horizontal center">
               <span class="flex">[[column.header]]</span>
               <paper-icon-button icon="arrow-drop-down"></paper-icon-button>
             </div>
-            <paper-listbox class="dropdown-content" selected-values="{{_selectedChoices}}" multi attr-for-selected="name" on-iron-select="_handleChoiceChanged" on-iron-deselect="_handleChoiceChanged">
+            <paper-listbox slot="dropdown-content" selected-values="{{_selectedChoices}}" multi attr-for-selected="name" on-iron-select="_handleChoiceChanged" on-iron-deselect="_handleChoiceChanged">
               <template is="dom-repeat" items="[[column.choices]]" as="choice">
                 <paper-icon-item name="[[choice.key]]">
-                  <iron-icon item-icon icon$="[[_computeIconName(choice.key, _selectedChoices.*)]]"></iron-icon>
+                  <iron-icon slot="item-icon" icon$="[[_computeIconName(choice.key, _selectedChoices.*)]]"></iron-icon>
                   <paper-item-body style$="[[choice.style]]">
                     [[choice.label]]
                   </paper-item-body>
