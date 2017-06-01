@@ -15,6 +15,7 @@ class DtPaperDatatableApiFooter
         type: Number,
         notify: true,
       },
+      availableSize: Array,
     };
   }
 
