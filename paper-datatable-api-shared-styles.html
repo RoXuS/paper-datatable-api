@@ -46,7 +46,6 @@
         min-width: 70px;
       }
 
-      :host ::content tbody tr,
       tbody tr {
         height: 48px;
       }
@@ -59,17 +58,14 @@
         background-color: var(--paper-datatable-api-tr-odd-background-color, none);
       }
 
-      :host ::content tbody tr:hover,
       tbody tr:hover {
         background: var(--paper-datatable-api-tr-hover-background-color, none);
       }
 
-      :host ::content tbody tr.selected,
       tbody tr.selected {
         background-color: var(--paper-datatable-api-tr-selected-background, var(--paper-grey-100));
       }
 
-      :host ::content tbody td,
       tbody td {
         font-size: 13px;
         font-weight: normal;
@@ -77,24 +73,19 @@
         padding: 6px var(--paper-datatable-api-horizontal-padding, 26px);
       }
 
-      :host ::content tbody tr:not(:first-child) td,
       tbody tr:not(:first-child) td {
         border-top: 1px solid;
         border-color: rgba(0, 0, 0, var(--dark-divider-opacity));
       }
 
-      :host ::content tbody td.customTd,
       tbody td.customTd {
         @apply --paper-datatable-api-custom-td;
       }
 
-      :host ::content thead th.selectable,
       thead th.selectable {
         width: 18px;
       }
 
-      :host ::content thead th.selectable,
-      :host ::content tbody td.selectable,
       thead th.selectable,
       tbody td.selectable {
         padding: 6px 0 6px var(--paper-datatable-api-horizontal-padding, 26px);
