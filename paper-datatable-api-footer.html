@@ -68,7 +68,7 @@
             </div>
             <div class="size">
               <paper-dropdown-menu no-label-float vertical-align="bottom">
-                <paper-listbox attr-for-selected="size" on-iron-select="_newSizeIsSelected" selected="[[size]]" class="dropdown-content">
+                <paper-listbox attr-for-selected="size" on-iron-select="_newSizeIsSelected" selected="[[size]]" slot="dropdown-content">
                   <template is="dom-repeat" items="[[availableSize]]" as="size">
                     <paper-item size="[[size]]">[[size]]</paper-item>
                   </template>
