@@ -507,7 +507,8 @@ class DtPaperDatatableApi extends Polymer.mixinBehaviors(
         toggleColumn => toggleColumn.property === columnProperty
       );
 
-      this.set(`toggleColumns.${toggleColumnIndex}.hidden`, !isHidden);
+      this.toggleColumns[toggleColumnIndex].hidden = !isHidden;
+      this.notifyPath(`toggleColumns.${toggleColumnIndex}.hidden`);
     }
   }
 
@@ -628,9 +629,11 @@ class DtPaperDatatableApi extends Polymer.mixinBehaviors(
     const columnIndex = this._columns.findIndex(_column => _column.property === column.property);
 
     if (column.activeFilter) {
-      this.set(`_columns.${columnIndex}.activeFilter`, false);
+      this._columns[columnIndex].activeFilter = false;
+      this.notifyPath(`_columns.${columnIndex}.activeFilter`);
     } else {
-      this.set(`_columns.${columnIndex}.activeFilter`, true);
+      this._columns[columnIndex].activeFilter = true;
+      this.notifyPath(`_columns.${columnIndex}.activeFilter`);
     }
   }
 
@@ -644,7 +647,8 @@ class DtPaperDatatableApi extends Polymer.mixinBehaviors(
   activeFilter(column, value) {
     if (column) {
       const columnIndex = this._columns.findIndex(_column => _column.property === column.property);
-      this.set(`_columns.${columnIndex}.activeFilter`, true);
+      this._columns[columnIndex].activeFilter = true;
+      this.notifyPath(`_columns.${columnIndex}.activeFilter`);
       this.fire('filter', {
         filter: {
           property: column.property,
@@ -654,7 +658,8 @@ class DtPaperDatatableApi extends Polymer.mixinBehaviors(
       });
       this.async(() => {
         if (value) {
-          this.set(`_columns.${columnIndex}.activeFilterValue`, value);
+          this._columns[columnIndex].activeFilterValue = value;
+          this.notifyPath(`_columns.${columnIndex}.activeFilterValue`);
         }
       }, 100);
     }
@@ -682,7 +687,8 @@ class DtPaperDatatableApi extends Polymer.mixinBehaviors(
           const columnIndex = this._columns.findIndex(
             _column => _column.property === column.property
           );
-          this.set(`_columns.${columnIndex}.activeFilterValue`, value);
+          this._columns[columnIndex].activeFilterValue = value;
+          this.notifyPath(`_columns.${columnIndex}.activeFilterValue`);
         }
       }, 100);
     }
