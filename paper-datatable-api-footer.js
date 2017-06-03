@@ -57,6 +57,14 @@ class DtPaperDatatableApiFooter
       this.size = newSize;
     }
   }
+
+  _computePosition(position) {
+    console.log(position);
+    if (position === 'right') {
+      return 'end-justified';
+    }
+    return '';
+  }
 }
 
 customElements.define(DtPaperDatatableApiFooter.is, DtPaperDatatableApiFooter);
