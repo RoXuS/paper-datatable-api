@@ -1,94 +1,89 @@
 <!doctype html>
 
 <html>
-  <head>
-    <title>paper-datatable-api test</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
-    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-    <script src="../../web-component-tester/browser.js"></script>
 
-    <link rel="import" href="../src/paper-datatable-api.html">
-    <link rel="import" href="../src/paper-datatable-api-column.html">
-  </head>
-  <body>
+<head>
+  <title>paper-datatable-api test</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="../../web-component-tester/browser.js"></script>
 
-    <test-fixture id="date">
-      <template>
-        <paper-datatable-api filters>
-          <paper-datatable-api-column header="Fruit" property="fruit" hideable>
-            <template>
-              <span>[[value]]</span>
-            </template>
-          </paper-datatable-api-column>
-          <paper-datatable-api-column date filter header="Color" property="color">
-            <template>
-              <div>[[value]]</div>
-            </template>
-          </paper-datatable-api-column>
-          <paper-datatable-api-column header="Color + fruit" property="color" hideable other-properties='["fruit"]'>
-            <template>
-              <div>[[otherValues.fruit]] is [[value]]</div>
-            </template>
-          </paper-datatable-api-column>
-        </paper-datatable-api>
-      </template>
-    </test-fixture>
+  <link rel="import" href="../paper-datatable-api.html">
+  <link rel="import" href="../paper-datatable-api-column.html">
+</head>
 
-    <script>
-//       var data = [
-// {
-//   "color": "yellow",
-//   "fruit": "banana"
-// },
-// {
-//   "fruit": "apple",
-//   "color": "green"
-// }
-//       ];
-//
-//       suite('paper-datatable-api', function() {
-//
-//         test('Headers are setted', function(done) {
-//           var paperDatatableApi = fixture('date');
-//           paperDatatableApi.data = data;
-//
-//           var toFullDate = function (date) {
-//             return (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
-//           };
-//
-//           paperDatatableApi.localeDatePicker = {
-//             today: 'today',
-//             cancel: 'cancel',
-//             formatDate: function(d) {
-//               var date = new Date(d);
-//               return toFullDate(date);
-//             },
-//           };
-//
-//           flush(function() {
-//             let filterButton = paperDatatableApi.querySelector('thead th div paper-icon-button[icon="search"]');
-//             filterButton.click();
-//             paperDatatableApi.async(function() {
-//               assert.isFalse(paperDatatableApi.querySelector('thead tr th div vaadin-date-picker-light').opened);
-//               let vaadinInput = paperDatatableApi.querySelector('thead th vaadin-date-picker-light paper-input');
-//               vaadinInput.click();
-//               assert.isTrue(paperDatatableApi.querySelector('thead th vaadin-date-picker-light').opened);
-//
-//               let today = paperDatatableApi.querySelector('thead vaadin-date-picker-overlay #scrollers div[today]');
-//               today.click();
-//
-//               let currentDate = new Date()
-//               let todayDate = toFullDate(currentDate);
-//
-//               assert.equal(vaadinInput.value, todayDate);
-//
-//               done();
-//             }, 200);
-//           });
-//         });
-//
-//       });
-    </script>
-  </body>
+<body>
+
+  <test-fixture id="date">
+    <template>
+      <paper-datatable-api filters>
+        <paper-datatable-api-column header="Fruit" property="fruit" hideable>
+          <template>
+            <span>[[value]]</span>
+          </template>
+        </paper-datatable-api-column>
+        <paper-datatable-api-column date filter header="Color" property="color">
+          <template>
+            <div>[[value]]</div>
+          </template>
+        </paper-datatable-api-column>
+        <paper-datatable-api-column header="Color + fruit" property="color" hideable other-properties='["fruit"]'>
+          <template>
+            <div>[[otherValues.fruit]] is [[value]]</div>
+          </template>
+        </paper-datatable-api-column>
+      </paper-datatable-api>
+    </template>
+  </test-fixture>
+
+  <script>
+    var data = [
+      {
+        "color": "yellow",
+        "fruit": "banana"
+      },
+      {
+        "fruit": "apple",
+        "color": "green"
+      }
+    ];
+
+    suite('paper-datatable-api', function () {
+
+      test('Headers are setted', function (done) {
+        var paperDatatableApi = fixture('date');
+        paperDatatableApi.data = data;
+
+        var toFullDate = function (date) {
+          return (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
+        };
+
+        paperDatatableApi.localeDatePicker = {
+          today: 'today',
+          cancel: 'cancel',
+          weekdays: moment.weekdays(),
+          monthNames: moment.months(),
+          weekdaysShort: moment.weekdaysShort(),
+          firstDayOfWeek: moment.localeData().firstDayOfWeek(),
+          formatDate: d => moment(d).format(moment.localeData().longDateFormat('L')),
+          formatTitle: (monthName, fullYear) => `${monthName} ${fullYear}`,
+        };
+
+        flush(function () {
+          let thContent = Polymer.dom(paperDatatableApi.root).querySelectorAll('paper-datatable-api-th-content');
+          let filterButton = Polymer.dom(thContent[1].root).querySelector('paper-icon-button');
+          filterButton.click();
+          paperDatatableApi.async(function () {
+            assert.isFalse(Polymer.dom(thContent[1].root).querySelector('vaadin-date-picker-light').opened);
+            done();
+          }, 200);
+        });
+      });
+
+    });
+  </script>
+  <script src="../bower_components/moment/min/moment.min.js"></script>
+</body>
+
 </html>

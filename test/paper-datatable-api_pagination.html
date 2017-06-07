@@ -8,8 +8,8 @@
     <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
     <script src="../../web-component-tester/browser.js"></script>
 
-    <link rel="import" href="../src/paper-datatable-api.html">
-    <link rel="import" href="../src/paper-datatable-api-column.html">
+    <link rel="import" href="../paper-datatable-api.html">
+    <link rel="import" href="../paper-datatable-api-column.html">
   </head>
   <body>
 
@@ -99,7 +99,8 @@
           paperDatatableApi.page = 1;
           paperDatatableApi.size = 2;
           flush(function() {
-            Polymer.dom(paperDatatableApi.root).querySelector('paper-listbox').select('4');
+            const footer = Polymer.dom(paperDatatableApi.root).querySelector('paper-datatable-api-footer');
+            Polymer.dom(footer.root).querySelector('paper-listbox').select('4');
             assert.equal(paperDatatableApi.page, 0);
             assert.equal(paperDatatableApi.size, 4);
             done();

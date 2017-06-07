@@ -8,8 +8,8 @@
     <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
     <script src="../../web-component-tester/browser.js"></script>
 
-    <link rel="import" href="../src/paper-datatable-api.html">
-    <link rel="import" href="../src/paper-datatable-api-column.html">
+    <link rel="import" href="../paper-datatable-api.html">
+    <link rel="import" href="../paper-datatable-api-column.html">
   </head>
   <body>
 
@@ -21,7 +21,7 @@
               <span>[[value]]</span>
             </template>
           </paper-datatable-api-column>
-          <paper-datatable-api-column header="Color" property="color" filter>
+          <paper-datatable-api-column header="Color" property="color">
             <template>
               <div>[[value]]</div>
             </template>
@@ -121,7 +121,8 @@
           });
           flush(function() {
             paperDatatableApi.async(() => {
-              var paperMenu = paperDatatableApi.querySelector('thead tr th paper-listbox');
+              let thContent = Polymer.dom(paperDatatableApi.root).querySelectorAll('paper-datatable-api-th-content');
+              var paperMenu = Polymer.dom(thContent[2].root).querySelector('paper-listbox');
               paperMenu.select(1);
             }, 100);
           });
