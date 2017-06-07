@@ -59,7 +59,6 @@ class DtPaperDatatableApiFooter
   }
 
   _computePosition(position) {
-    console.log(position);
     if (position === 'right') {
       return 'end-justified';
     }
