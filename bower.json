@@ -41,7 +41,8 @@
     "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0-rc.1",
     "iron-ajax": "PolymerElements/iron-ajax#2.0.0",
     "paper-header-panel": "PolymerElements/paper-header-panel#2.0.0",
-    "polymerfire": "firebase/polymerfire#2.0.0"
+    "polymerfire": "firebase/polymerfire#2.0.0",
+    "moment": "^2.18.1"
   },
   "resolutions": {
     "polymer": "^2.0.0-rc.3"
