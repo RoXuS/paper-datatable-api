@@ -28,7 +28,8 @@
     "iron-resizable-behavior": "PolymerElements/iron-resizable-behavior#2.0.0",
     "paper-checkbox": "PolymerElements/paper-checkbox#2.0.0",
     "app-localize-behavior": "PolymerElements/app-localize-behavior#2.0.0",
-    "paper-toolbar": "PolymerElements/paper-toolbar#2.0.0"
+    "paper-toolbar": "PolymerElements/paper-toolbar#2.0.0",
+    "vaadin-date-picker": "2.0.0-alpha2"
   },
   "devDependencies": {
     "paper-menu-button": "PolymerElements/paper-menu-button#2.0.0",
