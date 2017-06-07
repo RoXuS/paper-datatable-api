@@ -3,7 +3,7 @@
     "babel-preset-es2015": "6.1.18",
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
-    "web-component-tester": "^6.0.0-prerelease.7"
+    "web-component-tester": "^6.0.0"
   },
   "dependencies": {
     "babel-preset-es2015": "^6.14.0",
