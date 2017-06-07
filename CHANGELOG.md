@@ -1,5 +1,11 @@
 # Change Log
 
+## [v2.0.1](https://github.com/RoXuS/paper-datatable-api/tree/2.0.1) (2017-06-07)
+- Fix missing console.log ([commit](https://github.com/RoXuS/paper-datatable-api/commit/3eda91c))
+- Fix tests ([commit](https://github.com/RoXuS/paper-datatable-api/commit/99eae3d))
+- Fix version of wct ([commit](https://github.com/RoXuS/paper-datatable-api/commit/c06e7db))
+- Add new vaadin-date-picker ([commit](https://github.com/RoXuS/paper-datatable-api/commit/2b48606))
+
 ## [v2.0.0](https://github.com/RoXuS/paper-datatable-api/tree/2.0.0) (2017-06-07)
 - Fix footer position ([commit](https://github.com/RoXuS/paper-datatable-api/commit/9be2092))
 - Add missing property declaration ([commit](https://github.com/RoXuS/paper-datatable-api/commit/579ec6c))
