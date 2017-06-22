@@ -1,5 +1,12 @@
 # Change Log
 
+## [v2.0.2](https://github.com/RoXuS/paper-datatable-api/tree/2.0.2) (2017-06-22)
+- Fix filter on polymer 2 ([commit](https://github.com/RoXuS/paper-datatable-api/commit/575e6b4))
+- Fix eslint ([commit](https://github.com/RoXuS/paper-datatable-api/commit/f21a106))
+- Fix path of moment ([commit](https://github.com/RoXuS/paper-datatable-api/commit/da315ca))
+- Add moment to bower dev dep ([commit](https://github.com/RoXuS/paper-datatable-api/commit/707460f))
+- Use last version of wct in travis ([commit](https://github.com/RoXuS/paper-datatable-api/commit/71ff220))
+
 ## [v2.0.1](https://github.com/RoXuS/paper-datatable-api/tree/2.0.1) (2017-06-07)
 - Fix missing console.log ([commit](https://github.com/RoXuS/paper-datatable-api/commit/3eda91c))
 - Fix tests ([commit](https://github.com/RoXuS/paper-datatable-api/commit/99eae3d))
