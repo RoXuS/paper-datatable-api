@@ -1,9 +1,9 @@
 /* global customElements */
-class DtPaperDatatableApiThContent extends Polymer.mixinBehaviors(
-  [Polymer.AppLocalizeBehavior],
-  Polymer.Element) {
-
-  static get is() { return 'paper-datatable-api-th-content'; }
+class DtPaperDatatableApiThContent
+  extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], Polymer.Element) {
+  static get is() {
+    return 'paper-datatable-api-th-content';
+  }
 
   static get properties() {
     return {
@@ -119,7 +119,10 @@ class DtPaperDatatableApiThContent extends Polymer.mixinBehaviors(
 
   _handleVaadinDatePickerLight() {
     if (this.previousValue !== this.column.activeFilterValue && this.column.activeFilterValue) {
-      this.fire('date-input-change-th-content', { column: this.column, value: this.column.activeFilterValue });
+      this.fire('date-input-change-th-content', {
+        column: this.column,
+        value: this.column.activeFilterValue,
+      });
     }
   }
 
@@ -147,7 +150,6 @@ class DtPaperDatatableApiThContent extends Polymer.mixinBehaviors(
     }
     return 'check-box';
   }
-
 }
 
 customElements.define(DtPaperDatatableApiThContent.is, DtPaperDatatableApiThContent);

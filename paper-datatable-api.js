@@ -1,12 +1,12 @@
 /* global customElements */
-class DtPaperDatatableApi extends Polymer.mixinBehaviors(
-  [
-    Polymer.AppLocalizeBehavior,
-    Polymer.IronResizableBehavior,
-  ],
-  Polymer.Element) {
-
-  static get is() { return 'paper-datatable-api'; }
+class DtPaperDatatableApi
+  extends Polymer.mixinBehaviors(
+    [Polymer.AppLocalizeBehavior, Polymer.IronResizableBehavior],
+    Polymer.Element,
+  ) {
+  static get is() {
+    return 'paper-datatable-api';
+  }
 
   static get properties() {
     return {
@@ -191,9 +191,7 @@ class DtPaperDatatableApi extends Polymer.mixinBehaviors(
   }
 
   get behaviors() {
-    return [
-      Polymer.AppLocalizeBehavior,
-    ];
+    return [Polymer.AppLocalizeBehavior];
   }
 
   attached() {
@@ -249,7 +247,7 @@ class DtPaperDatatableApi extends Polymer.mixinBehaviors(
 
   _fillRows(data) {
     if (data) {
-      data.forEach((rowData) => {
+      data.forEach(rowData => {
         const trLocal = document.createElement('tr');
         trLocal.rowData = rowData;
         trLocal.className = 'paper-datatable-api-tr';
@@ -281,7 +279,7 @@ class DtPaperDatatableApi extends Polymer.mixinBehaviors(
   _findSelectableElement(rowData) {
     const splittedSelectableDataKey = this.selectableDataKey.split('.');
     let selectedRow = rowData;
-    splittedSelectableDataKey.forEach((selectableDataKey) => {
+    splittedSelectableDataKey.forEach(selectableDataKey => {
       selectedRow = selectedRow[selectableDataKey];
     });
 
@@ -305,8 +303,7 @@ class DtPaperDatatableApi extends Polymer.mixinBehaviors(
 
           if (this.selectableDataKey !== undefined) {
             const selectedRow = this._findSelectableElement(rowData);
-            if (selectedRow !== undefined
-              && this.selectedRows.indexOf(selectedRow) !== -1) {
+            if (selectedRow !== undefined && this.selectedRows.indexOf(selectedRow) !== -1) {
               paperCheckbox.checked = true;
             }
           }
@@ -319,7 +316,7 @@ class DtPaperDatatableApi extends Polymer.mixinBehaviors(
         const valueFromRowData = this._extractData(rowData, paperDatatableApiColumn.property);
 
         const otherPropertiesValue = {};
-        paperDatatableApiColumn.otherProperties.forEach((property) => {
+        paperDatatableApiColumn.otherProperties.forEach(property => {
           otherPropertiesValue[property] = this._extractData(rowData, property);
         });
 
@@ -333,7 +330,7 @@ class DtPaperDatatableApi extends Polymer.mixinBehaviors(
 
         const instance = paperDatatableApiColumn.fillTemplate(
           valueFromRowData,
-          otherPropertiesValue
+          otherPropertiesValue,
         );
 
         if (paperDatatableApiColumn.hideable && paperDatatableApiColumn.hidden) {
@@ -348,9 +345,8 @@ class DtPaperDatatableApi extends Polymer.mixinBehaviors(
 
   _selectAllCheckbox(event) {
     const localTarget = Polymer.dom(event).localTarget;
-    const allPaperCheckbox = this.shadowRoot
-      .querySelectorAll('tbody tr td paper-checkbox');
-    allPaperCheckbox.forEach((paperCheckboxParams) => {
+    const allPaperCheckbox = this.shadowRoot.querySelectorAll('tbody tr td paper-checkbox');
+    allPaperCheckbox.forEach(paperCheckboxParams => {
       const paperCheckbox = paperCheckboxParams;
       if (localTarget.checked) {
         if (!paperCheckbox.checked) {
@@ -373,7 +369,7 @@ class DtPaperDatatableApi extends Polymer.mixinBehaviors(
   selectRow(value) {
     const table = this.$$('table');
     const allTr = table.querySelectorAll('tbody tr');
-    allTr.forEach((tr) => {
+    allTr.forEach(tr => {
       const selectedRow = this._findSelectableElement(tr.rowData);
 
       if (selectedRow === value) {
@@ -382,8 +378,7 @@ class DtPaperDatatableApi extends Polymer.mixinBehaviors(
           checkbox.checked = true;
 
           let rowId = checkbox.rowIndex;
-          if (this.selectableDataKey !== undefined
-            && selectedRow !== undefined) {
+          if (this.selectableDataKey !== undefined && selectedRow !== undefined) {
             rowId = selectedRow;
           }
           this.push('selectedRows', rowId);
@@ -463,12 +458,13 @@ class DtPaperDatatableApi extends Polymer.mixinBehaviors(
       generateTr = true;
     }
 
-    this._columns = this.queryAllEffectiveChildren('paper-datatable-api-column')
-      .map((columnParams, i) => {
-        const column = columnParams;
-        column.position = i;
-        return column;
-      });
+    this._columns = this.queryAllEffectiveChildren(
+      'paper-datatable-api-column',
+    ).map((columnParams, i) => {
+      const column = columnParams;
+      column.position = i;
+      return column;
+    });
 
     if (this.propertiesOrder.length === 0) {
       this._generatePropertiesOrder();
@@ -491,20 +487,20 @@ class DtPaperDatatableApi extends Polymer.mixinBehaviors(
   toggleColumn(columnProperty) {
     const column = this._columns.find(columnElement => columnElement.property === columnProperty);
     const index = this._columns.findIndex(
-      columnElement => columnElement.property === columnProperty
+      columnElement => columnElement.property === columnProperty,
     );
     if (column && column.hideable) {
       const isHidden = column.hidden;
       const indexColumn = this.selectable ? index + 2 : index + 1;
       const cssQuery = `thead tr th:nth-of-type(${indexColumn}), tbody tr td:nth-of-type(${indexColumn})`;
-      this.shadowRoot.querySelectorAll(cssQuery).forEach((tdThParams) => {
+      this.shadowRoot.querySelectorAll(cssQuery).forEach(tdThParams => {
         const tdTh = tdThParams;
         tdTh.style.display = isHidden ? 'table-cell' : 'none';
       });
 
       column.hidden = !isHidden;
       const toggleColumnIndex = this.toggleColumns.findIndex(
-        toggleColumn => toggleColumn.property === columnProperty
+        toggleColumn => toggleColumn.property === columnProperty,
       );
 
       this.toggleColumns[toggleColumnIndex].hidden = !isHidden;
@@ -589,17 +585,16 @@ class DtPaperDatatableApi extends Polymer.mixinBehaviors(
     if (column && column.sortable) {
       let th = targetTh;
       const queryThContent = 'thead th paper-datatable-api-th-content[sortable][sorted]';
-      this.shadowRoot.querySelectorAll(queryThContent)
-        .forEach((otherThContent) => {
-          const thSorted = otherThContent.parentNode;
+      this.shadowRoot.querySelectorAll(queryThContent).forEach(otherThContent => {
+        const thSorted = otherThContent.parentNode;
 
-          if (thSorted.dataColumn !== column) {
-            otherThContent.setAttribute('sort-direction', 'asc');
-            otherThContent.removeAttribute('sorted');
-            thSorted.dataColumn.set('sortDirection', undefined);
-            thSorted.dataColumn.set('sorted', false);
-          }
-        });
+        if (thSorted.dataColumn !== column) {
+          otherThContent.setAttribute('sort-direction', 'asc');
+          otherThContent.removeAttribute('sorted');
+          thSorted.dataColumn.set('sortDirection', undefined);
+          thSorted.dataColumn.set('sorted', false);
+        }
+      });
 
       if (!th) {
         th = this.shadowRoot.querySelector(`thead th[property="${column.property}"]`);
@@ -685,7 +680,7 @@ class DtPaperDatatableApi extends Polymer.mixinBehaviors(
       this.async(() => {
         if (value) {
           const columnIndex = this._columns.findIndex(
-            _column => _column.property === column.property
+            _column => _column.property === column.property,
           );
           this._columns[columnIndex].activeFilterValue = value;
           this.notifyPath(`_columns.${columnIndex}.activeFilterValue`);
@@ -751,13 +746,13 @@ class DtPaperDatatableApi extends Polymer.mixinBehaviors(
 
   _handleDragAndDrop() {
     const allTh = this.shadowRoot.querySelectorAll('thead th');
-    allTh.forEach((th) => {
+    allTh.forEach(th => {
       th.addEventListener('dragover', this._dragOverHandle.bind(this), false);
       th.addEventListener('dragenter', this._dragEnterHandle.bind(this), false);
       th.addEventListener('drop', this._dropHandle.bind(this), false);
     });
     const allThDiv = this.shadowRoot.querySelectorAll('thead th paper-datatable-api-th-content');
-    allThDiv.forEach((div) => {
+    allThDiv.forEach(div => {
       div.addEventListener('dragstart', this._dragStartHandle.bind(this), false);
       div.addEventListener('dragend', this._dragEndHandle.bind(this), false);
     });
@@ -812,12 +807,13 @@ class DtPaperDatatableApi extends Polymer.mixinBehaviors(
     if (fromProperty !== toProperty) {
       this.async(() => {
         const allTh = this.shadowRoot.querySelectorAll('thead th');
-        const toIndex = allTh.findIndex(th => th.getAttribute('property') === toProperty);
-        const fromIndex = allTh.findIndex(th => th.getAttribute('property') === fromProperty);
+        const allThArray = Array.prototype.slice.call(allTh);
+        const toIndex = allThArray.findIndex(th => th.getAttribute('property') === toProperty);
+        const fromIndex = allThArray.findIndex(th => th.getAttribute('property') === fromProperty);
         this._insertElement(allTh, toIndex, fromIndex);
 
         const allTr = this.shadowRoot.querySelectorAll('tbody tr');
-        allTr.forEach((tr) => {
+        allTr.forEach(tr => {
           const allTd = Polymer.dom(tr).querySelectorAll('td');
           this._insertElement(allTd, toIndex, fromIndex);
         });
@@ -843,9 +839,13 @@ class DtPaperDatatableApi extends Polymer.mixinBehaviors(
       .map(th => th.getAttribute('property'));
 
     this.propertiesOrder = propertiesOrder;
-    this.async(() => this._changeColumn(propertiesOrder, () =>
-      this.fire('order-column-change', { propertiesOrder })
-    ), 100);
+    this.async(
+      () =>
+        this._changeColumn(propertiesOrder, () =>
+          this.fire('order-column-change', { propertiesOrder }),
+        ),
+      100,
+    );
   }
 
   /**
@@ -863,7 +863,7 @@ class DtPaperDatatableApi extends Polymer.mixinBehaviors(
   _changeColumn(propertiesOrder, cb) {
     if (propertiesOrder) {
       const newColumnsOrder = [];
-      propertiesOrder.forEach((property) => {
+      propertiesOrder.forEach(property => {
         const columnObj = this._columns.find(column => column.property === property);
         if (columnObj) {
           newColumnsOrder.push(columnObj);

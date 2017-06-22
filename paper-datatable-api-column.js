@@ -1,9 +1,9 @@
 /* global customElements */
-class DtPaperDatatableApiColumn extends Polymer.mixinBehaviors(
-  [Polymer.Templatizer],
-  Polymer.Element) {
-
-  static get is() { return 'paper-datatable-api-column'; }
+class DtPaperDatatableApiColumn
+  extends Polymer.mixinBehaviors([Polymer.Templatizer], Polymer.Element) {
+  static get is() {
+    return 'paper-datatable-api-column';
+  }
 
   static get properties() {
     return {
@@ -125,6 +125,5 @@ class DtPaperDatatableApiColumn extends Polymer.mixinBehaviors(
     return instance;
   }
 }
-
 
 customElements.define(DtPaperDatatableApiColumn.is, DtPaperDatatableApiColumn);
