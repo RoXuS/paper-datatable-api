@@ -871,14 +871,12 @@ class DtPaperDatatableApi
       });
       if (newColumnsOrder.length > 0) {
         this.splice('_columns', 0, this._columns.length);
+        this._columns = newColumnsOrder;
         this.async(() => {
-          this._columns = newColumnsOrder;
-          this.async(() => {
-            this._handleDragAndDrop();
-            if (cb) {
-              cb();
-            }
-          });
+          this._handleDragAndDrop();
+          if (cb) {
+            cb();
+          }
         });
       } else if (cb) {
         cb();
