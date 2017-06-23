@@ -620,16 +620,17 @@ class DtPaperDatatableApi
   }
 
   _toggleFilter(column) {
-    Polymer.dom.flush();
-    const columnIndex = this._columns.findIndex(_column => _column.property === column.property);
+    this.async(() => {
+      const columnIndex = this._columns.findIndex(_column => _column.property === column.property);
 
-    if (column.activeFilter) {
-      this._columns[columnIndex].activeFilter = false;
-      this.notifyPath(`_columns.${columnIndex}.activeFilter`);
-    } else {
-      this._columns[columnIndex].activeFilter = true;
-      this.notifyPath(`_columns.${columnIndex}.activeFilter`);
-    }
+      if (column.activeFilter) {
+        this._columns[columnIndex].activeFilter = false;
+        this.notifyPath(`_columns.${columnIndex}.activeFilter`);
+      } else {
+        this._columns[columnIndex].activeFilter = true;
+        this.notifyPath(`_columns.${columnIndex}.activeFilter`);
+      }
+    });
   }
 
   /**
@@ -871,12 +872,14 @@ class DtPaperDatatableApi
       });
       if (newColumnsOrder.length > 0) {
         this.splice('_columns', 0, this._columns.length);
-        this._columns = newColumnsOrder;
         this.async(() => {
-          this._handleDragAndDrop();
-          if (cb) {
-            cb();
-          }
+          this._columns = newColumnsOrder;
+          this.async(() => {
+            this._handleDragAndDrop();
+            if (cb) {
+              cb();
+            }
+          });
         });
       } else if (cb) {
         cb();
