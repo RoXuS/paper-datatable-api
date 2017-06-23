@@ -1,5 +1,8 @@
 # Change Log
 
+## [v2.0.3](https://github.com/RoXuS/paper-datatable-api/tree/2.0.3) (2017-06-23)
+- Fix drag and drop ([commit](https://github.com/RoXuS/paper-datatable-api/commit/8adf667))
+
 ## [v2.0.2](https://github.com/RoXuS/paper-datatable-api/tree/2.0.2) (2017-06-22)
 - Fix filter on polymer 2 ([commit](https://github.com/RoXuS/paper-datatable-api/commit/575e6b4))
 - Fix eslint ([commit](https://github.com/RoXuS/paper-datatable-api/commit/f21a106))
