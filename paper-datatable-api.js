@@ -254,10 +254,15 @@ class DtPaperDatatableApi
 
         this.listen(trLocal, 'mouseover', 'onOverTr');
         this.listen(trLocal, 'mouseout', 'onOutTr');
+        this.listen(trLocal, 'tap', 'onTapTr');
 
         Polymer.dom(this.shadowRoot.querySelector('tbody')).appendChild(trLocal);
       });
     }
+  }
+
+  onTapTr(e) {
+    this.dispatchEvent(new CustomEvent('tap-tr', { detail: { row: e.currentTarget.rowData } }));
   }
 
   onOverTd(e) {
