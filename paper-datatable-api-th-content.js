@@ -74,6 +74,7 @@ class DtPaperDatatableApiThContent
 
   _handleActiveFilterChange(event) {
     const parentDiv = event.currentTarget.parentNode;
+    Polymer.dom.flush();
     this.async(() => {
       let paperInput;
       if (!this.column.date && !this.column.choices) {
