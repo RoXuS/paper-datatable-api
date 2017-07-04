@@ -1,5 +1,8 @@
 # Change Log
 
+## [v2.0.5](https://github.com/RoXuS/paper-datatable-api/tree/2.0.5) (2017-07-04)
+- Fix toggle filter ([commit](https://github.com/RoXuS/paper-datatable-api/commit/373f559))
+
 ## [v2.0.4](https://github.com/RoXuS/paper-datatable-api/tree/2.0.4) (2017-06-27)
 - Fix direct focus after active filter ([commit](https://github.com/RoXuS/paper-datatable-api/commit/8101880))
 - Add event for tap on tr ([commit](https://github.com/RoXuS/paper-datatable-api/commit/6e593cd))
