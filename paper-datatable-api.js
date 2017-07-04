@@ -714,10 +714,13 @@ class DtPaperDatatableApi
   _handleFilter(event) {
     const column = event.detail.column;
 
-    if (column.activeFilter) {
-      this._launchFilterEvent('', column);
-    }
     this._toggleFilter(column);
+
+    if (column.activeFilter) {
+      this.async(() => {
+        this._launchFilterEvent('', column);
+      });
+    }
   }
 
   _handleInputChange(event) {
