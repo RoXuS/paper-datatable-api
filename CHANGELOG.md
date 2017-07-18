@@ -1,5 +1,8 @@
 # Change Log
 
+## [v2.0.6](https://github.com/RoXuS/paper-datatable-api/tree/2.0.6) (2017-07-18)
+- Fix js style ([commit](https://github.com/RoXuS/paper-datatable-api/commit/665296c))
+
 ## [v2.0.5](https://github.com/RoXuS/paper-datatable-api/tree/2.0.5) (2017-07-04)
 - Fix toggle filter ([commit](https://github.com/RoXuS/paper-datatable-api/commit/373f559))
 
