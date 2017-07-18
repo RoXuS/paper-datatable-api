@@ -2,7 +2,7 @@
 class DtPaperDatatableApi
   extends Polymer.mixinBehaviors(
     [Polymer.AppLocalizeBehavior, Polymer.IronResizableBehavior],
-    Polymer.Element,
+    Polymer.Element
   ) {
   static get is() {
     return 'paper-datatable-api';
@@ -247,7 +247,7 @@ class DtPaperDatatableApi
 
   _fillRows(data) {
     if (data) {
-      data.forEach(rowData => {
+      data.forEach((rowData) => {
         const trLocal = document.createElement('tr');
         trLocal.rowData = rowData;
         trLocal.className = 'paper-datatable-api-tr';
@@ -284,7 +284,7 @@ class DtPaperDatatableApi
   _findSelectableElement(rowData) {
     const splittedSelectableDataKey = this.selectableDataKey.split('.');
     let selectedRow = rowData;
-    splittedSelectableDataKey.forEach(selectableDataKey => {
+    splittedSelectableDataKey.forEach((selectableDataKey) => {
       selectedRow = selectedRow[selectableDataKey];
     });
 
@@ -321,7 +321,7 @@ class DtPaperDatatableApi
         const valueFromRowData = this._extractData(rowData, paperDatatableApiColumn.property);
 
         const otherPropertiesValue = {};
-        paperDatatableApiColumn.otherProperties.forEach(property => {
+        paperDatatableApiColumn.otherProperties.forEach((property) => {
           otherPropertiesValue[property] = this._extractData(rowData, property);
         });
 
@@ -335,7 +335,7 @@ class DtPaperDatatableApi
 
         const instance = paperDatatableApiColumn.fillTemplate(
           valueFromRowData,
-          otherPropertiesValue,
+          otherPropertiesValue
         );
 
         if (paperDatatableApiColumn.hideable && paperDatatableApiColumn.hidden) {
@@ -351,7 +351,7 @@ class DtPaperDatatableApi
   _selectAllCheckbox(event) {
     const localTarget = Polymer.dom(event).localTarget;
     const allPaperCheckbox = this.shadowRoot.querySelectorAll('tbody tr td paper-checkbox');
-    allPaperCheckbox.forEach(paperCheckboxParams => {
+    allPaperCheckbox.forEach((paperCheckboxParams) => {
       const paperCheckbox = paperCheckboxParams;
       if (localTarget.checked) {
         if (!paperCheckbox.checked) {
@@ -374,7 +374,7 @@ class DtPaperDatatableApi
   selectRow(value) {
     const table = this.$$('table');
     const allTr = table.querySelectorAll('tbody tr');
-    allTr.forEach(tr => {
+    allTr.forEach((tr) => {
       const selectedRow = this._findSelectableElement(tr.rowData);
 
       if (selectedRow === value) {
@@ -464,7 +464,7 @@ class DtPaperDatatableApi
     }
 
     this._columns = this.queryAllEffectiveChildren(
-      'paper-datatable-api-column',
+      'paper-datatable-api-column'
     ).map((columnParams, i) => {
       const column = columnParams;
       column.position = i;
@@ -492,20 +492,20 @@ class DtPaperDatatableApi
   toggleColumn(columnProperty) {
     const column = this._columns.find(columnElement => columnElement.property === columnProperty);
     const index = this._columns.findIndex(
-      columnElement => columnElement.property === columnProperty,
+      columnElement => columnElement.property === columnProperty
     );
     if (column && column.hideable) {
       const isHidden = column.hidden;
       const indexColumn = this.selectable ? index + 2 : index + 1;
       const cssQuery = `thead tr th:nth-of-type(${indexColumn}), tbody tr td:nth-of-type(${indexColumn})`;
-      this.shadowRoot.querySelectorAll(cssQuery).forEach(tdThParams => {
+      this.shadowRoot.querySelectorAll(cssQuery).forEach((tdThParams) => {
         const tdTh = tdThParams;
         tdTh.style.display = isHidden ? 'table-cell' : 'none';
       });
 
       column.hidden = !isHidden;
       const toggleColumnIndex = this.toggleColumns.findIndex(
-        toggleColumn => toggleColumn.property === columnProperty,
+        toggleColumn => toggleColumn.property === columnProperty
       );
 
       this.toggleColumns[toggleColumnIndex].hidden = !isHidden;
@@ -590,7 +590,7 @@ class DtPaperDatatableApi
     if (column && column.sortable) {
       let th = targetTh;
       const queryThContent = 'thead th paper-datatable-api-th-content[sortable][sorted]';
-      this.shadowRoot.querySelectorAll(queryThContent).forEach(otherThContent => {
+      this.shadowRoot.querySelectorAll(queryThContent).forEach((otherThContent) => {
         const thSorted = otherThContent.parentNode;
 
         if (thSorted.dataColumn !== column) {
@@ -686,7 +686,7 @@ class DtPaperDatatableApi
       this.async(() => {
         if (value) {
           const columnIndex = this._columns.findIndex(
-            _column => _column.property === column.property,
+            _column => _column.property === column.property
           );
           this._columns[columnIndex].activeFilterValue = value;
           this.notifyPath(`_columns.${columnIndex}.activeFilterValue`);
@@ -755,13 +755,13 @@ class DtPaperDatatableApi
 
   _handleDragAndDrop() {
     const allTh = this.shadowRoot.querySelectorAll('thead th');
-    allTh.forEach(th => {
+    allTh.forEach((th) => {
       th.addEventListener('dragover', this._dragOverHandle.bind(this), false);
       th.addEventListener('dragenter', this._dragEnterHandle.bind(this), false);
       th.addEventListener('drop', this._dropHandle.bind(this), false);
     });
     const allThDiv = this.shadowRoot.querySelectorAll('thead th paper-datatable-api-th-content');
-    allThDiv.forEach(div => {
+    allThDiv.forEach((div) => {
       div.addEventListener('dragstart', this._dragStartHandle.bind(this), false);
       div.addEventListener('dragend', this._dragEndHandle.bind(this), false);
     });
@@ -822,7 +822,7 @@ class DtPaperDatatableApi
         this._insertElement(allTh, toIndex, fromIndex);
 
         const allTr = this.shadowRoot.querySelectorAll('tbody tr');
-        allTr.forEach(tr => {
+        allTr.forEach((tr) => {
           const allTd = Polymer.dom(tr).querySelectorAll('td');
           this._insertElement(allTd, toIndex, fromIndex);
         });
@@ -851,9 +851,9 @@ class DtPaperDatatableApi
     this.async(
       () =>
         this._changeColumn(propertiesOrder, () =>
-          this.fire('order-column-change', { propertiesOrder }),
+          this.fire('order-column-change', { propertiesOrder })
         ),
-      100,
+      100
     );
   }
 
@@ -872,7 +872,7 @@ class DtPaperDatatableApi
   _changeColumn(propertiesOrder, cb) {
     if (propertiesOrder) {
       const newColumnsOrder = [];
-      propertiesOrder.forEach(property => {
+      propertiesOrder.forEach((property) => {
         const columnObj = this._columns.find(column => column.property === property);
         if (columnObj) {
           newColumnsOrder.push(columnObj);
