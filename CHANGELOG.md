@@ -1,5 +1,8 @@
 # Change Log
 
+## [v2.0.7](https://github.com/RoXuS/paper-datatable-api/tree/2.0.7) (2017-07-24)
+- Use last version of vaadin date picker ([commit](https://github.com/RoXuS/paper-datatable-api/commit/30a7958))
+
 ## [v2.0.6](https://github.com/RoXuS/paper-datatable-api/tree/2.0.6) (2017-07-18)
 - Fix js style ([commit](https://github.com/RoXuS/paper-datatable-api/commit/665296c))
 
