@@ -25,7 +25,7 @@
     "paper-item": "PolymerElements/paper-item#2.0.0",
     "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#2.0.0",
     "paper-listbox": "PolymerElements/paper-listbox#2.0.0",
-    "iron-resizable-behavior": "PolymerElements/iron-resizable-behavior#2.0.0",
+    "iron-resizable-behavior": "PolymerElements/iron-resizable-behavior#^2.0.0",
     "paper-checkbox": "PolymerElements/paper-checkbox#2.0.0",
     "app-localize-behavior": "PolymerElements/app-localize-behavior#2.0.0",
     "paper-toolbar": "PolymerElements/paper-toolbar#2.0.0",
