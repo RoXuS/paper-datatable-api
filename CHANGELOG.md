@@ -1,5 +1,8 @@
 # Change Log
 
+## [v2.0.8](https://github.com/RoXuS/paper-datatable-api/tree/2.0.8) (2017-09-13)
+- Change dependencies version of iron-resizable-behavior ([commit](https://github.com/RoXuS/paper-datatable-api/commit/13deeaa))
+
 ## [v2.0.7](https://github.com/RoXuS/paper-datatable-api/tree/2.0.7) (2017-07-24)
 - Use last version of vaadin date picker ([commit](https://github.com/RoXuS/paper-datatable-api/commit/30a7958))
 
