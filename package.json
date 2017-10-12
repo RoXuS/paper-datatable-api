@@ -1,4 +1,22 @@
 {
+	"name": "paper-datatable-api",
+	"description": "A material design implementation of a data table",
+	"version": "2.0.8",
+	"keywords": [
+		"web-component",
+		"web-components",
+		"polymer",
+		"datatable",
+		"grid",
+		"table"
+	],
+	"maintainers": [
+		{
+		  "name": "Julien Rousseau - RoXuS",
+		  "email": "",
+		  "web": ""
+		}
+	],
 	"devDependencies": {
 		"babel-preset-es2015": "6.1.18",
 		"gulp": "^3.9.1",
