@@ -1,12 +1,15 @@
 /* global customElements */
-class DtPaperDatatableApiThContent
-  extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior], Polymer.Element) {
+class DtPaperDatatableApiThContent extends Polymer.mixinBehaviors(
+  [Polymer.AppLocalizeBehavior],
+  Polymer.Element
+) {
   static get is() {
     return 'paper-datatable-api-th-content';
   }
 
   static get properties() {
     return {
+      language: String,
       column: {
         type: Object,
         notify: true,
@@ -33,15 +36,39 @@ class DtPaperDatatableApiThContent
         type: String,
         value: () => '',
       },
-      localeDatePicker: {
-        type: Object,
-      },
       timeoutFilter: Number,
       focused: {
         type: Boolean,
         value: false,
       },
+      _dateFrom: Number,
+      _dateTo: Number,
+      dateFormat: String,
     };
+  }
+
+  static get observers() {
+    return ['_dateChanged(_dateTo)'];
+  }
+
+  _dateChanged() {
+    if (this._dateFrom && this._dateTo) {
+      this.column.activeFilterValue = {
+        dateFrom: this._dateFrom,
+        dateTo: this._dateTo,
+      };
+      this.fire('date-input-change-th-content', {
+        column: this.column,
+        value: this.column.activeFilterValue,
+      });
+    }
+  }
+
+  _displayPickerDate(dateFrom, dateTo) {
+    if (dateFrom && dateTo) {
+      return `${dateFrom} - ${dateTo}`;
+    }
+    return '';
   }
 
   _handleSort() {
@@ -62,9 +89,6 @@ class DtPaperDatatableApiThContent
   }
 
   setPaperInputValue(value) {
-    if (this.column.date) {
-      this.shadowRoot.querySelector('vaadin-date-picker-light paper-input').value = value;
-    }
     this.shadowRoot.querySelector('paper-input').value = value;
   }
 
@@ -86,12 +110,11 @@ class DtPaperDatatableApiThContent
           }
         }
       } else if (this.column.date) {
-        const datePicker = parentDiv.querySelector('vaadin-date-picker-light');
+        const datePicker = parentDiv.querySelector('range-datepicker-input');
         if (datePicker) {
           if (this.column.activeFilterValue) {
             this.previousValue = this.column.activeFilterValue;
           }
-          datePicker.i18n = this.localeDatePicker;
         }
       } else {
         this._selectedChoices = [];
@@ -115,15 +138,6 @@ class DtPaperDatatableApiThContent
           this.previousValue = this.currentValue;
         }, 1000);
       }
-    }
-  }
-
-  _handleVaadinDatePickerLight() {
-    if (this.previousValue !== this.column.activeFilterValue && this.column.activeFilterValue) {
-      this.fire('date-input-change-th-content', {
-        column: this.column,
-        value: this.column.activeFilterValue,
-      });
     }
   }
 

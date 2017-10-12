@@ -1,9 +1,8 @@
 /* global customElements */
-class DtPaperDatatableApi
-  extends Polymer.mixinBehaviors(
-    [Polymer.AppLocalizeBehavior, Polymer.IronResizableBehavior],
-    Polymer.Element
-  ) {
+class DtPaperDatatableApi extends Polymer.mixinBehaviors(
+  [Polymer.AppLocalizeBehavior, Polymer.IronResizableBehavior],
+  Polymer.Element
+) {
   static get is() {
     return 'paper-datatable-api';
   }
@@ -116,13 +115,6 @@ class DtPaperDatatableApi
         type: String,
         value: 'en',
       },
-      /**
-       * If it is setted, the date picker is localized with this object.
-       * See https://vaadin.com/docs/-/part/elements/vaadin-date-picker/vaadin-date-picker-localization.html.
-       */
-      localeDatePicker: {
-        type: Object,
-      },
       resources: {
         notify: true,
         value() {
@@ -186,6 +178,13 @@ class DtPaperDatatableApi
       oldPage: {
         type: Number,
         notify: true,
+      },
+      /**
+       * Date format for datepicker
+       */
+      dateFormat: {
+        type: String,
+        value: 'MM/DD/YYYY',
       },
     };
   }
@@ -615,7 +614,7 @@ class DtPaperDatatableApi
     }
   }
 
-  _handleVaadinDatePickerLight(event) {
+  _handleDateChange(event) {
     const column = event.detail.column;
     const value = event.detail.value;
 

@@ -55,28 +55,11 @@
       test('Headers are setted', function (done) {
         var paperDatatableApi = fixture('date');
         paperDatatableApi.data = data;
-
-        var toFullDate = function (date) {
-          return (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
-        };
-
-        paperDatatableApi.localeDatePicker = {
-          today: 'today',
-          cancel: 'cancel',
-          weekdays: moment.weekdays(),
-          monthNames: moment.months(),
-          weekdaysShort: moment.weekdaysShort(),
-          firstDayOfWeek: moment.localeData().firstDayOfWeek(),
-          formatDate: d => moment(d).format(moment.localeData().longDateFormat('L')),
-          formatTitle: (monthName, fullYear) => `${monthName} ${fullYear}`,
-        };
-
         flush(function () {
           let thContent = Polymer.dom(paperDatatableApi.root).querySelectorAll('paper-datatable-api-th-content');
           let filterButton = Polymer.dom(thContent[1].root).querySelector('paper-icon-button');
           filterButton.click();
           paperDatatableApi.async(function () {
-            assert.isFalse(Polymer.dom(thContent[1].root).querySelector('vaadin-date-picker-light').opened);
             done();
           }, 200);
         });

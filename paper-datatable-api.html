@@ -12,8 +12,6 @@
 
 <link rel="import" href="../app-localize-behavior/app-localize-behavior.html">
 
-<link rel="import" href="../vaadin-date-picker/vaadin-date-picker-light.html">
-
 <!--
 
 `paper-datatable-api` is a material design implementation of a data table.
@@ -93,10 +91,11 @@ Custom property                                   | Description                 
             </template>
             <th class$="[[_generateClass(column.filter)]] pgTh [[_addCustomTdClass(column.tdCustomStyle)]]" data-column="[[column]]"
               property$="[[column.property]]" style$="display: [[_getThDisplayStyle(column.hidden)]];">
-              <paper-datatable-api-th-content column="[[column]]" locale-date-picker="[[localeDatePicker]]" position-sort-icon="[[positionSortIcon]]"
+              <paper-datatable-api-th-content column="[[column]]" position-sort-icon="[[positionSortIcon]]" date-format="[[dateFormat]]"
                 sort-direction$="[[column.sortDirection]]" on-input-change-th-content="_handleInputChange"
-                on-date-input-change-th-content="_handleVaadinDatePickerLight" sorted$="[[column.sorted]]"
-                sortable$="[[column.sortable]]" on-filter-th-content="_handleFilter" on-sort-th-content="_handleSort">
+                on-date-input-change-th-content="_handleDateChange" language="[[language]]"
+                sorted$="[[column.sorted]]" sortable$="[[column.sortable]]" on-filter-th-content="_handleFilter"
+                on-sort-th-content="_handleSort">
               </paper-datatable-api-th-content>
             </th>
           </template>
@@ -108,16 +107,9 @@ Custom property                                   | Description                 
     </table>
 
     <template is="dom-if" if="[[paginate]]" restamp>
-      <paper-datatable-api-footer
-        resources="[[resources]]"
-        language="[[language]]"
-        footer-position="[[footerPosition]]"
-        available-size="[[availableSize]]"
-        total-pages="[[totalPages]]"
-        total-elements="[[totalElements]]"
-        old-page="[[oldPage]]"
-        size="{{size}}"
-        page="{{page}}">
+      <paper-datatable-api-footer resources="[[resources]]" language="[[language]]" footer-position="[[footerPosition]]"
+        available-size="[[availableSize]]" total-pages="[[totalPages]]" total-elements="[[totalElements]]"
+        old-page="[[oldPage]]" size="{{size}}" page="{{page}}">
       </paper-datatable-api-footer>
     </template>
 

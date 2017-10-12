@@ -4,7 +4,6 @@
 
 <link rel="import" href="../app-localize-behavior/app-localize-behavior.html">
 
-<link rel="import" href="../vaadin-date-picker/vaadin-date-picker-light.html">
 <link rel="import" href="paper-datatable-api-icons.html">
 
 <link rel="import" href="../paper-icon-button/paper-icon-button.html">
@@ -13,6 +12,7 @@
 <link rel="import" href="../paper-listbox/paper-listbox.html">
 <link rel="import" href="../paper-menu-button/paper-menu-button.html">
 <link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../range-datepicker/range-datepicker-input.html">
 
 <dom-module id="paper-datatable-api-th-content">
   <template>
@@ -23,38 +23,43 @@
         display: block;
       }
 
-      :host > div {
+      :host>div {
         @apply --layout-horizontal;
         @apply --layout-center;
       }
 
       paper-input {
         min-width: var(--paper-datatable-api-min-width-input-filter, 120px);
-        --paper-input-container-underline-focus: {
+        --paper-input-container-underline-focus: {
           display: block;
-        };
-        --paper-input-container-label: {
+        }
+        ;
+        --paper-input-container-label: {
           position: initial;
-        };
+        }
+        ;
         --paper-input-container: {
           padding: 0;
-        };
+        }
+        ;
         --paper-input-container-input: {
           font-size: 12px;
-        };
+        }
+        ;
       }
 
       paper-icon-button {
         --paper-icon-button-hover: {
           @apply --paper-datatable-api-header-sorted;
-        };
+        }
+        ;
         min-width: 36px;
         min-height: 36px;
         transition: transform .2s linear;
       }
 
       paper-icon-button[sortable].filter {
-        color: rgba(0,0,0, .26);
+        color: rgba(0, 0, 0, .26);
       }
 
       paper-icon-button[sortable].filter.active {
@@ -62,10 +67,10 @@
       }
 
       paper-icon-button.sort {
-        color: rgba(0,0,0, .26);
+        color: rgba(0, 0, 0, .26);
       }
 
-      paper-icon-button[sorted].sort {
+      paper-icon-button[sorted].sort {
         @apply --paper-datatable-api-header-sorted;
       }
 
@@ -82,8 +87,8 @@
         padding: 0;
       }
 
-      paper-icon-button[icon="arrow-drop-down"] {
-        color: rgba(0,0,0, .26);
+      paper-icon-button[icon="arrow-drop-down"] {
+        color: rgba(0, 0, 0, .26);
       }
 
       iron-icon[icon="check-box"] {
@@ -93,7 +98,6 @@
       iron-icon[icon="check-box-outline-blank"] {
         color: var(--paper-datatable-api-unchecked-checkbox-color, --primary-text-color);
       }
-
     </style>
 
     <div class$="[[_draggableClass(column.draggableColumn)]]" draggable$="[[_isDraggable(column.draggableColumn, focused)]]">
@@ -102,18 +106,15 @@
 
         <!-- Sort -->
         <template is="dom-if" if="[[column.sortable]]">
-          <paper-icon-button
-            icon="paper-datatable-api-icons:arrow-downward"
-            sorted$="[[sorted]]"
-            class="sort"
-            on-tap="_handleSort"
-            sort-direction$="[[sortDirection]]"></paper-icon-button>
+          <paper-icon-button icon="paper-datatable-api-icons:arrow-downward" sorted$="[[sorted]]" class="sort"
+            on-tap="_handleSort" sort-direction$="[[sortDirection]]"></paper-icon-button>
         </template>
 
         <!-- Filter icon -->
         <template is="dom-if" if="[[column.filter]]">
           <template is="dom-if" if="[[column.activeFilter]]">
-            <paper-icon-button icon="paper-datatable-api-icons:clear" sortable$="[[sortable]]" class="filter active" on-tap="_handleFilter"></paper-icon-button>
+            <paper-icon-button icon="paper-datatable-api-icons:clear" sortable$="[[sortable]]" class="filter active"
+              on-tap="_handleFilter"></paper-icon-button>
           </template>
           <template is="dom-if" if="[[!column.activeFilter]]">
             <paper-icon-button icon="paper-datatable-api-icons:search" sortable$="[[sortable]]" class="filter" on-tap="_handleFilter"></paper-icon-button>
@@ -126,13 +127,17 @@
       <template is="dom-if" if="[[column.activeFilter]]" on-dom-change="_handleActiveFilterChange">
         <template is="dom-if" if="[[!column.date]]" restamp>
           <template is="dom-if" if="[[!column.choices]]" restamp>
-            <paper-input class="flex" value="{{column.activeFilterValue}}" no-label-float placeholder="[[column.header]]" on-keyup="_handleKeyDownInput" focused="{{focused}}"></paper-input>
+            <paper-input class="flex" value="{{column.activeFilterValue}}" no-label-float placeholder="[[column.header]]"
+              on-keyup="_handleKeyDownInput" focused="{{focused}}"></paper-input>
           </template>
         </template>
         <template is="dom-if" if="[[column.date]]" restamp>
-          <vaadin-date-picker-light attr-for-value="value" on-value-changed="_handleVaadinDatePickerLight" value="{{column.activeFilterValue}}">
-            <paper-input class="flex" no-label-float placeholder="[[column.header]]" focused="{{focused}}"></paper-input>
-          </vaadin-date-picker-light>
+          <range-datepicker-input class="flex" horizontal-align="right" locale="[[language]]" date-format="[[dateFormat]]" date-from="{{_dateFrom}}" date-to="{{_dateTo}}">
+            <template>
+              <paper-input class="flex" focused="{{focused}}" placeholder="[[column.header]]" no-label-float value="[[_displayPickerDate(dateFrom, dateTo)]]"
+                readonly></paper-input>
+            </template>
+          </range-datepicker-input>
         </template>
       </template>
 
@@ -140,29 +145,30 @@
       <template is="dom-if" if="[[!column.activeFilter]]">
         <div class="flex" on-tap="_handleFilter">
           <template is="dom-if" if="[[!column.choices]]" restamp>
-          [[column.header]]
-      </template>
+            [[column.header]]
+          </template>
 
-        <template is="dom-if" if="[[column.choices]]" restamp>
+          <template is="dom-if" if="[[column.choices]]" restamp>
 
-          <paper-menu-button ignore-select dynamic-align>
-            <div slot="dropdown-trigger" class="layout horizontal center">
-              <span class="flex">[[column.header]]</span>
-              <paper-icon-button icon="arrow-drop-down"></paper-icon-button>
-            </div>
-            <paper-listbox slot="dropdown-content" selected-values="{{_selectedChoices}}" multi attr-for-selected="name" on-iron-select="_handleChoiceChanged" on-iron-deselect="_handleChoiceChanged">
-              <template is="dom-repeat" items="[[column.choices]]" as="choice">
-                <paper-icon-item name="[[choice.key]]">
-                  <iron-icon slot="item-icon" icon$="[[_computeIconName(choice.key, _selectedChoices.*)]]"></iron-icon>
-                  <paper-item-body style$="[[choice.style]]">
-                    [[choice.label]]
-                  </paper-item-body>
-                </paper-icon-item>
-              </template>
-            </paper-listbox>
-          </paper-menu-button>
+            <paper-menu-button ignore-select dynamic-align>
+              <div slot="dropdown-trigger" class="layout horizontal center">
+                <span class="flex">[[column.header]]</span>
+                <paper-icon-button icon="arrow-drop-down"></paper-icon-button>
+              </div>
+              <paper-listbox slot="dropdown-content" selected-values="{{_selectedChoices}}" multi attr-for-selected="name"
+                on-iron-select="_handleChoiceChanged" on-iron-deselect="_handleChoiceChanged">
+                <template is="dom-repeat" items="[[column.choices]]" as="choice">
+                  <paper-icon-item name="[[choice.key]]">
+                    <iron-icon slot="item-icon" icon$="[[_computeIconName(choice.key, _selectedChoices.*)]]"></iron-icon>
+                    <paper-item-body style$="[[choice.style]]">
+                      [[choice.label]]
+                    </paper-item-body>
+                  </paper-icon-item>
+                </template>
+              </paper-listbox>
+            </paper-menu-button>
 
-        </template>
+          </template>
         </div>
       </template>
 
@@ -171,7 +177,8 @@
         <!-- Filter icon -->
         <template is="dom-if" if="[[column.filter]]">
           <template is="dom-if" if="[[column.activeFilter]]">
-            <paper-icon-button icon="paper-datatable-api-icons:clear" sortable$="[[sortable]]" class="filter active" on-tap="_handleFilter"></paper-icon-button>
+            <paper-icon-button icon="paper-datatable-api-icons:clear" sortable$="[[sortable]]" class="filter active"
+              on-tap="_handleFilter"></paper-icon-button>
           </template>
           <template is="dom-if" if="[[!column.activeFilter]]">
             <paper-icon-button icon="paper-datatable-api-icons:search" sortable$="[[sortable]]" class="filter" on-tap="_handleFilter"></paper-icon-button>
@@ -180,12 +187,8 @@
 
         <!-- Sort -->
         <template is="dom-if" if="[[column.sortable]]">
-          <paper-icon-button
-            icon="paper-datatable-api-icons:arrow-downward"
-            sorted$="[[sorted]]"
-            class="sort"
-            on-tap="_handleSort"
-            sort-direction$="[[sortDirection]]"></paper-icon-button>
+          <paper-icon-button icon="paper-datatable-api-icons:arrow-downward" sorted$="[[sorted]]" class="sort"
+            on-tap="_handleSort" sort-direction$="[[sortDirection]]"></paper-icon-button>
         </template>
 
       </template>
