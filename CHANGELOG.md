@@ -1,5 +1,10 @@
 # Change Log
 
+## [v2.0.9](https://github.com/RoXuS/paper-datatable-api/tree/2.0.9) (2017-10-12)
+- Delete package-lock.json ([commit](https://github.com/RoXuS/paper-datatable-api/commit/b56c4f1))
+- Use range-datepicker instead of vaadin date picker ([commit](https://github.com/RoXuS/paper-datatable-api/commit/bcedf75))
+- package.json completion with bower.json information ([commit](https://github.com/RoXuS/paper-datatable-api/commit/d755c27))
+
 ## [v2.0.8](https://github.com/RoXuS/paper-datatable-api/tree/2.0.8) (2017-09-13)
 - Change dependencies version of iron-resizable-behavior ([commit](https://github.com/RoXuS/paper-datatable-api/commit/13deeaa))
 
