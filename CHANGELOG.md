@@ -1,5 +1,8 @@
 # Change Log
 
+## [v2.0.11](https://github.com/RoXuS/paper-datatable-api/tree/2.0.11) (2017-11-30)
+- Change semver usage on range-datepicker dependency ([commit](https://github.com/RoXuS/paper-datatable-api/commit/a2a5d3b))
+
 ## [v2.0.10](https://github.com/RoXuS/paper-datatable-api/tree/2.0.10) (2017-10-13)
 - Use last version of range-datepicker ([commit](https://github.com/RoXuS/paper-datatable-api/commit/5dd2af8))
 
