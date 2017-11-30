@@ -29,7 +29,7 @@
     "paper-checkbox": "PolymerElements/paper-checkbox#2.0.0",
     "app-localize-behavior": "PolymerElements/app-localize-behavior#2.0.0",
     "paper-toolbar": "PolymerElements/paper-toolbar#2.0.0",
-    "range-datepicker": "^0.0.15"
+    "range-datepicker": "~0.0.15"
   },
   "devDependencies": {
     "paper-menu-button": "PolymerElements/paper-menu-button#2.0.0",
