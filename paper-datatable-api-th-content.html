@@ -21,6 +21,9 @@
     <style>
       :host {
         display: block;
+        --paper-icon-button-width: 24px;
+        --paper-icon-button-padding-right: 3px;
+        --paper-icon-button-padding-left: 3px;
       }
 
       :host>div {
@@ -49,6 +52,9 @@
       }
 
       paper-icon-button {
+        width: var(--paper-icon-button-width);
+        padding-right: var(--paper-icon-button-padding-right);
+        padding-left: var(--paper-icon-button-padding-left);
         --paper-icon-button-hover: {
           @apply --paper-datatable-api-header-sorted;
         }
