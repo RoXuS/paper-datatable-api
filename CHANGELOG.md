@@ -1,5 +1,8 @@
 # Change Log
 
+## [v2.0.13](https://github.com/RoXuS/paper-datatable-api/tree/2.0.13) (2018-02-09)
+- Fix templatize to use with polymer 2.5 ([commit](https://github.com/RoXuS/paper-datatable-api/commit/1ca20de))
+
 ## [v2.0.12](https://github.com/RoXuS/paper-datatable-api/tree/2.0.12) (2018-02-01)
 - Use last version of polymer components ([commit](https://github.com/RoXuS/paper-datatable-api/commit/922e2af))
 
