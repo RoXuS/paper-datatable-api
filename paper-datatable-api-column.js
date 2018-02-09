@@ -98,19 +98,30 @@ class DtPaperDatatableApiColumn
     };
   }
 
-  attached() {
-    const props = {};
-    props.__key__ = true;
-    props[this.header] = true;
-    props[this.property] = true;
-    this._instanceProps = props;
-
-    if (this.ctor) {
-      return;
-    }
-    const template = this.queryEffectiveChildren('template');
-    this.templatize(template);
+  constructor() {
+    super();
+    this.instances = [];
   }
+
+  connectedCallback() {
+    if (!this.ctor) {
+      const props = {
+        __key__: true,
+        [this.header]: true,
+        [this.property]: true,
+      };
+      const template = this.querySelector('template');
+      this.ctor = Polymer.Templatize.templatize(template, this, {
+        instanceProps: props,
+        forwardHostProp(prop, value) {
+          this.instances.forEach((inst) => {
+            inst.forwardHostProp(prop, value);
+          });
+        },
+      });
+    }
+  }
+
 
   /**
    * Stamp the value in template (according to property).
@@ -119,9 +130,8 @@ class DtPaperDatatableApiColumn
    * @param {String} value The value of the property.
    */
   fillTemplate(value, otherValues) {
-    const instance = this.stamp({ value, otherValues });
-    instance.value = value;
-    instance.otherValues = otherValues;
+    const instance = new this.ctor({ value, otherValues });
+    this.instances.push(instance);
     return instance;
   }
 }
