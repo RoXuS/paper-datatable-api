@@ -1,6 +1,8 @@
 /* global customElements */
-class DtPaperDatatableApiColumn
-  extends Polymer.mixinBehaviors([Polymer.Templatizer], Polymer.Element) {
+class DtPaperDatatableApiColumn extends Polymer.mixinBehaviors(
+  [Polymer.Templatizer],
+  Polymer.Element
+) {
   static get is() {
     return 'paper-datatable-api-column';
   }
@@ -95,6 +97,11 @@ class DtPaperDatatableApiColumn
        * If setted, the choices are displayed in place of the paper-input (in filter mode)
        */
       choices: Array,
+
+      /**
+       * The default value of the editable field
+       */
+       defaultValue: String
     };
   }
 

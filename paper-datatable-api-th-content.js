@@ -44,11 +44,22 @@ class DtPaperDatatableApiThContent extends Polymer.mixinBehaviors(
       _dateFrom: Number,
       _dateTo: Number,
       dateFormat: String,
+      defaultValue: String,
     };
   }
 
   static get observers() {
-    return ['_dateChanged(_dateTo)'];
+    return [
+      '_dateChanged(_dateTo)'
+    ];
+  }
+
+  ready() {
+    super.ready();
+    if(this.column.defaultValue !== undefined) {
+      this.column.activeFilter = true;
+      this.column.activeFilterValue = this.column.defaultValue;
+    }
   }
 
   _dateChanged() {
