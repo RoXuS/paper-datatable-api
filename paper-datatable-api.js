@@ -392,6 +392,28 @@ class DtPaperDatatableApi extends Polymer.mixinBehaviors(
     });
   }
 
+  /**
+   * Uncheck the checkbox
+   *
+   * @property selectRow
+   * @param {String} value The value of the row following the selectableDatakey.
+   */
+  deselectRow(value) {
+    const table = this.$$('table');
+    const allTr = table.querySelectorAll('tbody tr');
+    allTr.forEach((tr) => {
+      const selectedRow = this._findSelectableElement(tr.rowData);
+      if (selectedRow === value) {
+        const checkbox = tr.querySelector('paper-checkbox');
+        if (checkbox) {
+          checkbox.checked = false;
+        }
+        tr.classList.remove('selected');
+      }
+    });
+    this.splice('selectedRows', this.selectedRows.indexOf(value), 1);
+  }
+
   _selectChange(event) {
     let localTarget;
     if (event.type && event.type === 'change') {
