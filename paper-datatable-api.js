@@ -1,7 +1,7 @@
 /* global customElements */
 class DtPaperDatatableApi extends Polymer.mixinBehaviors(
   [Polymer.AppLocalizeBehavior, Polymer.IronResizableBehavior],
-  Polymer.Element
+  Polymer.MutableData(Polymer.Element)
 ) {
   static get is() {
     return 'paper-datatable-api';
@@ -414,21 +414,26 @@ class DtPaperDatatableApi extends Polymer.mixinBehaviors(
     }
 
     let eventData = {};
+
+    const selectedRows = [...this.selectedRows];
+
     if (localTarget.checked) {
-      this.push('selectedRows', rowId);
+      selectedRows.push(rowId);
       eventData = {
         selected: [rowId],
         data: rowData,
       };
       tr.classList.add('selected');
     } else {
-      this.splice('selectedRows', this.selectedRows.indexOf(rowId), 1);
+      selectedRows.splice(selectedRows.indexOf(rowId), 1);
       eventData = {
         deselected: [rowId],
         data: rowData,
       };
       tr.classList.remove('selected');
     }
+
+    this.set('selectedRows', selectedRows);
 
     /**
      * Fired when a row is selected.
@@ -462,19 +467,29 @@ class DtPaperDatatableApi extends Polymer.mixinBehaviors(
       generateTr = true;
     }
 
-    this._columns = this.queryAllEffectiveChildren(
-      'paper-datatable-api-column'
-    ).map((columnParams, i) => {
-      const column = columnParams;
-      column.position = i;
-      return column;
-    });
+    this._columns = this.queryAllEffectiveChildren('paper-datatable-api-column').map(
+      (columnParams, i) => {
+        const column = columnParams;
+        column.position = i;
+        return column;
+      }
+    );
 
     if (this.propertiesOrder.length === 0) {
       this._generatePropertiesOrder();
     }
 
-    this.toggleColumns = this._columns.filter(column => column.hideable || column.draggableColumn);
+    const columns = [...this._columns];
+    this.set(
+      'toggleColumns',
+      columns.filter(column => column.hideable || column.draggableColumn).map(column => ({
+        position: column.position,
+        hideable: column.hideable,
+        hidden: column.hidden,
+        property: column.property,
+        header: column.header,
+      }))
+    );
 
     this._columnsHeight = this.selectable ? this._columns.length + 1 : this._columns.length;
     if (generateTr) {
@@ -507,8 +522,8 @@ class DtPaperDatatableApi extends Polymer.mixinBehaviors(
         toggleColumn => toggleColumn.property === columnProperty
       );
 
-      this.toggleColumns[toggleColumnIndex].hidden = !isHidden;
-      this.notifyPath(`toggleColumns.${toggleColumnIndex}.hidden`);
+      this.set(`toggleColumns.${toggleColumnIndex}.hidden`, !isHidden);
+      this._setColumns();
     }
   }
 
@@ -883,6 +898,18 @@ class DtPaperDatatableApi extends Polymer.mixinBehaviors(
           this._columns = newColumnsOrder;
           this.async(() => {
             this._handleDragAndDrop();
+
+            const columns = [...this._columns];
+            this.set(
+              'toggleColumns',
+              columns.filter(column => column.hideable || column.draggableColumn).map(column => ({
+                position: column.position,
+                hideable: column.hideable,
+                hidden: column.hidden,
+                property: column.property,
+                header: column.header,
+              }))
+            );
             if (cb) {
               cb();
             }
