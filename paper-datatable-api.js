@@ -375,7 +375,9 @@ class DtPaperDatatableApi extends Polymer.mixinBehaviors(
     const allTr = table.querySelectorAll('tbody tr');
     allTr.forEach((tr) => {
       const selectedRow = this._findSelectableElement(tr.rowData);
-
+      if(!this.selectable) {
+        tr.classList.remove('selected');
+      }
       if (selectedRow === value) {
         const checkbox = tr.querySelector('paper-checkbox');
         if (checkbox) {
@@ -386,8 +388,8 @@ class DtPaperDatatableApi extends Polymer.mixinBehaviors(
             rowId = selectedRow;
           }
           this.push('selectedRows', rowId);
-          tr.classList.add('selected');
         }
+        tr.classList.add('selected');
       }
     });
   }
