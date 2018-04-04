@@ -1,5 +1,9 @@
 # Change Log
 
+## [v2.0.15](https://github.com/RoXuS/paper-datatable-api/tree/2.0.15) (2018-04-04)
+
+* Enable single row selection in non checkbox mode. ([commit](https://github.com/RoXuS/paper-datatable-api/commit/5dba96a))
+
 ## [v2.0.14](https://github.com/RoXuS/paper-datatable-api/tree/2.0.14) (2018-03-26)
 
 * Add mutabledata class to skip strict dirty-checking ([commit](https://github.com/RoXuS/paper-datatable-api/commit/c4a01db))
