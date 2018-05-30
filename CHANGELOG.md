@@ -1,5 +1,9 @@
 # Change Log
 
+## [v2.0.16](https://github.com/RoXuS/paper-datatable-api/tree/2.0.16) (2018-05-30)
+- Force nodejs to 9.11.1 ([commit](https://github.com/RoXuS/paper-datatable-api/commit/52d64b7))
+- Force focus after toggle a filter ([commit](https://github.com/RoXuS/paper-datatable-api/commit/b9ffc2a))
+
 ## [v2.0.15](https://github.com/RoXuS/paper-datatable-api/tree/2.0.15) (2018-04-04)
 
 * Enable single row selection in non checkbox mode. ([commit](https://github.com/RoXuS/paper-datatable-api/commit/5dba96a))
