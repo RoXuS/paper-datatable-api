@@ -1,8 +1,15 @@
 {
   "name": "paper-datatable-api",
   "description": "A material design implementation of a data table",
-  "version": "2.0.15",
-  "keywords": ["web-component", "web-components", "polymer", "datatable", "grid", "table"],
+  "version": "2.0.16",
+  "keywords": [
+    "web-component",
+    "web-components",
+    "polymer",
+    "datatable",
+    "grid",
+    "table"
+  ],
   "maintainers": [
     {
       "name": "Julien Rousseau - RoXuS",
