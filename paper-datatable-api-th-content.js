@@ -99,11 +99,12 @@ class DtPaperDatatableApiThContent extends Polymer.mixinBehaviors(
   _handleActiveFilterChange(event) {
     const parentDiv = event.currentTarget.parentNode;
     Polymer.dom.flush();
-    this.async(() => {
+    Polymer.Async.microTask.run(() => {
       let paperInput;
       if (!this.column.date && !this.column.choices) {
-        paperInput = this.shadowRoot.querySelector('paper-input');
+        paperInput = parentDiv.querySelector('paper-input');
         if (paperInput) {
+          paperInput.setAttribute('tabindex', 1);
           paperInput.focus();
           if (this.column.activeFilterValue) {
             this.previousValue = this.column.activeFilterValue;
