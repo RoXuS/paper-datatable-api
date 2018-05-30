@@ -1,8 +1,7 @@
 sudo: required
 dist: trusty
 language: node_js
-node_js:
-  - "node"
+node_js: 9.11.1
 addons:
   # From some tests it seems you can only have one firefox addon.
   # Adding two results in the last one defined being the one installed.
