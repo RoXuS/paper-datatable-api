@@ -1,6 +1,11 @@
 # Change Log
 
+## [v2.0.17](https://github.com/RoXuS/paper-datatable-api/tree/2.0.17) (2018-06-28)
+
+- Fix bug on toggleColumn ([commit](https://github.com/RoXuS/paper-datatable-api/commit/2fde387))
+
 ## [v2.0.16](https://github.com/RoXuS/paper-datatable-api/tree/2.0.16) (2018-05-30)
+
 - Force nodejs to 9.11.1 ([commit](https://github.com/RoXuS/paper-datatable-api/commit/52d64b7))
 - Force focus after toggle a filter ([commit](https://github.com/RoXuS/paper-datatable-api/commit/b9ffc2a))
 
