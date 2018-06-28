@@ -375,7 +375,7 @@ class DtPaperDatatableApi extends Polymer.mixinBehaviors(
     const allTr = table.querySelectorAll('tbody tr');
     allTr.forEach((tr) => {
       const selectedRow = this._findSelectableElement(tr.rowData);
-      if(!this.selectable) {
+      if (!this.selectable) {
         tr.classList.remove('selected');
       }
       if (selectedRow === value) {
@@ -520,11 +520,14 @@ class DtPaperDatatableApi extends Polymer.mixinBehaviors(
       });
 
       column.hidden = !isHidden;
-      const toggleColumnIndex = this.toggleColumns.findIndex(
+      const toggleColumns = [...this.toggleColumns];
+      const toggleColumnIndex = toggleColumns.findIndex(
         toggleColumn => toggleColumn.property === columnProperty
       );
 
-      this.set(`toggleColumns.${toggleColumnIndex}.hidden`, !isHidden);
+      toggleColumns[toggleColumnIndex].hidden = !isHidden;
+
+      this.set('toggleColumns', toggleColumns);
       this._setColumns();
     }
   }
