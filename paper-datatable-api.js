@@ -52,6 +52,13 @@ class DtPaperDatatableApi extends Polymer.mixinBehaviors(
         notify: true,
       },
       /**
+       * The current sort.
+       */
+      sort: {
+        type: String,
+        notify: true,
+      },
+      /**
        * If true, a filter on each column is added.
        */
       filters: {
@@ -191,6 +198,10 @@ class DtPaperDatatableApi extends Polymer.mixinBehaviors(
 
   get behaviors() {
     return [Polymer.AppLocalizeBehavior];
+  }
+
+  static get observers() {
+    return ['_sortChanged(_columns, sort)'];
   }
 
   attached() {
@@ -540,14 +551,49 @@ class DtPaperDatatableApi extends Polymer.mixinBehaviors(
     return 'table-cell';
   }
 
-  _handleSort(event) {
-    const column = event.detail.column;
-    const paperDatatableApiThContent = event.currentTarget;
+  _sortChanged(columns, sort) {
+    if (sort) {
+      const splittedSort = sort.split(',');
+      if (splittedSort && splittedSort.length > 0 && splittedSort[0] && splittedSort[1]) {
+        const [property, direction] = splittedSort;
+        const column = columns.find(
+          columnElement => columnElement.property === property
+        );
+        const th = [...this.shadowRoot.querySelectorAll('th')].find(
+          thTarget => thTarget.property === property
+        );
+        if (column) {
+          this.sortColumn(column, direction, th);
+        }
+      }
+    } else {
+      [...this.shadowRoot.querySelectorAll('th')].forEach((th) => {
+        const column = [...columns].find(
+          columnElement => columnElement.property === th.getAttribute('property')
+        );
+        if (column && column.sortable && column.sorted) {
+          const thContent = Polymer.dom(th).querySelector('paper-datatable-api-th-content');
+          thContent.setAttribute('sort-direction', 'asc');
+          thContent.removeAttribute('sorted');
+          column.set('sortDirection', undefined);
+          column.set('sorted', false);
+          this.fire('sort', {
+            sort: {},
+            column,
+          });
+        }
+      });
+    }
+  }
+
+  _handleSort({ detail, currentTarget }) {
+    const column = detail.column;
+    const paperDatatableApiThContent = currentTarget;
     const th = paperDatatableApiThContent.parentNode;
     const sortDirection = column.sortDirection === 'asc' ? 'desc' : 'asc';
 
     if (column.sortDirection === undefined || column.sortDirection === 'asc') {
-      this.sortColumn(column, sortDirection, th);
+      this.set('sort', `${column.property},${sortDirection}`);
 
       /**
        * Fired when a column is sorted.
@@ -563,7 +609,7 @@ class DtPaperDatatableApi extends Polymer.mixinBehaviors(
         column,
       });
     } else {
-      this.deleteSortColumn(column, th);
+      this.set('sort', null);
     }
   }
 

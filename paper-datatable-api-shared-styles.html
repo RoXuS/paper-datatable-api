@@ -27,8 +27,8 @@
         font-weight: 500;
         text-align: left;
         white-space: nowrap;
-        padding: 6px var(--paper-datatable-api-horizontal-padding, 26px);
-        height: 43px;
+        padding: var(--paper-datatable-api-padding, 6px 26px);
+        height: var(--paper-datable-api-height, 43px);
         border-bottom: 1px solid;
         border-color: rgba(0, 0, 0, var(--dark-divider-opacity));
         @apply --paper-datatable-api-header;
@@ -43,7 +43,7 @@
       }
 
       tbody tr {
-				@apply --paper-datatable-api-tr;
+        @apply --paper-datatable-api-tr;
         height: 48px;
       }
 
@@ -95,7 +95,6 @@
         --paper-checkbox-checked-color: var(--paper-datatable-api-checked-checkbox-color, --primary-color);
         --paper-checkbox-unchecked-color: var(--paper-datatable-api-unchecked-checkbox-color, --primary-text-color);
       }
-
     </style>
   </template>
 </dom-module>

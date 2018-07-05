@@ -56,6 +56,7 @@
         min-width: 36px;
         min-height: 36px;
         transition: transform .2s linear;
+        @apply --paper-datatable-api-header-sorted-no-active;
       }
 
       paper-icon-button[sortable].filter {
@@ -106,15 +107,14 @@
 
         <!-- Sort -->
         <template is="dom-if" if="[[column.sortable]]">
-          <paper-icon-button icon="paper-datatable-api-icons:arrow-downward" sorted$="[[sorted]]" class="sort"
-            on-tap="_handleSort" sort-direction$="[[sortDirection]]"></paper-icon-button>
+          <paper-icon-button icon="paper-datatable-api-icons:arrow-downward" sorted$="[[sorted]]" class="sort" on-tap="_handleSort"
+            sort-direction$="[[sortDirection]]"></paper-icon-button>
         </template>
 
         <!-- Filter icon -->
         <template is="dom-if" if="[[column.filter]]">
           <template is="dom-if" if="[[column.activeFilter]]">
-            <paper-icon-button icon="paper-datatable-api-icons:clear" sortable$="[[sortable]]" class="filter active"
-              on-tap="_handleFilter"></paper-icon-button>
+            <paper-icon-button icon="paper-datatable-api-icons:clear" sortable$="[[sortable]]" class="filter active" on-tap="_handleFilter"></paper-icon-button>
           </template>
           <template is="dom-if" if="[[!column.activeFilter]]">
             <paper-icon-button icon="paper-datatable-api-icons:search" sortable$="[[sortable]]" class="filter" on-tap="_handleFilter"></paper-icon-button>
@@ -127,12 +127,13 @@
       <template is="dom-if" if="[[column.activeFilter]]" on-dom-change="_handleActiveFilterChange">
         <template is="dom-if" if="[[!column.date]]" restamp>
           <template is="dom-if" if="[[!column.choices]]" restamp>
-            <paper-input class="flex" value="{{column.activeFilterValue}}" no-label-float placeholder="[[column.header]]"
-              on-keyup="_handleKeyDownInput" focused="{{focused}}"></paper-input>
+            <paper-input class="flex" value="{{column.activeFilterValue}}" no-label-float placeholder="[[column.header]]" on-keyup="_handleKeyDownInput"
+              focused="{{focused}}"></paper-input>
           </template>
         </template>
         <template is="dom-if" if="[[column.date]]" restamp>
-          <range-datepicker-input class="flex" horizontal-align="right" locale="[[language]]" date-format="[[dateFormat]]" date-from="{{_dateFrom}}" date-to="{{_dateTo}}">
+          <range-datepicker-input class="flex" horizontal-align="right" locale="[[language]]" date-format="[[dateFormat]]" date-from="{{_dateFrom}}"
+            date-to="{{_dateTo}}">
             <template>
               <paper-input class="flex" focused="{{focused}}" placeholder="[[column.header]]" no-label-float value="[[_displayPickerDate(dateFrom, dateTo)]]"
                 readonly></paper-input>
@@ -155,8 +156,8 @@
                 <span class="flex">[[column.header]]</span>
                 <paper-icon-button icon="arrow-drop-down"></paper-icon-button>
               </div>
-              <paper-listbox slot="dropdown-content" selected-values="{{_selectedChoices}}" multi attr-for-selected="name"
-                on-iron-select="_handleChoiceChanged" on-iron-deselect="_handleChoiceChanged">
+              <paper-listbox slot="dropdown-content" selected-values="{{_selectedChoices}}" multi attr-for-selected="name" on-iron-select="_handleChoiceChanged"
+                on-iron-deselect="_handleChoiceChanged">
                 <template is="dom-repeat" items="[[column.choices]]" as="choice">
                   <paper-icon-item name="[[choice.key]]">
                     <iron-icon slot="item-icon" icon$="[[_computeIconName(choice.key, _selectedChoices.*)]]"></iron-icon>
@@ -177,8 +178,7 @@
         <!-- Filter icon -->
         <template is="dom-if" if="[[column.filter]]">
           <template is="dom-if" if="[[column.activeFilter]]">
-            <paper-icon-button icon="paper-datatable-api-icons:clear" sortable$="[[sortable]]" class="filter active"
-              on-tap="_handleFilter"></paper-icon-button>
+            <paper-icon-button icon="paper-datatable-api-icons:clear" sortable$="[[sortable]]" class="filter active" on-tap="_handleFilter"></paper-icon-button>
           </template>
           <template is="dom-if" if="[[!column.activeFilter]]">
             <paper-icon-button icon="paper-datatable-api-icons:search" sortable$="[[sortable]]" class="filter" on-tap="_handleFilter"></paper-icon-button>
@@ -187,8 +187,8 @@
 
         <!-- Sort -->
         <template is="dom-if" if="[[column.sortable]]">
-          <paper-icon-button icon="paper-datatable-api-icons:arrow-downward" sorted$="[[sorted]]" class="sort"
-            on-tap="_handleSort" sort-direction$="[[sortDirection]]"></paper-icon-button>
+          <paper-icon-button icon="paper-datatable-api-icons:arrow-downward" sorted$="[[sorted]]" class="sort" on-tap="_handleSort"
+            sort-direction$="[[sortDirection]]"></paper-icon-button>
         </template>
 
       </template>
