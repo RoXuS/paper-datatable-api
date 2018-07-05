@@ -1,5 +1,9 @@
 # Change Log
 
+## [v2.0.18](https://github.com/RoXuS/paper-datatable-api/tree/2.0.18) (2018-07-05)
+
+- Better sort handling ([commit](https://github.com/RoXuS/paper-datatable-api/commit/967e569))
+
 ## [v2.0.17](https://github.com/RoXuS/paper-datatable-api/tree/2.0.17) (2018-06-28)
 
 - Fix bug on toggleColumn ([commit](https://github.com/RoXuS/paper-datatable-api/commit/2fde387))
